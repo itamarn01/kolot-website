@@ -1,0 +1,111 @@
+{
+ "slug": "en__djs2",
+ "route": "/en/djs2/",
+ "lang": "en",
+ "alt": "/djs/",
+ "title": "Djs2 – KOLOT – קולות",
+ "description": null,
+ "layout": "default",
+ "sections": [
+  {
+   "type": "hero",
+   "images": [
+    "/media/djs-hero.webp"
+   ],
+   "anchor": null
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "orange",
+   "title": "DJ's",
+   "anchor": null
+  },
+  {
+   "type": "intro",
+   "heading": "THE RIGHT BEAT.<br>THE RIGHT ATMOSPHERE.<br>EVERYTIME.",
+   "headingAlign": "end",
+   "columns": [
+    "<p dir=\"ltr\">Our DJs are true stage animals. They’re here to set the dance floor on fire. They know exactly how to read the crowd, feel the energy, and pick the perfect song at just the right moment. With surprising combinations, smooth transitions, and beats that get everyone moving, our DJs never stop – they create an unforgettable experience that keeps everyone on their feet.</p><p dir=\"ltr\">Get ready for the perfect set that will keep you dancing until the early hours. 🔥</p>"
+   ],
+   "align": "start",
+   "image": "/media/dj-yosef.jpg"
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "yellow",
+   "title": "our DJ's",
+   "anchor": null
+  },
+  {
+   "type": "ensembleList",
+   "items": [
+    {
+     "media": {
+      "kind": "instagram",
+      "url": "https://www.instagram.com/reel/C4vzOteNOdz/"
+     },
+     "title": "DJ YOSEF",
+     "desc": "An experienced DJ and one of the founders of the \"Kolot\" band. With 15 years in the events industry, he's here to set your dance floor on fire like only he knows how.",
+     "icon": "/icons/8afc37424f.svg"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "tab",
+   "color": "cyan",
+   "title": "TESTIMONIALS",
+   "anchor": null
+  },
+  {
+   "type": "perfectMatch",
+   "src": "/media/the_perfect_match.svg"
+  },
+  {
+   "type": "heading",
+   "variant": "reviews",
+   "html": "SOME REVIEWS",
+   "align": "end"
+  },
+  {
+   "type": "testimonials"
+  },
+  {
+   "type": "heading",
+   "variant": "related",
+   "html": "You might also be interested in our other bands:",
+   "align": "center"
+  },
+  {
+   "type": "ensembles",
+   "items": [
+    {
+     "label": "Reception",
+     "href": "/en/reception-2/",
+     "icon": "/icons/df5b00eec2.svg",
+     "ring": "yellow"
+    },
+    {
+     "label": "Wedding Band",
+     "href": "/en/wedding-band/",
+     "icon": "/icons/5148779c68.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "Bar/Bat Mitzva",
+     "href": "/en/barbatmitzva/",
+     "icon": "/icons/5b5eefcf00.svg",
+     "ring": "orange"
+    },
+    {
+     "label": "Corporate",
+     "href": "/en/corporate-2/",
+     "icon": "/icons/9b59e66513.svg",
+     "ring": "cyan"
+    }
+   ]
+  }
+ ]
+}

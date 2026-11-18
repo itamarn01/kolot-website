@@ -1,0 +1,215 @@
+{
+ "slug": "en__packages-en",
+ "route": "/en/packages-en/",
+ "lang": "en",
+ "alt": "/packages/",
+ "title": "packages-en – KOLOT – קולות",
+ "description": null,
+ "layout": "packages",
+ "sections": [
+  {
+   "type": "packagesFull",
+   "packages": [
+    {
+     "logo": "/media/standard-svg-1.svg",
+     "color": "orange",
+     "instruments": [
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Keys",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "Sax",
+       "icon": "/icons/7ab699607b.svg"
+      }
+     ],
+     "desc": "<p>The signature Kolot line-up for the perfect party professional production musicians high-end sound and lighting and everything needed !to set the dance floor on fire</p>",
+     "listTitle": "whats included:",
+     "list": "<ul><li>Band including 5 professional musicians and a singer</li><li>4.5 hours of musical accompaniment for the evening, starting from the Kisei haKallah (“Bedeken”), the Chupah and on to the dancing</li><li>High-end sound equipment set up at three locations: Kisei haKallah, the Chupah, and at the dancefloor, as needed.</li><li>A professional sound technician who will monitor the sound, keeping it pleasant, balanced and fun throughout the evening</li><li>Basic stage lighting*</li><li>A rich repertoire that includes all styles</li><li>Planning meeting before the wedding</li></ul>",
+     "price": "15,000 ₪"
+    },
+    {
+     "logo": "/media/premium-svg-1.svg",
+     "color": "cyan",
+     "instruments": [
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Keys",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "Sax",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "Trumpet",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      }
+     ],
+     "desc": "<p>Next-level ensemble! The line-up for people who want a little more for their event. A powerful and energetic lineup that includes Duo Brass Section professional production musicians, and a crazy after-party with the Kolot band’s in-house DJ into the night.</p>",
+     "listTitle": "whats included:",
+     "list": "<ul><li>Band including 6 professional musicians and a singer</li><li>4.5 hours of live music, from the Kisei haKallah (“Bedeken”) through the Chupah to the dancing — then the DJ plays on with no time limit.</li><li>High-end sound equipment set up at three locations: Kisei haKallah, the Chupah, and at the dancefloor, as needed.</li><li>A professional sound technician who will monitor the sound, keeping it pleasant, balanced and fun throughout the evening.</li><li>Basic stage lighting*</li><li>A rich repertoire that includes all styles</li><li>Planning meeting before the wedding</li></ul>",
+     "price": "19,000 ₪"
+    },
+    {
+     "logo": "/media/ultimate-svg-1.svg",
+     "color": "yellow",
+     "instruments": [
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Percussion",
+       "icon": "/icons/09f1da252a.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Saxophone",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "Trumpet",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "Trombone",
+       "icon": "/icons/11137c0288.svg"
+      },
+      {
+       "label": "Keyboards",
+       "icon": "/icons/4674648c52.svg"
+      }
+     ],
+     "desc": "<p>The full Kolot experience. Your band for your dream event. The event that people just won’t stop talking about. Custom-picked line-up with a brass section, prestigious- reception band of your choice professional production musicians and a crazy after-party with the Kolot band’s in-house DJ.</p>",
+     "listTitle": "whats included:",
+     "list": "<ul><li>Complete and customizable band, including at least 8 professional musicians and a singer</li><li>4.5 hours of live music, from the reception through the Kisei haKallah (“Bedeken”) and the Chupah to the dancing — then  DJ plays on with no time limit</li><li>High-end sound equipment set up at four locations: reception, Kisei haKallah, Chupah, and at the dancefloor, as needed.</li><li>A professional sound technician who will monitor the sound, keeping it pleasant, balanced and fun throughout the evening.</li><li>Basic stage lighting*</li><li>A rich repertoire that includes all styles • Planning meeting before the wedding</li></ul>",
+     "extraTitle": "Reception Ensemble options:",
+     "calculator": [
+      {
+       "value": 2500,
+       "icon": "/media/violin.svg",
+       "label": "Violin"
+      },
+      {
+       "value": 6000,
+       "icon": "/media/harp.svg",
+       "label": "Harp &amp; Violin"
+      },
+      {
+       "value": 7500,
+       "icon": "/media/trio-jazz.svg",
+       "label": "Trio Jazz"
+      },
+      {
+       "value": 10000,
+       "icon": "/media/violins.svg",
+       "label": "Strings"
+      }
+     ],
+     "price": "₪24,500"
+    }
+   ],
+   "calculatorBase": 24500,
+   "includedLabel": "Included"
+  },
+  {
+   "type": "addons",
+   "logo": "/media/kolot-logo-01.png",
+   "title": "Add to our packages:",
+   "items": [
+    {
+     "label": "Singer",
+     "price": "4000 ₪"
+    },
+    {
+     "label": "2 brass players",
+     "price": "3500 ₪"
+    },
+    {
+     "label": "Trumpet",
+     "price": "2000 ₪"
+    },
+    {
+     "label": "Live DJ",
+     "price": "3000 ₪"
+    },
+    {
+     "label": "Percussion",
+     "price": "2500 ₪"
+    },
+    {
+     "label": "Violinist",
+     "price": "2500 ₪"
+    },
+    {
+     "label": "Jazz Trio",
+     "price": "7500 ₪"
+    },
+    {
+     "label": "Strings Ensemble",
+     "price": "10000 ₪"
+    },
+    {
+     "label": "Harp &amp; Violin",
+     "price": "6000 ₪"
+    }
+   ]
+  },
+  {
+   "type": "packagesFooter",
+   "note": "*Lighting installation subject to venue approval | *Prices applicable for weddings in the center of the country, between Hadera and Gedera Further north or south of these areas, there is an additional travel charge in accordance with the location",
+   "contact": "<a href=\"mailto:kolotmusic@gmail.com\">kolotmusic@gmail.com</a> | <a href=\"kolotband.co.il\">kolotband.co.il</a> | <a href=\"tel:+972555081080\">055-5081080 </a>"
+  }
+ ]
+}

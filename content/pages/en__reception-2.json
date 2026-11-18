@@ -1,0 +1,180 @@
+{
+ "slug": "en__reception-2",
+ "route": "/en/reception-2/",
+ "lang": "en",
+ "alt": "/reception/",
+ "title": "reception – KOLOT – קולות",
+ "description": null,
+ "layout": "default",
+ "sections": [
+  {
+   "type": "hero",
+   "images": [
+    "/media/bg-reception.webp"
+   ],
+   "anchor": null
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "orange",
+   "title": "Reception Bands",
+   "anchor": null
+  },
+  {
+   "type": "intro",
+   "heading": "OUR PERFECT SOUNDTRACK FOR YOUR SPECIAL MOMENTS",
+   "headingAlign": "end",
+   "columns": [
+    "<p dir=\"ltr\"><strong>After many years in the events industry, we know that everything comes down to the atmosphere.</strong><br>When guests arrive at your event and start to feel the vibe, the music is what creates that initial magic.</p><p dir=\"ltr\">Kolot’s welcome ensembles bring a unique vibe, elegant relaxation, and live music that sets the perfect tone.</p><p dir=\"ltr\"><strong>So, what do we offer?</strong></p><ul dir=\"ltr\"><li><strong>A variety of styles</strong> – Jazz, Blues, Bossa Nova, Israeli classics, acoustic pop, and more.</li><li><strong>Customizable ensembles</strong> – Duo, trio, or quartet, tailored to the atmosphere you want to create.</li><li><strong>Professional musicians</strong> with rich experience who know how to accompany your event with the perfect touch.</li><li><strong>An elegant and inviting ambiance</strong> that leaves an unforgettable first impression.</li></ul><p dir=\"ltr\">We’re here to give your event a musical atmosphere that makes it truly unforgettable.</p>"
+   ],
+   "align": "start",
+   "image": "/media/reception-sax.jpeg"
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "yellow",
+   "title": "our bands",
+   "anchor": null
+  },
+  {
+   "type": "ensembleList",
+   "items": [
+    {
+     "media": {
+      "kind": "youtube",
+      "id": "he7LTGs78pc"
+     },
+     "title": "Harp & Violin",
+     "desc": "A perfect blend of classical music, delicacy, and elegance, creating a magical and moving atmosphere that will give your event its unique touch.",
+     "icon": "/icons/d8f7a5ec78.svg"
+    },
+    {
+     "media": {
+      "kind": "youtube",
+      "id": "ZXl5LNzT124"
+     },
+     "title": "JAZZ TRIO",
+     "desc": "An elegant group performing professional arrangements of beloved standards alongside unique interpretations from all eras.",
+     "icon": "/icons/58a602ccfd.svg"
+    },
+    {
+     "media": {
+      "kind": "youtube",
+      "id": "CgpoORwoj7I"
+     },
+     "title": "Strings Ensemble",
+     "desc": "Our violin ensemble is a magic of its own. It begins with a stunning welcome featuring classical and Israeli pieces and continues with a moving ceremony accompanied by string instruments.",
+     "icon": "/icons/051ee10f91.svg"
+    },
+    {
+     "media": {
+      "kind": "carousel",
+      "slides": [
+       {
+        "id": "A6ID-y6SZl0",
+        "thumb": "/media/video-thumbs/clip-2024-12-15-0-12-06.webp"
+       },
+       {
+        "id": "0SLCPYIcIiU",
+        "thumb": "/media/video-thumbs/clip-2024-12-15-0-14-58.webp"
+       },
+       {
+        "id": "wiMWb2xShQI",
+        "thumb": "/media/video-thumbs/clip-2024-12-12-18-53-31.webp"
+       },
+       {
+        "id": "kCHNiP8uyRk",
+        "thumb": "/media/video-thumbs/clip-2024-12-12-19-33-29.webp"
+       },
+       {
+        "id": "tB9w_1EKFdY",
+        "thumb": "/media/video-thumbs/clip-2024-12-12-19-26-05.webp"
+       }
+      ]
+     },
+     "title": "The Violinist",
+     "desc": "<b>Meet the Violinist.</b> He will add an elegant and unique atmosphere to your event, strolling among your guests while playing classical and modern pieces that will captivate and connect everyone.",
+     "icon": "/icons/5b9603a585.svg"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "split",
+   "color": "yellow",
+   "title": "videos",
+   "subtitle": "SOME LIVE ACTION",
+   "anchor": null
+  },
+  {
+   "type": "videos",
+   "slides": [
+    {
+     "id": "uhWXBGHdrg8",
+     "thumb": "/media/video-thumbs/clip-2024-12-12-18-56-57.webp"
+    },
+    {
+     "id": "RNLV4R3jlK0",
+     "thumb": "/media/video-thumbs/basof.webp"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "variant": "related",
+   "html": "You might also be interested in our other bands:",
+   "align": "center"
+  },
+  {
+   "type": "ensembles",
+   "items": [
+    {
+     "label": "Wedding Band",
+     "href": "/en/wedding-band/",
+     "icon": "/icons/5148779c68.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "Bar/Bat Mitzva",
+     "href": "/en/barbatmitzva/",
+     "icon": "/icons/5b5eefcf00.svg",
+     "ring": "orange"
+    },
+    {
+     "label": "Corporate",
+     "href": "/en/corporate-2/",
+     "icon": "/icons/9b59e66513.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "DJ's",
+     "href": "/en/djs2/",
+     "icon": "/icons/7a1802f62a.svg",
+     "ring": "yellow"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "tab",
+   "color": "cyan",
+   "title": "TESTIMONIALS",
+   "anchor": null
+  },
+  {
+   "type": "perfectMatch",
+   "src": "/media/the_perfect_match.svg"
+  },
+  {
+   "type": "heading",
+   "variant": "reviews",
+   "html": "SOME REVIEWS",
+   "align": "end"
+  },
+  {
+   "type": "testimonials"
+  }
+ ]
+}

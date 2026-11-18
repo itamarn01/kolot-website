@@ -1,0 +1,132 @@
+import type { Lang } from "./types";
+
+export const SITE_URL = "https://kolotband.co.il";
+
+export const CONTACT = {
+  email: "kolotmusic@gmail.com",
+  phone: "055-5081080",
+  phoneHref: "tel:+972555081080",
+  facebook: "https://www.facebook.com/kolotband",
+  instagram: "https://www.instagram.com/kolotband/",
+  youtube: "https://www.youtube.com/user/kolotMusic",
+};
+
+/** Lead form – submissions go straight into the Zooglot app. */
+export const ZOOGLOT_FORM: Record<Lang, { src: string; title: string }> = {
+  he: {
+    src: "https://zooglot.vercel.app/form.html?f=" + encodeURIComponent("טופס-ניסוי-d8eb009fa99c319a"),
+    title: "מזל טוב!!",
+  },
+  en: { src: "https://zooglot.vercel.app/form.html?f=Mazal-Tov--a092a5d62d6d2aae", title: "Mazal Tov!!" },
+};
+
+/**
+ * Legal placeholders – fill these in before going live.
+ * They are used by the privacy policy, terms and accessibility statement.
+ */
+export const LEGAL = {
+  businessName: "[שם העסק המשפטי / Legal business name]",
+  businessId: "[ח.פ / ע.מ – Business ID]",
+  address: "[כתובת העסק / Business address]",
+  accessibilityContact: "[שם רכז/ת הנגישות / Accessibility coordinator]",
+  lastUpdated: "18/11/2026",
+};
+
+export type NavItem = { label: string; href: string; children?: NavItem[] };
+
+const he = (p: string) => p;
+
+export const NAV: Record<Lang, NavItem[]> = {
+  he: [
+    { label: "קצת עלינו", href: "/#about" },
+    {
+      label: "הרכבים",
+      href: "/#bands",
+      children: [
+        { label: "להקה לחתונה", href: he("/להקה-לחתונה/") },
+        { label: "הרכבי קבלת פנים", href: "/reception/" },
+        { label: "דיג׳ייז", href: "/djs/" },
+        { label: "להקה לבר/בת מצוה", href: he("/להקה-לחתונה-copy/") },
+        { label: "להקה לאירועי חברה", href: "/corporate/" },
+      ],
+    },
+    { label: "גלריה", href: "/#gallery" },
+    { label: "וידאו", href: "/#videos" },
+    { label: "TESTIMONIALS", href: "/#testimonials" },
+    { label: "צור קשר", href: "#contact-us" },
+  ],
+  en: [
+    { label: "About Us", href: "/en/#about" },
+    {
+      label: "Our Bands",
+      href: "/en/#bands",
+      children: [
+        { label: "Wedding Band", href: "/en/wedding-band/" },
+        { label: "Reception Bands", href: "/en/reception-2/" },
+        { label: "DJ’s", href: "/en/djs2/" },
+        { label: "Bar/Bat Mitzva", href: "/en/barbatmitzva/" },
+        { label: "Corporate events", href: "/en/corporate-2/" },
+      ],
+    },
+    { label: "Gallery", href: "/en/#gallery" },
+    { label: "Videos", href: "/en/#videos" },
+    { label: "Testimonials", href: "/en/#testimonials" },
+    { label: "Contact Us", href: "#contact-us" },
+  ],
+};
+
+export const LEGAL_LINKS: Record<Lang, { label: string; href: string }[]> = {
+  he: [
+    { label: "הצהרת נגישות", href: "/accessibility-statement/" },
+    { label: "מדיניות פרטיות", href: "/privacy-policy/" },
+    { label: "מדיניות עוגיות", href: "/cookie-policy/" },
+    { label: "תנאי שימוש", href: "/terms/" },
+  ],
+  en: [
+    { label: "Accessibility Statement", href: "/en/accessibility-statement/" },
+    { label: "Privacy Policy", href: "/en/privacy-policy/" },
+    { label: "Cookie Policy", href: "/en/cookie-policy/" },
+    { label: "Terms of Use", href: "/en/terms/" },
+  ],
+};
+
+export const UI = {
+  he: {
+    skip: "דלג לתוכן הראשי",
+    menu: "תפריט",
+    openMenu: "פתיחת תפריט",
+    closeMenu: "סגירת תפריט",
+    langLabel: "English",
+    langShort: "EN",
+    contactTitle: "צרו קשר",
+    contactSubtitle: "TALK TO US",
+    backToTop: "חזרה לראש העמוד",
+    moreReviews: "רוצים לראות עוד תגובות",
+    play: "ניגון הסרטון",
+    prev: "הקודם",
+    next: "הבא",
+    gallery: "גלריית תמונות",
+    rights: "כל הזכויות שמורות",
+    cookieManage: "הגדרות עוגיות",
+    included: "כלול",
+  },
+  en: {
+    skip: "Skip to main content",
+    menu: "Menu",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    langLabel: "עברית",
+    langShort: "HE",
+    contactTitle: "צרו קשר",
+    contactSubtitle: "TALK TO US",
+    backToTop: "Back to top",
+    moreReviews: "more reviews",
+    play: "Play video",
+    prev: "Previous",
+    next: "Next",
+    gallery: "Photo gallery",
+    rights: "All rights reserved",
+    cookieManage: "Cookie settings",
+    included: "Included",
+  },
+} as const;

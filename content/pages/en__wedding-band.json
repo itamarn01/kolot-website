@@ -1,0 +1,312 @@
+{
+ "slug": "en__wedding-band",
+ "route": "/en/wedding-band/",
+ "lang": "en",
+ "alt": "/להקה-לחתונה/",
+ "title": "wedding band – KOLOT – קולות",
+ "description": null,
+ "layout": "default",
+ "sections": [
+  {
+   "type": "hero",
+   "images": [
+    "/media/kolot-272.jpg",
+    "/media/kolot-bg.webp"
+   ],
+   "anchor": null
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "cyan",
+   "title": "wedding band",
+   "anchor": null
+  },
+  {
+   "type": "intro",
+   "heading": "WE ARE HERE TO MAKE SURE THAT IT WILL TRULY BE THE HAPPIEST DAY OF YOUR LIFE",
+   "headingAlign": "end",
+   "columns": [
+    "<p dir=\"ltr\"><strong>Let’s be honest here…</strong> the market is flooded with great bands. They all can sell you a bog-standard “chassidish-Israeli band with a bit of Mizrahi influence here and a touch of Klezmer there, with the option of violins and bagpipes!” And some of them will even be pretty good without burning a large hole in your pocket.<br><strong>So what marks us out?</strong><br>Our energy, the madness on stage, and our genuine participation in the joy of your simcha. The simple desire to understand how you imagine every last detail, how you want your wedding to look and sound like, our original and surprising takes on popular songs, and the aspiration to the highest level of quality at every moment – from the chuppa until the End we’ll be there, with you, to make sure that it will truly be<br><strong>the happiest day of your life.</strong></p>"
+   ],
+   "align": "start",
+   "image": "/media/kolot-53.jpg"
+  },
+  {
+   "type": "banner",
+   "variant": "split",
+   "color": "orange",
+   "title": "VIDEOS",
+   "subtitle": "SOME LIVE ACTION",
+   "anchor": null
+  },
+  {
+   "type": "videos",
+   "slides": [
+    {
+     "id": "7mXq8bQDG_w",
+     "thumb": "/media/video-thumbs/maxresdefault-2.webp"
+    },
+    {
+     "id": "fOlMxqGVV1Y",
+     "thumb": "/media/video-thumbs/clip-2022-08-18-12-31-29.webp"
+    },
+    {
+     "id": "T9GGKMDukiM",
+     "thumb": "/media/video-thumbs/chupa.webp"
+    },
+    {
+     "id": "RNLV4R3jlK0",
+     "thumb": "/media/video-thumbs/basof.webp"
+    },
+    {
+     "id": "NkuTfMrascI",
+     "thumb": "/media/video-thumbs/maxresdefault-1.webp"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "yellow",
+   "title": "our packages",
+   "anchor": null
+  },
+  {
+   "type": "packagesSummary",
+   "packages": [
+    {
+     "logo": "/media/standard-svg-1.svg",
+     "instruments": [
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Saxophone",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "Keyboards",
+       "icon": "/icons/4674648c52.svg"
+      }
+     ],
+     "key": "standard",
+     "color": "orange"
+    },
+    {
+     "logo": "/media/premium-svg-1.svg",
+     "instruments": [
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Keyboards",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "Trumpet",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "Saxophone",
+       "icon": "/icons/7ab699607b.svg"
+      }
+     ],
+     "key": "premium",
+     "color": "cyan"
+    },
+    {
+     "logo": "/media/ultimate-svg-1.svg",
+     "instruments": [
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Percussion",
+       "icon": "/icons/09f1da252a.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Keyboards",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "Trumpet",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "Saxophone",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "Trombone",
+       "icon": "/icons/11137c0288.svg"
+      },
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Percussion",
+       "icon": "/icons/09f1da252a.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Saxophone",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "Trumpet",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "Trombone",
+       "icon": "/icons/11137c0288.svg"
+      },
+      {
+       "label": "Keyboards",
+       "icon": "/icons/4674648c52.svg"
+      }
+     ],
+     "extraTitle": ":Reception Band Options",
+     "extras": [
+      {
+       "label": "Violin",
+       "icon": "/icons/3164c1116e.svg"
+      },
+      {
+       "label": "Trio Jazz",
+       "icon": "/icons/58a602ccfd.svg"
+      },
+      {
+       "label": "Strings",
+       "icon": "/icons/051ee10f91.svg"
+      },
+      {
+       "label": "Harp & Violin",
+       "icon": "/icons/d8f7a5ec78.svg"
+      }
+     ],
+     "key": "ultimate",
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "tab",
+   "color": "orange",
+   "title": "TESTIMONIALS",
+   "anchor": null
+  },
+  {
+   "type": "perfectMatch",
+   "src": "/media/the_perfect_match.svg"
+  },
+  {
+   "type": "heading",
+   "variant": "reviews",
+   "html": "SOME REVIEWS",
+   "align": "end"
+  },
+  {
+   "type": "testimonials"
+  },
+  {
+   "type": "heading",
+   "variant": "related",
+   "html": "You might also be interested in our other bands:",
+   "align": "center"
+  },
+  {
+   "type": "ensembles",
+   "items": [
+    {
+     "label": "Reception",
+     "href": "/en/reception-2/",
+     "icon": "/icons/df5b00eec2.svg",
+     "ring": "yellow"
+    },
+    {
+     "label": "Bar/Bat Mitzva",
+     "href": "/en/barbatmitzva/",
+     "icon": "/icons/5b5eefcf00.svg",
+     "ring": "orange"
+    },
+    {
+     "label": "Corporate",
+     "href": "/en/corporate-2/",
+     "icon": "/icons/9b59e66513.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "DJ's",
+     "href": "/en/djs2/",
+     "icon": "/icons/7a1802f62a.svg",
+     "ring": "yellow"
+    }
+   ]
+  }
+ ]
+}

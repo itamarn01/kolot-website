@@ -1,0 +1,312 @@
+{
+ "slug": "להקה-לחתונה",
+ "route": "/להקה-לחתונה/",
+ "lang": "he",
+ "alt": "/en/wedding-band/",
+ "title": "להקה לחתונה – KOLOT – קולות",
+ "description": null,
+ "layout": "default",
+ "sections": [
+  {
+   "type": "hero",
+   "images": [
+    "/media/kolot-272.jpg",
+    "/media/kolot-bg.webp"
+   ],
+   "anchor": null
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "cyan",
+   "title": "להקה לחתונה",
+   "anchor": null
+  },
+  {
+   "type": "intro",
+   "heading": "WE ARE HERE TO MAKE SURE THAT IT WILL TRULY BE THE HAPPIEST DAY OF YOUR LIFE",
+   "headingAlign": "end",
+   "columns": [
+    "<p>בואו נדבר בכנות. השוק מוצף בלהקות טובות, יותר ופחות.<br>כולן ימכרו לכם \"להקת חתונות המציעה מוזיקה חסידית בשילוב מוזיקה ישראלית ומזרחית, עם אופציה לכנר וחמת חלילים!\" וחלקן אפילו עושות שמח בלי לקחת יותר מידי כסף.</p><p><strong>אז מה מיוחד בנו?</strong> האנרגיות, הטירוף על הבמה, ההשתתפות הכנה בשמחה שלכם.<br>הרצון האמיתי להבין עד לפרט הכי קטן איך אתם רוצים שהחתונה שלכם תיראה ותשמע.<br>העיבודים המקוריים והמפתיעים, השאיפה לאיכות הכי גבוהה בכל סגנון ובכל רגע – מכסא הכלה עד לשבע הברכות אנחנו שם, איתכם, דואגים לכך שהיום הכי שמח בחייכם – יהיה הכי שמח!</p>"
+   ],
+   "align": "start",
+   "image": "/media/kolot-53.jpg"
+  },
+  {
+   "type": "banner",
+   "variant": "split",
+   "color": "orange",
+   "title": "קליפים מחתונות",
+   "subtitle": "SOME LIVE ACTION",
+   "anchor": null
+  },
+  {
+   "type": "videos",
+   "slides": [
+    {
+     "id": "7mXq8bQDG_w",
+     "thumb": "/media/video-thumbs/maxresdefault-2.webp"
+    },
+    {
+     "id": "fOlMxqGVV1Y",
+     "thumb": "/media/video-thumbs/clip-2022-08-18-12-31-29.webp"
+    },
+    {
+     "id": "T9GGKMDukiM",
+     "thumb": "/media/video-thumbs/chupa.webp"
+    },
+    {
+     "id": "RNLV4R3jlK0",
+     "thumb": "/media/video-thumbs/basof.webp"
+    },
+    {
+     "id": "NkuTfMrascI",
+     "thumb": "/media/video-thumbs/maxresdefault-1.webp"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "yellow",
+   "title": "החבילות שלנו",
+   "anchor": null
+  },
+  {
+   "type": "packagesSummary",
+   "packages": [
+    {
+     "logo": "/media/standard-svg-1.svg",
+     "instruments": [
+      {
+       "label": "זמר",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "תופים",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "בס",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "גיטרה",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "קלידים",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "סקסופון",
+       "icon": "/icons/7ab699607b.svg"
+      }
+     ],
+     "key": "standard",
+     "color": "orange"
+    },
+    {
+     "logo": "/media/premium-svg-1.svg",
+     "instruments": [
+      {
+       "label": "זמר",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "תופים",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "בס",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "גיטרה",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "קלידים",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "סקסופון",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "חצוצרה",
+       "icon": "/icons/4fa5db1c46.svg"
+      }
+     ],
+     "key": "premium",
+     "color": "cyan"
+    },
+    {
+     "logo": "/media/ultimate-svg-1.svg",
+     "instruments": [
+      {
+       "label": "זמר",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "תופים",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "בס",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "פרקשן",
+       "icon": "/icons/09f1da252a.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "גיטרה",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "קלידים",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "חצוצרה",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "סקסופון",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "טרומבון",
+       "icon": "/icons/11137c0288.svg"
+      },
+      {
+       "label": "זמר",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "תופים",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "בס",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "פרקשן",
+       "icon": "/icons/09f1da252a.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "גיטרה",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "סקסופון",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "חצוצרה",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "טרומבון",
+       "icon": "/icons/11137c0288.svg"
+      },
+      {
+       "label": "קלידים",
+       "icon": "/icons/4674648c52.svg"
+      }
+     ],
+     "extraTitle": "הרכב קבלת פנים לבחירה:",
+     "extras": [
+      {
+       "label": "כנר",
+       "icon": "/icons/3164c1116e.svg"
+      },
+      {
+       "label": "טריו ג׳אז",
+       "icon": "/icons/58a602ccfd.svg"
+      },
+      {
+       "label": "הרכב כנרים",
+       "icon": "/icons/051ee10f91.svg"
+      },
+      {
+       "label": "נבל וכינור",
+       "icon": "/icons/d8f7a5ec78.svg"
+      }
+     ],
+     "key": "ultimate",
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "tab",
+   "color": "orange",
+   "title": "TESTIMONIALS",
+   "anchor": null
+  },
+  {
+   "type": "perfectMatch",
+   "src": "/media/the_perfect_match.svg"
+  },
+  {
+   "type": "heading",
+   "variant": "reviews",
+   "html": "קצת תגובות שקיבלנו",
+   "align": "start"
+  },
+  {
+   "type": "testimonials"
+  },
+  {
+   "type": "heading",
+   "variant": "related",
+   "html": "אולי תתעניינו בהרכבים האחרים שלנו:",
+   "align": "center"
+  },
+  {
+   "type": "ensembles",
+   "items": [
+    {
+     "label": "הרכבים לקבלת פנים",
+     "href": "/reception/",
+     "icon": "/icons/df5b00eec2.svg",
+     "ring": "yellow"
+    },
+    {
+     "label": "להקה לבר/בת מצווה",
+     "href": "/להקה-לחתונה-copy/",
+     "icon": "/icons/5b5eefcf00.svg",
+     "ring": "orange"
+    },
+    {
+     "label": "להקה לאירועי חברה",
+     "href": "/corporate/",
+     "icon": "/icons/9b59e66513.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "דיג׳ייז",
+     "href": "/djs/",
+     "icon": "/icons/7a1802f62a.svg",
+     "ring": "yellow"
+    }
+   ]
+  }
+ ]
+}

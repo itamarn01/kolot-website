@@ -1,0 +1,196 @@
+{
+ "slug": "home",
+ "route": "/",
+ "lang": "he",
+ "alt": "/en/",
+ "title": "KOLOT – קולות – מוסיקה לחתונות ואירועים",
+ "description": null,
+ "layout": "default",
+ "sections": [
+  {
+   "type": "hero",
+   "images": [
+    "/media/kolot-bg.webp",
+    "/media/kolot-272.jpg"
+   ],
+   "anchor": "hero"
+  },
+  {
+   "type": "banner",
+   "variant": "split",
+   "color": "cyan",
+   "title": "קצת עלינו",
+   "subtitle": "KOLOT - SOUND OF HEART",
+   "anchor": "about"
+  },
+  {
+   "type": "intro",
+   "heading": "סטנדרט מוסיקה בינלאומי בעולם החתונות והאירועים.<br>בואו ונהפוך את האירוע שלכם לחוויה מוסיקלית בלתי נשכחת!",
+   "headingAlign": "start",
+   "columns": [
+    "<p>הי! אם אתם כאן, אז בטח מגיע לכם מזל טוב!<br>אנחנו מכירים אתכם. אתם רוצים אירוע מושלם ושהכל יהיה מדויק.<br>בחרתם את המקום המושלם. את העיצוב המהמם ובדוק שגם האוכל יהיה לא פחות ממעולה. והנה הגעתם לשלב הכי חשוב – <strong>למוסיקה</strong>. </p> <p><strong>אתם בטח שואלים את עצמכם:<br></strong>איך עוטפים את כל הטוב הזה באווירה ובמוסיקה שפשוט תעשה לכם אירוע שאף אחד לא ישכח?</p> <p>אז נעים להכיר! אנחנו<b> קולות</b>.<br>15 שנה בעולם האירועים, מעל ל1000 חתונות ואירועים בלתי נשכחים, שיתופי פעולה עם אמנים ומוזיקאים מהשורה הראשונה בישראל, הפכו את קולות למילה נרדפת ליחודיות, איכות, אנרגיה מתפרצת ושמחה ללא גבולות.</p>",
+    "<p>עם השנים זכינו להיות חלק מהשמחה של קהלים מכל העולמות, ומתוך רצון בלתי מתפשר להיות חוויה מוסיקלית שמחברת את כולם, יצרנו רפרטואר עשיר של מגוון סגנונות שמחברים ומעשירים כל אירוע ובכל סגנון. במהלך השנים אנו משתפים פעולה עם גופים וחברות הפקה מובילות רבות, ומופיעים במיטב המקומות בארץ וגם בחו״ל, אנו מביאים לרחבה אנרגיות מטורפות וריגוש גבוה, תוך הקפדה בלתי מתפשרת על איכות סאונד וציוד ברמה הגבוהה בעולם.</p><p>אנו גאים בכך שאצלנו, כל לקוח מקבל ליווי אישי ומקצועי, אנו מוודאים שלא רק שנעמוד בכל ההעדפות והציפיות של הלקוח מאיתנו, אלא הרבה מעבר.</p><p>אתם מחפשים מוסיקה חסידית? ישראלית? יש לכם קהל מחו״ל? רוצים דיג׳יי לאפטר פארטי? הרכב כנרים שירגש בחופה? </p>"
+   ],
+   "align": "start",
+   "image": null
+  },
+  {
+   "type": "cta",
+   "text": "בואו ונבנה איתכם יחד חוויה מוסיקלית בלתי נשכחת לאירוע שלכם.",
+   "align": "start",
+   "href": "#contact-us"
+  },
+  {
+   "type": "joy",
+   "html": "YOUR JOY IS OUR DESIRE<br>THE PERFECT BAND<br>FOR YOUR DREAM EVENT",
+   "image": "/media/video-thumbs/tubul3.webp"
+  },
+  {
+   "type": "banner",
+   "variant": "split",
+   "color": "yellow",
+   "title": "ההרכבים שלנו",
+   "subtitle": "YOU JUST HAVE TO CHOOSE",
+   "anchor": "bands"
+  },
+  {
+   "type": "ensembles",
+   "items": [
+    {
+     "label": "להקה לחתונה",
+     "href": "/להקה-לחתונה/",
+     "icon": "/icons/5148779c68.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "הרכבים לקבלת פנים",
+     "href": "/reception/",
+     "icon": "/icons/df5b00eec2.svg",
+     "ring": "yellow"
+    },
+    {
+     "label": "להקה לבר/בת מצווה",
+     "href": "/להקה-לחתונה-copy/",
+     "icon": "/icons/5b5eefcf00.svg",
+     "ring": "orange"
+    },
+    {
+     "label": "להקה לאירועי חברה",
+     "href": "/corporate/",
+     "icon": "/icons/9b59e66513.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "דיג׳ייז",
+     "href": "/djs/",
+     "icon": "/icons/7a1802f62a.svg",
+     "ring": "yellow"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "cyan",
+   "title": "גלריה",
+   "anchor": "gallery"
+  },
+  {
+   "type": "gallery",
+   "images": [
+    "/media/gallery/kolot-589.jpg",
+    "/media/gallery/kolot-585.jpg",
+    "/media/gallery/kolot-565.jpg",
+    "/media/gallery/kolot-533.jpg",
+    "/media/gallery/kolot-519.jpg",
+    "/media/gallery/kolot-471.jpg",
+    "/media/gallery/kolot-467.jpg",
+    "/media/gallery/kolot-441.jpg",
+    "/media/gallery/kolot-429.jpg",
+    "/media/gallery/kolot-417.jpg",
+    "/media/gallery/kolot-416.jpg",
+    "/media/gallery/kolot-413.jpg",
+    "/media/gallery/kolot-401.jpg",
+    "/media/gallery/kolot-387.jpg",
+    "/media/gallery/kolot-375.jpg",
+    "/media/gallery/kolot-372.jpg",
+    "/media/gallery/kolot-370.jpg",
+    "/media/gallery/kolot-360.jpg",
+    "/media/gallery/kolot-350.jpg",
+    "/media/gallery/kolot-336.jpg",
+    "/media/gallery/kolot-331.jpg",
+    "/media/gallery/kolot-272.jpg",
+    "/media/gallery/kolot-243.jpg",
+    "/media/gallery/kolot-215.jpg",
+    "/media/gallery/kolot-173.jpg",
+    "/media/gallery/kolot-156.jpg",
+    "/media/gallery/kolot-133.jpg",
+    "/media/gallery/kolot-108.jpg",
+    "/media/gallery/kolot-106.jpg",
+    "/media/gallery/kolot-96.jpg",
+    "/media/gallery/kolot-88.jpg",
+    "/media/gallery/kolot-73.jpg",
+    "/media/gallery/kolot-53.jpg",
+    "/media/gallery/kolot-48.jpg",
+    "/media/gallery/kolot-28.jpg",
+    "/media/gallery/kolot-22.jpg",
+    "/media/gallery/kolot-21.jpg",
+    "/media/gallery/kolot-15.jpg",
+    "/media/gallery/kolot-13.jpg"
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "split",
+   "color": "orange",
+   "title": "וידאו",
+   "subtitle": "SOME LIVE ACTION",
+   "anchor": "videos"
+  },
+  {
+   "type": "videos",
+   "slides": [
+    {
+     "id": "7mXq8bQDG_w",
+     "thumb": "/media/video-thumbs/maxresdefault-2.webp"
+    },
+    {
+     "id": "fOlMxqGVV1Y",
+     "thumb": "/media/video-thumbs/clip-2022-08-18-12-31-29.webp"
+    },
+    {
+     "id": "T9GGKMDukiM",
+     "thumb": "/media/video-thumbs/chupa.webp"
+    },
+    {
+     "id": "RNLV4R3jlK0",
+     "thumb": "/media/video-thumbs/basof.webp"
+    },
+    {
+     "id": "NkuTfMrascI",
+     "thumb": "/media/video-thumbs/maxresdefault-1.webp"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "tab",
+   "color": "orange",
+   "title": "TESTIMONIALS",
+   "anchor": "testimonials"
+  },
+  {
+   "type": "perfectMatch",
+   "src": "/media/the_perfect_match.svg"
+  },
+  {
+   "type": "heading",
+   "variant": "reviews",
+   "html": "קצת תגובות שקיבלנו",
+   "align": "start"
+  },
+  {
+   "type": "testimonials"
+  }
+ ]
+}

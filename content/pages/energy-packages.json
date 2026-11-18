@@ -1,0 +1,199 @@
+{
+ "slug": "energy-packages",
+ "route": "/energy-packages/",
+ "lang": "he",
+ "alt": "/en/",
+ "title": "energy-packages – KOLOT – קולות",
+ "description": null,
+ "layout": "packages",
+ "sections": [
+  {
+   "type": "packagesFull",
+   "packages": [
+    {
+     "logo": "/media/lightenergy.svg",
+     "color": "cyan",
+     "instruments": [
+      {
+       "label": "זמר",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "תופים",
+       "icon": "/icons/df5b00eec2.svg"
+      },
+      {
+       "label": "קלידים",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "סקסופון",
+       "icon": "/icons/7ab699607b.svg"
+      }
+     ],
+     "desc": "<p>ההרכב של להקת KOLOT ENERGY לקבלת פנים וחופה מושלמת! נגני הפקות מקצועיים עתירי נסיון במה<br>הגברה בסטנדט גבוה וכל מה שנדרש כדי לרגש ולהביא את הנשמה לחופה שלכם</p>",
+     "listTitle": "מה בחבילה:",
+     "list": "<ul><li>הרכב של שלושה נגנים מקצועיים וזמר</li><li>ציוד הגברה איכותי ומקצועי ברמה גבוהה לשני מוקדים</li><li>טכנאי סאונד מקצועי שישמור על הסאונד נעים וכיפי</li><li>רפרטואר עשיר הכולל את כל הסגנונות</li><li>פגישת תכנון לפני החתונה</li></ul>",
+     "price": "10,000 ₪"
+    },
+    {
+     "logo": "/media/sparkenergy.svg",
+     "color": "orange",
+     "instruments": [
+      {
+       "label": "זמר",
+       "icon": "/icons/9b59e66513.svg"
+      },
+      {
+       "label": "תופים",
+       "icon": "/icons/09f1da252a.svg"
+      },
+      {
+       "label": "קלידים",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "סקסופון",
+       "icon": "/icons/7ab699607b.svg"
+      }
+     ],
+     "desc": "<p>החבילה המומלצת של KOLOT ENERGY<br>שנותנת מענה מושלם לכל החתונה, לייב קבלת פנים מהפנט, חופה מרגשת ומיוחדת עם נגני הפקות מקצועיים עתירי ניסיון במה.<br>הגברה בסטנדרט גבוה<br>ומסיבה אל תוך הלילה עם דיג'י הבית שלנו.</p>",
+     "listTitle": "מה בחבילה:",
+     "list": "<ul><li>הרכב של שלושה נגנים מקצועיים וזמר</li><li>מסיבה מטורפת עם דיג’י הבית של KOLOT</li><li>ציוד הגברה איכותי ברמה גבוהה בשני מוקדים</li><li>טכנאי סאונד מקצועי שישמור על סאונד נעים וכיפי</li><li>רפרטואר עשיר הכולל את כל הסגנונות</li><li>פגישת תכנון לפני החתונה</li></ul>",
+     "price": "14,000 ₪"
+    },
+    {
+     "logo": "/media/powerenergy.svg",
+     "color": "yellow",
+     "instruments": [
+      {
+       "label": "זמר",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "תופים",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "בס",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "קלידים",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "סקסופון",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "זמר",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "תופים",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "בס",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "קלידים",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/7a1802f62a.svg"
+      },
+      {
+       "label": "סקסופון",
+       "icon": "/icons/7ab699607b.svg"
+      }
+     ],
+     "desc": "<p>החבילת העוצמתית של KOLOT ENERGY לאנשים שרוצים יותר.<br>מופע לייב קונספט בקבלת פנים, חופה מיוחדת ומרגשת. זמר נשמה עוצמתי ומסיבה מטורפת עם DJ הבית של להקת קולות בליווי לייב און דיגיי שירים את הרחבה.</p>",
+     "listTitle": "מה בחבילה:",
+     "list": "<ul><li>הרכב של 4 נגנים מקצועיים וזמר</li><li>מסיבה מטורפת עם דיג׳י הבית של KOLOT בליווי Live On DJ</li><li>ציוד הגברה איכותי ומקצועי ברמה גבוהה בשני מוקדים.</li><li>טכנאי סאונד מקצועי שישמור על הסאונד נעים וכיפי לאורך כל הערב.</li><li>רפרטואר עשיר הכולל את כל הסגנונות</li><li>פגישת תכנון לפני החתונה</li></ul>",
+     "extraTitle": "LIVE ON DJ לבחירה:",
+     "extras": [
+      {
+       "label": "כנר",
+       "icon": "/icons/3164c1116e.svg"
+      },
+      {
+       "label": "סקסופון",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "חצוצרה",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "בוזוקי",
+       "icon": "/icons/5cce63880b.svg"
+      }
+     ],
+     "price": "18,000 ₪"
+    }
+   ],
+   "calculatorBase": null,
+   "includedLabel": "Included"
+  },
+  {
+   "type": "addons",
+   "logo": "/media/kolot-logo-01.png",
+   "title": "הוסיפו לחבילות שלנו:",
+   "items": [
+    {
+     "label": "זמר נוסף",
+     "price": "4000 ₪"
+    },
+    {
+     "label": "גיטרה",
+     "price": "2000 ₪"
+    },
+    {
+     "label": "חצוצרה",
+     "price": "2000 ₪"
+    },
+    {
+     "label": "LIVE ON DJ",
+     "price": "3000 ₪"
+    },
+    {
+     "label": "כלי הקשה",
+     "price": "2500 ₪"
+    },
+    {
+     "label": "כנר",
+     "price": "2500 ₪"
+    },
+    {
+     "label": "טריו ג׳אז",
+     "price": "7500 ₪"
+    },
+    {
+     "label": "הרכב כנרים",
+     "price": "10000 ₪"
+    },
+    {
+     "label": "נבל וכינור",
+     "price": "6000 ₪"
+    }
+   ]
+  },
+  {
+   "type": "packagesFooter",
+   "note": "*הרכבת תאורה בהתאם לאישור המקום | *המחירים לחתונות בין חדרה לגדרה. מעבר לאיזורים אלה קיימת אפשרות תוספת נסיעות בהתאם למיקום.",
+   "contact": "<a href=\"mailto:kolotmusic@gmail.com\">kolotmusic@gmail.com</a> | <a href=\"/\">kolotband.co.il</a> | <a href=\"tel:+972555081080\">055-5081080 </a>"
+  }
+ ]
+}

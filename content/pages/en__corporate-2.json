@@ -1,0 +1,304 @@
+{
+ "slug": "en__corporate-2",
+ "route": "/en/corporate-2/",
+ "lang": "en",
+ "alt": "/corporate/",
+ "title": "corporate – KOLOT – קולות",
+ "description": null,
+ "layout": "default",
+ "sections": [
+  {
+   "type": "hero",
+   "images": [
+    "/media/kolot-272.jpg",
+    "/media/kolot-bg.webp"
+   ],
+   "anchor": null
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "cyan",
+   "title": "corporate Party Band",
+   "anchor": null
+  },
+  {
+   "type": "intro",
+   "heading": "BRINGING PEOPLE TOGETHER<br>ONE NOTE AT A TIME",
+   "headingAlign": "end",
+   "columns": [
+    "<p dir=\"ltr\"><strong>Planning a corporate event?</strong><br>It’s time to elevate the atmosphere and give your team an experience they’ll be talking about long after the event ends!<br>Kolot brings infectious energy, top-tier music, and a customized repertoire that’ll get everyone dancing – from the boss to the newest employee.<br>With many years of experience handling a wide range of events and audiences, we know how to create a unique experience that brings everyone together and sets the perfect tone for your event.<br>We also maintain the highest standards – premium equipment and top-tier sound engineers – ensuring everything sounds smooth and flawless.</p>"
+   ],
+   "align": "start",
+   "image": "/media/kolot-53.jpg"
+  },
+  {
+   "type": "banner",
+   "variant": "split",
+   "color": "orange",
+   "title": "videos",
+   "subtitle": "SOME LIVE ACTION",
+   "anchor": null
+  },
+  {
+   "type": "videos",
+   "slides": [
+    {
+     "id": "RNLV4R3jlK0",
+     "thumb": "/media/video-thumbs/basof.webp"
+    },
+    {
+     "id": "uhWXBGHdrg8",
+     "thumb": "/media/video-thumbs/clip-2024-12-12-18-56-57.webp"
+    },
+    {
+     "id": "fOlMxqGVV1Y",
+     "thumb": "/media/video-thumbs/clip-2022-08-18-12-31-29.webp"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "yellow",
+   "title": "our packages",
+   "anchor": null
+  },
+  {
+   "type": "packagesSummary",
+   "packages": [
+    {
+     "logo": "/media/standard-svg-1.svg",
+     "instruments": [
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Saxophone",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "Keyboards",
+       "icon": "/icons/4674648c52.svg"
+      }
+     ],
+     "key": "standard",
+     "color": "orange"
+    },
+    {
+     "logo": "/media/premium-svg-1.svg",
+     "instruments": [
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Keyboards",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "Trumpet",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "Saxophone",
+       "icon": "/icons/7ab699607b.svg"
+      }
+     ],
+     "key": "premium",
+     "color": "cyan"
+    },
+    {
+     "logo": "/media/ultimate-svg-1.svg",
+     "instruments": [
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Percussion",
+       "icon": "/icons/09f1da252a.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Keyboards",
+       "icon": "/icons/4674648c52.svg"
+      },
+      {
+       "label": "Trumpet",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "Saxophone",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "Trombone",
+       "icon": "/icons/11137c0288.svg"
+      },
+      {
+       "label": "Singer",
+       "icon": "/icons/329093df32.svg"
+      },
+      {
+       "label": "Drums",
+       "icon": "/icons/2a5bca74f0.svg"
+      },
+      {
+       "label": "Bass",
+       "icon": "/icons/5cce63880b.svg"
+      },
+      {
+       "label": "Percussion",
+       "icon": "/icons/09f1da252a.svg"
+      },
+      {
+       "label": "DJ",
+       "icon": "/icons/d34feb8636.svg"
+      },
+      {
+       "label": "Guitar",
+       "icon": "/icons/e8284c370c.svg"
+      },
+      {
+       "label": "Saxophone",
+       "icon": "/icons/7ab699607b.svg"
+      },
+      {
+       "label": "Trumpet",
+       "icon": "/icons/4fa5db1c46.svg"
+      },
+      {
+       "label": "Trombone",
+       "icon": "/icons/11137c0288.svg"
+      },
+      {
+       "label": "Keyboards",
+       "icon": "/icons/4674648c52.svg"
+      }
+     ],
+     "extraTitle": ":Reception Band Options",
+     "extras": [
+      {
+       "label": "Violin",
+       "icon": "/icons/3164c1116e.svg"
+      },
+      {
+       "label": "Trio Jazz",
+       "icon": "/icons/58a602ccfd.svg"
+      },
+      {
+       "label": "Strings",
+       "icon": "/icons/051ee10f91.svg"
+      },
+      {
+       "label": "Harp & Violin",
+       "icon": "/icons/d8f7a5ec78.svg"
+      }
+     ],
+     "key": "ultimate",
+     "color": "yellow"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "tab",
+   "color": "orange",
+   "title": "TESTIMONIALS",
+   "anchor": null
+  },
+  {
+   "type": "perfectMatch",
+   "src": "/media/the_perfect_match.svg"
+  },
+  {
+   "type": "heading",
+   "variant": "reviews",
+   "html": "SOME REVIEWS",
+   "align": "end"
+  },
+  {
+   "type": "testimonials"
+  },
+  {
+   "type": "heading",
+   "variant": "related",
+   "html": "You might also be interested in our other bands:",
+   "align": "center"
+  },
+  {
+   "type": "ensembles",
+   "items": [
+    {
+     "label": "Wedding Band",
+     "href": "/en/wedding-band/",
+     "icon": "/icons/5148779c68.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "Reception",
+     "href": "/en/reception-2/",
+     "icon": "/icons/df5b00eec2.svg",
+     "ring": "yellow"
+    },
+    {
+     "label": "Bar/Bat Mitzva",
+     "href": "/en/barbatmitzva/",
+     "icon": "/icons/5b5eefcf00.svg",
+     "ring": "orange"
+    },
+    {
+     "label": "DJ's",
+     "href": "/en/djs2/",
+     "icon": "/icons/7a1802f62a.svg",
+     "ring": "yellow"
+    }
+   ]
+  }
+ ]
+}

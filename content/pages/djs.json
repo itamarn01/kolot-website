@@ -1,0 +1,111 @@
+{
+ "slug": "djs",
+ "route": "/djs/",
+ "lang": "he",
+ "alt": "/en/djs2/",
+ "title": "דיג׳ייז – KOLOT – קולות",
+ "description": null,
+ "layout": "default",
+ "sections": [
+  {
+   "type": "hero",
+   "images": [
+    "/media/djs-hero.webp"
+   ],
+   "anchor": null
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "orange",
+   "title": "דיג׳ייז",
+   "anchor": null
+  },
+  {
+   "type": "intro",
+   "heading": ".THE RIGHT BEAT<br>.THE RIGHT ATMOSPHERE<br>.EVERYTIME",
+   "headingAlign": "end",
+   "columns": [
+    "<p>הדיג׳יים שלנו חיות במה.<br><span> הם כאן כדי להעלות את הרחבה באוויר.<br>הם יודעים לקרוא את הקהל במדוייק. להרגיש את האנרגיה ולבחור את השיר הנכון בדיוק ברגע הנכון. עם שילובים מפתיעים, מעברים חלקים, וביטים שגורמים לכולם לזוז, הדיג'יים שלנו לא עוצרים לרגע – הם יוצרים חוויה בלתי נשכחת שתשאיר את כולם על הרגליים.</span></p><p>תתכוננו לסט המושלם שישאיר אותכם על הרגליים עד השעות הקטנות. 🔥</p>"
+   ],
+   "align": "start",
+   "image": "/media/dj-yosef.jpg"
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "yellow",
+   "title": "הדיג׳ייז שלנו",
+   "anchor": null
+  },
+  {
+   "type": "ensembleList",
+   "items": [
+    {
+     "media": {
+      "kind": "instagram",
+      "url": "https://www.instagram.com/reel/C4vzOteNOdz/"
+     },
+     "title": "DJ YOSEF",
+     "desc": "דיג׳יי עתיר ניסיון וממייסדי להקת קולות. כבר 15 שנה בעולם האירועים. בא להרים לכם את הרחבה באוויר כמו שרק הוא יודע.",
+     "icon": "/icons/8afc37424f.svg"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "tab",
+   "color": "cyan",
+   "title": "TESTIMONIALS",
+   "anchor": null
+  },
+  {
+   "type": "perfectMatch",
+   "src": "/media/the_perfect_match.svg"
+  },
+  {
+   "type": "heading",
+   "variant": "reviews",
+   "html": "קצת תגובות שקיבלנו",
+   "align": "start"
+  },
+  {
+   "type": "testimonials"
+  },
+  {
+   "type": "heading",
+   "variant": "related",
+   "html": "אולי תתעניינו בהרכבים האחרים שלנו:",
+   "align": "center"
+  },
+  {
+   "type": "ensembles",
+   "items": [
+    {
+     "label": "הרכבים לקבלת פנים",
+     "href": "/reception/",
+     "icon": "/icons/df5b00eec2.svg",
+     "ring": "yellow"
+    },
+    {
+     "label": "להקה לחתונה",
+     "href": "/להקה-לחתונה/",
+     "icon": "/icons/5148779c68.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "להקה לבר/בת מצווה",
+     "href": "/להקה-לחתונה-copy/",
+     "icon": "/icons/5b5eefcf00.svg",
+     "ring": "orange"
+    },
+    {
+     "label": "להקה לאירועי חברה",
+     "href": "/corporate/",
+     "icon": "/icons/9b59e66513.svg",
+     "ring": "cyan"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,180 @@
+{
+ "slug": "reception",
+ "route": "/reception/",
+ "lang": "he",
+ "alt": "/en/reception-2/",
+ "title": "הרכבי קבלת פנים – KOLOT – קולות",
+ "description": null,
+ "layout": "default",
+ "sections": [
+  {
+   "type": "hero",
+   "images": [
+    "/media/bg-reception.webp"
+   ],
+   "anchor": null
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "orange",
+   "title": "הרכבי קבלת פנים",
+   "anchor": null
+  },
+  {
+   "type": "intro",
+   "heading": "OUR PERFECT SOUNDTRACK FOR YOUR SPECIAL MOMENTS",
+   "headingAlign": "end",
+   "columns": [
+    "<p>אחרי שנים רבות בעולם האירועים אנחנו יודעים להגיד שהכל נמצא באווירה. כשהאורחים מגיעים לאירוע ומתחילים להרגיש את האווירה, המוזיקה היא זו שיוצרת את הקסם הראשוני של האירוע.<br>הרכבי קבלת הפנים של קולות מביאים איתם וייב ייחודי, רוגע אלגנטי, ומוזיקה חיה שמכניסה <b>לאווירה הנכונה</b>.<br>אז מה אנחנו מציעים?</p><ul><li>סגנונות מגוונים – ג'אז, בלוז, בוסה נובה, קלאסיקות ישראליות, פופ אקוסטי ועוד.</li><li>הרכבים בהתאמה אישית – צמד, שלישייה או רביעייה בהתאם לאווירה שתרצו ליצור.</li><li>נגנים מקצועיים עם ניסיון עשיר שיודעים ללוות את האירוע בטאץ' הנכון.</li><li>יצירת אווירה יוקרתית ומזמינה שתשאיר רושם ראשוני בלתי נשכח.</li></ul><p>אנחנו כאן כדי להעניק לאירוע שלכם אווירה מוסיקלית שתהפוך אותו ל<b>בלתי נשכח</b>.</p>"
+   ],
+   "align": "start",
+   "image": "/media/reception-sax.jpeg"
+  },
+  {
+   "type": "banner",
+   "variant": "lines",
+   "color": "yellow",
+   "title": "ההרכבים שלנו",
+   "anchor": null
+  },
+  {
+   "type": "ensembleList",
+   "items": [
+    {
+     "media": {
+      "kind": "youtube",
+      "id": "he7LTGs78pc"
+     },
+     "title": "נבל וכינור",
+     "desc": "חיבור מושלם של מוזיקה קלאסית, עדינות ואלגנטיות, ליצירת אווירה קסומה ומרגשת שתתן את הטאצ׳ היחודי לאירוע שלכם",
+     "icon": "/icons/d8f7a5ec78.svg"
+    },
+    {
+     "media": {
+      "kind": "youtube",
+      "id": "ZXl5LNzT124"
+     },
+     "title": "JAZZ TRIO",
+     "desc": "הרכב טריו ג׳אז - הרכב יוקרתי בעיבודים מקצועיים של סטנדרטים אהובים לצד עיבודים ייחודיים מכל התקופות.",
+     "icon": "/icons/58a602ccfd.svg"
+    },
+    {
+     "media": {
+      "kind": "youtube",
+      "id": "CgpoORwoj7I"
+     },
+     "title": "רביעיית כלי מיתר",
+     "desc": "הרכב הכנרים שלנו הוא קסם בפני עצמו. זה מתחיל בקבלת פנים מרהיבה עם יצירות קלאסיות וישראליות. וממשיך בחופה מרגשת בליווי כלי מיתר",
+     "icon": "/icons/051ee10f91.svg"
+    },
+    {
+     "media": {
+      "kind": "carousel",
+      "slides": [
+       {
+        "id": "A6ID-y6SZl0",
+        "thumb": "/media/video-thumbs/clip-2024-12-15-0-12-06.webp"
+       },
+       {
+        "id": "0SLCPYIcIiU",
+        "thumb": "/media/video-thumbs/clip-2024-12-15-0-14-58.webp"
+       },
+       {
+        "id": "wiMWb2xShQI",
+        "thumb": "/media/video-thumbs/clip-2024-12-12-18-53-31.webp"
+       },
+       {
+        "id": "kCHNiP8uyRk",
+        "thumb": "/media/video-thumbs/clip-2024-12-12-19-33-29.webp"
+       },
+       {
+        "id": "tB9w_1EKFdY",
+        "thumb": "/media/video-thumbs/clip-2024-12-12-19-26-05.webp"
+       }
+      ]
+     },
+     "title": "הכנר",
+     "desc": "הכירו את <b>הכנר</b>. הוא יוסיף לאירוע שלכם אווירה יוקרתית ויחודית. יסתובב בין האורחים, וינגן יצירות קלאסיות ומודרניות שירגשו ויחברו את כולם.",
+     "icon": "/icons/5b9603a585.svg"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "split",
+   "color": "yellow",
+   "title": "קליפים",
+   "subtitle": "SOME LIVE ACTION",
+   "anchor": null
+  },
+  {
+   "type": "videos",
+   "slides": [
+    {
+     "id": "uhWXBGHdrg8",
+     "thumb": "/media/video-thumbs/clip-2024-12-12-18-56-57.webp"
+    },
+    {
+     "id": "RNLV4R3jlK0",
+     "thumb": "/media/video-thumbs/basof.webp"
+    }
+   ]
+  },
+  {
+   "type": "heading",
+   "variant": "related",
+   "html": "אולי תתעניינו בהרכבים האחרים שלנו:",
+   "align": "center"
+  },
+  {
+   "type": "ensembles",
+   "items": [
+    {
+     "label": "להקה לחתונה",
+     "href": "/להקה-לחתונה/",
+     "icon": "/icons/5148779c68.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "להקה לבר/בת מצווה",
+     "href": "/להקה-לחתונה-copy/",
+     "icon": "/icons/5b5eefcf00.svg",
+     "ring": "orange"
+    },
+    {
+     "label": "להקה לאירועי חברה",
+     "href": "/corporate/",
+     "icon": "/icons/9b59e66513.svg",
+     "ring": "cyan"
+    },
+    {
+     "label": "דיג׳ייז",
+     "href": "/djs/",
+     "icon": "/icons/7a1802f62a.svg",
+     "ring": "yellow"
+    }
+   ]
+  },
+  {
+   "type": "banner",
+   "variant": "tab",
+   "color": "cyan",
+   "title": "TESTIMONIALS",
+   "anchor": null
+  },
+  {
+   "type": "perfectMatch",
+   "src": "/media/the_perfect_match.svg"
+  },
+  {
+   "type": "heading",
+   "variant": "reviews",
+   "html": "קצת תגובות שקיבלנו",
+   "align": "start"
+  },
+  {
+   "type": "testimonials"
+  }
+ ]
+}
