@@ -37,6 +37,15 @@ New: `/accessibility-statement/`, `/privacy-policy/`, `/cookie-policy/`, `/terms
 
 Hebrew URLs are served through rewrites in `next.config.ts` (Next.js can't prerender non-ASCII folder names), so the public addresses are unchanged. Old WP URLs (`/hello-world/`, `/testimonial/*`) redirect.
 
+## KOLOT Worldwide (destination weddings & luxury events)
+
+`/en/international/` (flagship) and `/international/` – linked from the menu (gold item) and a teaser on both home pages.
+
+* Texts, destinations, partners: `lib/international.ts`
+* **Videos:** put MP4s in `public/media/international/` and set `video` on each story (and `HERO_VIDEO`) in `lib/international.ts`. Until then each card shows a still and links to the Instagram reel.
+* **Separate lead form:** paste the Zooglot embed links into `ZOOGLOT_FORM_INTL` in `lib/site.ts` (falls back to the regular forms while empty).
+* Animations: GSAP ScrollTrigger (pinned horizontal destinations, count-up stats, timeline, word reveals) – all disabled for "reduce motion" / the accessibility menu.
+
 ## Contact form → Zooglot
 
 The form is the Zooglot embed (Hebrew form on Hebrew pages, English form on English pages). To change it, edit `ZOOGLOT_FORM` in `lib/site.ts`. Submissions go straight into the Zooglot app.

@@ -13,6 +13,7 @@ import { PackagesSummary, AddonsBox, PackagesFooter } from "./sections/Packages"
 import PackagesFull from "./sections/PackagesFull";
 import EnsembleList from "./sections/EnsembleList";
 import SiteFooter from "./SiteFooter";
+import WorldwideTeaser from "./international/WorldwideTeaser";
 import SiteHeader, { LangSwitch } from "./SiteHeader";
 
 export default function PageRenderer({ page }: { page: Page }) {
@@ -69,6 +70,8 @@ export default function PageRenderer({ page }: { page: Page }) {
         return <PackagesFull key={i} section={s} lang={lang} />;
       case "addons":
         return <AddonsBox key={i} section={s} />;
+      case "worldwide":
+        return <WorldwideTeaser key={i} lang={lang} />;
       case "packagesFooter":
         return <PackagesFooter key={i} section={s} />;
       default:

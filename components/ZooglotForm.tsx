@@ -5,8 +5,8 @@ import { ZOOGLOT_FORM } from "@/lib/site";
 import type { Lang } from "@/lib/types";
 
 /** The lead form lives in the Zooglot app; we embed it and load it only when it gets near the viewport. */
-export default function ZooglotForm({ lang }: { lang: Lang }) {
-  const f = ZOOGLOT_FORM[lang];
+export default function ZooglotForm({ lang, form }: { lang: Lang; form?: { src: string; title: string } | null }) {
+  const f = form ?? ZOOGLOT_FORM[lang];
   const ref = useRef<HTMLDivElement>(null);
   const [load, setLoad] = useState(false);
   useEffect(() => {

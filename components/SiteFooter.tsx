@@ -5,12 +5,12 @@ import { AtIcon, DoubleUp, FacebookIcon, InstagramIcon, PhoneIcon, YoutubeIcon }
 import { CONTACT, LEGAL_LINKS, UI } from "@/lib/site";
 import type { Lang } from "@/lib/types";
 
-export default function SiteFooter({ lang }: { lang: Lang }) {
+export default function SiteFooter({ lang, form }: { lang: Lang; form?: { src: string; title: string } | null }) {
   const t = UI[lang];
   return (
     <>
       <Banner variant="split" color="yellow" title={t.contactTitle} subtitle={t.contactSubtitle} anchor="contact-us" lang={lang} />
-      <ZooglotForm lang={lang} />
+      <ZooglotForm lang={lang} form={form} />
       <a className="to-top" href="#top" aria-label={t.backToTop}>
         <DoubleUp />
       </a>

@@ -89,6 +89,9 @@
    ]
   },
   {
+   "type": "worldwide"
+  },
+  {
    "type": "banner",
    "variant": "lines",
    "color": "cyan",

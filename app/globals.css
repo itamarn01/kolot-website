@@ -192,7 +192,7 @@ html.a11y-no-motion *, html.a11y-no-motion *::before, html.a11y-no-motion *::aft
 /* desktop horizontal nav (Elementor "off canvas" + trapezoid .bg-entry items) */
 .desk-nav {
   position: absolute;
-  top: 45px; right: 126px;
+  top: 45px; right: 70px;
   pointer-events: none;
 }
 .desk-nav.is-open { pointer-events: auto; }
@@ -204,9 +204,9 @@ html.a11y-no-motion *, html.a11y-no-motion *::before, html.a11y-no-motion *::aft
   /* trapezoid menu entry, as .bg-entry in the child theme */
   position: relative;
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  width: 160px; height: 54px;
+  width: 140px; height: 54px;
   font-family: var(--font-body);
-  font-size: 19px; font-weight: 600;
+  font-size: 17px; font-weight: 600;
   color: var(--white);
   isolation: isolate;
   white-space: nowrap;
@@ -230,6 +230,9 @@ html.a11y-no-motion *, html.a11y-no-motion *::before, html.a11y-no-motion *::aft
 }
 .tz:hover::after, .tz:focus-visible::after, .tz[aria-expanded="true"]::after, .tz.is-current::after { opacity: 0; }
 .tz:hover, .tz:focus-visible, .tz[aria-expanded="true"], .tz.is-current { color: var(--black); }
+.tz--gold::before { background: var(--yellow); }
+.tz--gold::after { background: linear-gradient(180deg, var(--yellow) 0.7%, var(--black) 66%); }
+.desk-nav .tz--gold { width: 186px; }
 .tz svg { width: 10px; height: 16px; fill: currentColor; transition: transform 0.3s; }
 .tz[aria-expanded="true"] svg { transform: rotate(180deg); }
 

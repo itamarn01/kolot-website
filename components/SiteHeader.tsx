@@ -137,7 +137,7 @@ export default function SiteHeader({ lang, alt }: { lang: Lang; alt: string }) {
       </li>
     ) : (
       <li key={item.label}>
-        <a className="tz" href={item.href} tabIndex={deskOpen ? 0 : -1} onClick={() => toggleDesk(false)}>
+        <a className={`tz${item.highlight ? " tz--gold" : ""}${isCurrent(item.href) ? " is-current" : ""}`} href={item.href} tabIndex={deskOpen ? 0 : -1} onClick={() => toggleDesk(false)}>
           <span>{item.label}</span>
         </a>
       </li>
@@ -201,7 +201,7 @@ export default function SiteHeader({ lang, alt }: { lang: Lang; alt: string }) {
                 </li>
               ) : (
                 <li key={item.label} className="list-item">
-                  <a className="tz" href={item.href} onClick={() => toggleMob(false)} tabIndex={mobOpen ? 0 : -1}>
+                  <a className={`tz${item.highlight ? " tz--gold" : ""}`} href={item.href} onClick={() => toggleMob(false)} tabIndex={mobOpen ? 0 : -1}>
                     <span>{item.label}</span>
                   </a>
                 </li>

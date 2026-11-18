@@ -21,6 +21,15 @@ export const ZOOGLOT_FORM: Record<Lang, { src: string; title: string }> = {
 };
 
 /**
+ * Separate Zooglot form for international / luxury inquiries (KOLOT Worldwide page).
+ * Create it in Zooglot and paste the embed links here; while null, the regular forms above are used.
+ */
+export const ZOOGLOT_FORM_INTL: Record<Lang, { src: string; title: string } | null> = {
+  he: null,
+  en: null,
+};
+
+/**
  * Legal placeholders – fill these in before going live.
  * They are used by the privacy policy, terms and accessibility statement.
  */
@@ -32,7 +41,7 @@ export const LEGAL = {
   lastUpdated: "18/11/2026",
 };
 
-export type NavItem = { label: string; href: string; children?: NavItem[] };
+export type NavItem = { label: string; href: string; children?: NavItem[]; highlight?: boolean };
 
 const he = (p: string) => p;
 
@@ -50,6 +59,7 @@ export const NAV: Record<Lang, NavItem[]> = {
         { label: "להקה לאירועי חברה", href: "/corporate/" },
       ],
     },
+    { label: "בינלאומי ויוקרה", href: "/international/", highlight: true },
     { label: "גלריה", href: "/#gallery" },
     { label: "וידאו", href: "/#videos" },
     { label: "TESTIMONIALS", href: "/#testimonials" },
@@ -68,6 +78,7 @@ export const NAV: Record<Lang, NavItem[]> = {
         { label: "Corporate events", href: "/en/corporate-2/" },
       ],
     },
+    { label: "Worldwide & Luxury", href: "/en/international/", highlight: true },
     { label: "Gallery", href: "/en/#gallery" },
     { label: "Videos", href: "/en/#videos" },
     { label: "Testimonials", href: "/en/#testimonials" },

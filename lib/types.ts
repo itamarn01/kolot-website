@@ -50,7 +50,8 @@ export type Section =
       }[];
     }
   | { type: "addons"; logo: string; title: string; items: { label: string; price: string }[] }
-  | { type: "packagesFooter"; note: string; contact: string };
+  | { type: "packagesFooter"; note: string; contact: string }
+  | { type: "worldwide" };
 
 export type Page = {
   slug: string;
