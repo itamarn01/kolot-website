@@ -144,7 +144,7 @@
       {
        "value": 6000,
        "icon": "/media/harp.svg",
-       "label": "Harp &amp; Violin"
+       "label": "Harp & Violin"
       },
       {
        "value": 7500,
@@ -201,7 +201,7 @@
      "price": "10000 ₪"
     },
     {
-     "label": "Harp &amp; Violin",
+     "label": "Harp & Violin",
      "price": "6000 ₪"
     }
    ]
@@ -209,7 +209,7 @@
   {
    "type": "packagesFooter",
    "note": "*Lighting installation subject to venue approval | *Prices applicable for weddings in the center of the country, between Hadera and Gedera Further north or south of these areas, there is an additional travel charge in accordance with the location",
-   "contact": "<a href=\"mailto:kolotmusic@gmail.com\">kolotmusic@gmail.com</a> | <a href=\"kolotband.co.il\">kolotband.co.il</a> | <a href=\"tel:+972555081080\">055-5081080 </a>"
+   "contact": "<a href=\"mailto:kolotmusic@gmail.com\">kolotmusic@gmail.com</a> | <a href=\"https://kolotband.co.il/\">kolotband.co.il</a> | <a href=\"tel:+972555081080\">055-5081080 </a>"
   }
  ]
 }
