@@ -628,18 +628,35 @@ html.a11y-no-motion *, html.a11y-no-motion *::before, html.a11y-no-motion *::aft
 .videos__thumbs .swiper-slide-thumb-active { transform: translateY(-3px); }
 
 .yt-modal {
-  position: fixed; inset: 0; z-index: 200;
-  display: grid; place-items: center;
-  background: rgba(0, 0, 0, 0.9);
-  padding: 20px;
+  position: fixed; inset: 0; z-index: 300;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(6px);
+  /* room around the player so it is never cut: close button on top, breathing space at the bottom */
+  padding: 72px 20px 40px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   animation: fade .3s ease;
 }
-.yt-modal__frame { width: min(1100px, 100%); aspect-ratio: 16 / 9; background: #000; border-radius: 10px; overflow: hidden; }
-.yt-modal__frame iframe { width: 100%; height: 100%; border: 0; }
+.yt-modal__inner { position: relative; width: 100%; display: flex; justify-content: center; margin: auto; }
+/* the player is as large as possible while always fitting the visible screen height */
+.yt-modal__frame {
+  width: min(1100px, 100%, calc((100dvh - 112px) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  background: #000; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .6), 0 0 0 1px rgba(240, 131, 84, .5);
+}
+.yt-modal__frame iframe { width: 100%; height: 100%; border: 0; display: block; }
 .yt-modal__close {
-  position: absolute; top: 14px; right: 14px;
+  position: fixed; top: 14px; right: 14px; z-index: 2;
   width: 48px; height: 48px; border-radius: 50%;
-  border: 1px solid #fff; background: none; color: #fff; font-size: 28px; line-height: 1; cursor: pointer;
+  border: 1px solid #fff; background: rgba(0,0,0,.6); color: #fff; font-size: 28px; line-height: 1; cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.yt-modal__close:hover { background: var(--orange); color: #000; border-color: var(--orange); }
+@media (max-width: 767px) {
+  .yt-modal { padding: 70px 10px 30px; }
+  .yt-modal__frame { width: 100%; border-radius: 8px; }
 }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 
