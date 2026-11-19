@@ -569,25 +569,27 @@ html.a11y-no-motion *, html.a11y-no-motion *::before, html.a11y-no-motion *::aft
 .gallery .swiper { width: min(923px, calc(100% - 32px)); overflow: visible; }
 .gallery figure { margin: 11px; border-radius: 12px; overflow: hidden; }
 .gallery img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; transition: transform 1.2s var(--ease-out), filter .6s; }
-.gallery .swiper-slide:not(.swiper-slide-active) img { filter: brightness(0.55); }
+.gallery .swiper-slide:not(.swiper-slide-active) img { filter: brightness(0.55); cursor: pointer; }
 .gallery .swiper-slide-active img { transform: scale(1.02); }
 
 .car-arrow {
   position: absolute; top: 50%; z-index: 5;
-  width: 44px; height: 44px; margin-top: -22px;
+  width: 56px; height: 56px; margin-top: -28px;
   display: grid; place-items: center;
-  background: none; border: 0; cursor: pointer;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--c);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
   color: var(--c);
-  transition: transform 0.3s var(--ease-out);
+  transition: transform 0.3s var(--ease-out), background .3s, color .3s;
 }
-.car-arrow svg { width: 22px; height: 36px; fill: currentColor; }
+.car-arrow svg { width: 16px; height: 26px; }
+.car-arrow:hover, .car-arrow:focus-visible { background: var(--c); color: #000; }
 .car-arrow--prev { right: 18px; }
 .car-arrow--next { left: 18px; }
-.gallery .car-arrow--prev { right: calc(50% - 440px); }
-.gallery .car-arrow--next { left: calc(50% - 440px); }
-@media (max-width: 960px) { .gallery .car-arrow--prev { right: 24px; } .gallery .car-arrow--next { left: 24px; } }
-.car-arrow--prev:hover { transform: translateX(4px); }
-.car-arrow--next:hover { transform: translateX(-4px); }
+.car-arrow--prev:hover { transform: translateX(3px); }
+.car-arrow--next:hover { transform: translateX(-3px); }
 
 /* ==========================================================================
    Video carousel (slideshow + thumbnails)

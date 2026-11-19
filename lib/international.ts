@@ -14,7 +14,7 @@ export type Story = {
   country: Record<Lang, string>;
   title: Record<Lang, string>;
   text: Record<Lang, string>;
-  instagram: string;
+  instagram: string | null;
   poster: string;
   video: string | null;
 };
@@ -37,6 +37,19 @@ export const DESTINATIONS: Story[] = [
     video: null,
   },
   {
+    key: "vienna",
+    place: { en: "Vienna", he: "וינה" },
+    country: { en: "Austria", he: "אוסטריה" },
+    title: { en: "Kolot in Vienna", he: "קולות בווינה" },
+    text: {
+      en: "Our live band, singers and DJ brought the full Kolot experience to the heart of Vienna.",
+      he: "הלהקה, הזמרים והדיג׳יי שלנו הביאו את חוויית קולות המלאה ללב וינה.",
+    },
+    instagram: null, // add the reel link when the video is ready
+    poster: "/media/gallery/kolot-416.jpg",
+    video: null,
+  },
+  {
     key: "italy",
     place: { en: "Italy", he: "איטליה" },
     country: { en: "Europe", he: "אירופה" },
@@ -47,6 +60,19 @@ export const DESTINATIONS: Story[] = [
     },
     instagram: "https://www.instagram.com/reel/Df0DSILNrr_/",
     poster: "/media/gallery/kolot-360.jpg",
+    video: null,
+  },
+  {
+    key: "new-york",
+    place: { en: "New York", he: "ניו יורק" },
+    country: { en: "USA", he: "ארה״ב" },
+    title: { en: "Manhattan & the Statue of Liberty behind us", he: "מנהטן ופסל החירות מאחורינו" },
+    text: {
+      en: "Kolot in New York with Ely Katz | Symphonia Events – live music with the Manhattan skyline as our backdrop.",
+      he: "קולות בניו יורק עם אלי כץ | Symphonia Events – מוזיקה חיה עם קו הרקיע של מנהטן ברקע.",
+    },
+    instagram: "https://www.instagram.com/p/B0UZvRUDQW1/",
+    poster: "/media/gallery/kolot-21.jpg",
     video: null,
   },
   {
@@ -147,11 +173,11 @@ export const COPY: Record<Lang, Copy> = {
   en: {
     metaTitle: "KOLOT Worldwide – Destination Weddings & Luxury Events",
     metaDesc:
-      "KOLOT live band, singers and DJ for destination weddings and luxury events – Paris, Italy, California and couples from abroad celebrating in Israel. 1,500+ events.",
+      "KOLOT live band, singers and DJ for destination weddings and luxury events – Paris, Vienna, Italy, New York, California and couples from abroad celebrating in Israel. 1,500+ events.",
     eyebrow: "KOLOT WORLDWIDE",
     heroTitle: ["Your celebration.", "Anywhere in the world."],
     heroSub:
-      "Live band, singers and DJ for destination weddings and luxury events – from Paris to Italy to California, and for couples from abroad celebrating in Israel.",
+      "Live band, singers and DJ for destination weddings and luxury events – from Paris, Vienna and Italy to New York and California, and for couples from abroad celebrating in Israel.",
     ctaPlan: "Plan your event",
     ctaWatch: "Watch our stories",
     scroll: "Scroll",
@@ -161,7 +187,7 @@ export const COPY: Record<Lang, Copy> = {
       { value: 3, suffix: "", label: "continents" },
     ],
     destEyebrow: "WHERE WE'VE PLAYED",
-    destTitle: "From Paris to California",
+    destTitle: "From Paris to New York",
     destHint: "Keep scrolling",
     watch: "Watch on Instagram",
     expEyebrow: "THE KOLOT EXPERIENCE",
@@ -196,16 +222,16 @@ export const COPY: Record<Lang, Copy> = {
     finalCta: "Start planning",
     teaserEyebrow: "KOLOT WORLDWIDE",
     teaserTitle: "Destination weddings & luxury events",
-    teaserText: "Paris · Italy · California · couples from abroad in Israel",
+    teaserText: "Paris · Vienna · Italy · New York · California · couples from abroad in Israel",
     teaserCta: "Discover",
   },
   he: {
     metaTitle: "KOLOT Worldwide – חתונות יעד ואירועי יוקרה",
     metaDesc:
-      "להקת קולות בחו״ל ובאירועי יוקרה: להקה חיה, זמרים ודיג׳יי לחתונות יעד – פריז, איטליה, קליפורניה – ולזוגות מחו״ל שמתחתנים בישראל. מעל 1,500 אירועים.",
+      "להקת קולות בחו״ל ובאירועי יוקרה: להקה חיה, זמרים ודיג׳יי לחתונות יעד – פריז, וינה, איטליה, ניו יורק, קליפורניה – ולזוגות מחו״ל שמתחתנים בישראל. מעל 1,500 אירועים.",
     eyebrow: "KOLOT WORLDWIDE",
     heroTitle: ["החגיגה שלכם.", "בכל מקום בעולם."],
-    heroSub: "להקה חיה, זמרים ודיג׳יי לחתונות יעד ולאירועי יוקרה – מפריז, דרך איטליה ועד קליפורניה, ולזוגות מחו״ל שחוגגים בישראל.",
+    heroSub: "להקה חיה, זמרים ודיג׳יי לחתונות יעד ולאירועי יוקרה – מפריז, וינה ואיטליה ועד ניו יורק וקליפורניה, ולזוגות מחו״ל שחוגגים בישראל.",
     ctaPlan: "בואו נתכנן",
     ctaWatch: "לצפייה ברגעים",
     scroll: "גללו",
@@ -215,7 +241,7 @@ export const COPY: Record<Lang, Copy> = {
       { value: 3, suffix: "", label: "יבשות" },
     ],
     destEyebrow: "איפה כבר הופענו",
-    destTitle: "מפריז ועד קליפורניה",
+    destTitle: "מפריז ועד ניו יורק",
     destHint: "המשיכו לגלול",
     watch: "לצפייה באינסטגרם",
     expEyebrow: "חוויית קולות",
@@ -249,7 +275,7 @@ export const COPY: Record<Lang, Copy> = {
     finalCta: "מתחילים לתכנן",
     teaserEyebrow: "KOLOT WORLDWIDE",
     teaserTitle: "חתונות יעד ואירועי יוקרה",
-    teaserText: "פריז · איטליה · קליפורניה · זוגות מחו״ל בישראל",
+    teaserText: "פריז · וינה · איטליה · ניו יורק · קליפורניה · זוגות מחו״ל בישראל",
     teaserCta: "לגלות עוד",
   },
 };

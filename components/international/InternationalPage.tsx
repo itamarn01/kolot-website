@@ -29,10 +29,12 @@ function StoryMedia({ story, lang, eager }: { story: Story; lang: Lang; eager?: 
       ) : (
         <img src={story.poster} alt="" loading={eager ? "eager" : "lazy"} />
       )}
+      {story.instagram && (
       <a className="st-ig" href={story.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${COPY[lang].watch}: ${story.title[lang]}`}>
         {story.video ? <InstagramIcon /> : <PlayIcon />}
         <span>{COPY[lang].watch}</span>
       </a>
+      )}
     </div>
   );
 }
@@ -74,10 +76,48 @@ export default function InternationalPage({ lang }: { lang: Lang }) {
   useIso(() => {
     const el = root.current;
     if (!el) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.classList.contains("a11y-no-motion");
+    const osReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const stopAll = document.documentElement.classList.contains("a11y-no-motion");
     const rtl = lang === "he";
     const ctx = gsap.context(() => {
-      if (reduce) return;
+      // ---- destinations: vertical scrolling drives the cards sideways (pinned) on large screens.
+      // This is scroll-linked (it only moves while the visitor scrolls), so it stays on with the OS
+      // "reduce motion" setting; only the accessibility menu's "stop animations" turns it off.
+      // Whenever it is off, the track falls back to normal horizontal scrolling (see CSS).
+      if (!stopAll) {
+        const mm = gsap.matchMedia();
+        mm.add("(min-width: 900px)", () => {
+          const track = el.querySelector<HTMLElement>(".dest-track");
+          const section = el.querySelector<HTMLElement>(".dest");
+          if (!track || !section) return;
+          section.classList.add("is-pinned");
+          // the heading is the first item of the track, so the track starts at the section edge
+          const distance = () => Math.max(0, track.scrollWidth - section.clientWidth);
+          gsap.to(track, {
+            x: () => (rtl ? distance() : -distance()),
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: () => `+=${distance()}`,
+              pin: true,
+              scrub: 0.6,
+              invalidateOnRefresh: true,
+              anticipatePin: 1,
+              onUpdate: (self) => gsap.set(".dest-progress span", { scaleX: self.progress }),
+            },
+          });
+          if (!osReduce) {
+            // cards drift slightly for depth
+            gsap.utils.toArray<HTMLElement>(".dest-card .st-media img, .dest-card .st-media video").forEach((m) => {
+              gsap.fromTo(m, { scale: 1.15 }, { scale: 1, ease: "none", scrollTrigger: { trigger: section, start: "top top", end: () => `+=${distance()}`, scrub: true } });
+            });
+          }
+          return () => section.classList.remove("is-pinned");
+        });
+      }
+
+      if (osReduce || stopAll) return;
 
       // ---- hero: word-by-word title, then the rest
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
@@ -106,33 +146,6 @@ export default function InternationalPage({ lang }: { lang: Lang }) {
       });
       gsap.utils.toArray<HTMLElement>(".i-line").forEach((line) => {
         gsap.from(line, { scaleX: 0, transformOrigin: rtl ? "right center" : "left center", duration: 1.4, ease: "power3.inOut", scrollTrigger: { trigger: line, start: "top 90%" } });
-      });
-
-      // ---- destinations: pinned horizontal scroll on large screens
-      const mm = gsap.matchMedia();
-      mm.add("(min-width: 900px)", () => {
-        const track = el.querySelector<HTMLElement>(".dest-track");
-        const section = el.querySelector<HTMLElement>(".dest");
-        if (!track || !section) return;
-        const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
-        gsap.to(track, {
-          x: () => (rtl ? distance() : -distance()),
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => `+=${distance()}`,
-            pin: true,
-            scrub: 0.8,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-            onUpdate: (self) => gsap.set(".dest-progress span", { scaleX: self.progress }),
-          },
-        });
-        // cards drift slightly for depth
-        gsap.utils.toArray<HTMLElement>(".dest-card .st-media img, .dest-card .st-media video").forEach((m) => {
-          gsap.fromTo(m, { scale: 1.15 }, { scale: 1, ease: "none", scrollTrigger: { trigger: section, start: "top top", end: () => `+=${distance()}`, scrub: true } });
-        });
       });
 
       // ---- luxury: parallax columns
@@ -238,20 +251,26 @@ export default function InternationalPage({ lang }: { lang: Lang }) {
       </section>
 
       {/* ------------------------------------------------ DESTINATIONS (pinned horizontal) */}
-      <section id="destinations" className="dest" aria-labelledby="dest-title">
-        <div className="dest-head">
+      <section id="destinations" className="dest" aria-label={t.destTitle}>
+        <div className="dest-head dest-head--mob">
           <p className="i-eyebrow">{t.destEyebrow}</p>
-          <h2 id="dest-title" className="i-title">
+          <h2 id="dest-title-m" className="i-title">
+            {t.destTitle}
+          </h2>
+          <p className="dest-hint" aria-hidden hidden>
+            {t.destHint} <span>→</span>
+          </p>
+        </div>
+        <div className="dest-track">
+        <div className="dest-head dest-head--in">
+          <p className="i-eyebrow">{t.destEyebrow}</p>
+          <h2 className="i-title">
             {t.destTitle}
           </h2>
           <p className="dest-hint" aria-hidden>
             {t.destHint} <span>→</span>
           </p>
-          <div className="dest-progress" aria-hidden>
-            <span />
-          </div>
         </div>
-        <div className="dest-track">
           {DESTINATIONS.map((d, i) => (
             <article key={d.key} className="dest-card">
               <StoryMedia story={d} lang={lang} eager={i === 0} />
@@ -264,6 +283,9 @@ export default function InternationalPage({ lang }: { lang: Lang }) {
               </div>
             </article>
           ))}
+        </div>
+        <div className="dest-progress" aria-hidden>
+          <span />
         </div>
       </section>
 

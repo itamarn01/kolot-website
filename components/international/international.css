@@ -110,17 +110,25 @@
 .places span + span { border-inline-start: 1px solid rgba(247, 193, 30, 0.5); }
 
 /* ------------------------------------------------ DESTINATIONS */
-.dest { position: relative; min-height: 100vh; display: flex; align-items: center; gap: 0; overflow: hidden; padding: 60px 0; }
-.dest-head { flex: 0 0 auto; width: min(430px, 34vw); padding-inline-start: var(--pad); padding-inline-end: 40px; align-self: center; }
+.dest { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; padding: 60px 0; }
+.dest-head { flex: 0 0 auto; width: min(400px, 32vw); padding-inline-end: 20px; align-self: center; }
 .dest-hint { margin: 26px 0 0; font-size: 14px; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); }
 .dest-hint span { display: inline-block; animation: nudge 1.6s var(--ease-in-out) infinite; color: var(--gold); }
 .intl[dir="rtl"] .dest-hint span { transform: scaleX(-1); animation-name: nudge-rtl; }
 @keyframes nudge { 50% { transform: translateX(8px); } }
 @keyframes nudge-rtl { 0%, 100% { transform: scaleX(-1); } 50% { transform: scaleX(-1) translateX(8px); } }
-.dest-progress { margin-top: 30px; height: 2px; background: var(--line); width: 100%; overflow: hidden; }
+.dest-progress { position: absolute; bottom: 34px; inset-inline: var(--pad); height: 2px; background: var(--line); overflow: hidden; }
 .dest-progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--cyan)); transform: scaleX(0); transform-origin: left; }
 .intl[dir="rtl"] .dest-progress span { transform-origin: right; }
-.dest-track { display: flex; gap: 34px; padding-inline-end: var(--pad); will-change: transform; }
+/* fallback (pin off): a normal horizontal scroller with snap; when pinned, scrolling down moves it */
+.dest-track {
+  display: flex; align-items: center; gap: 34px; width: 100%;
+  padding-inline: var(--pad);
+  overflow-x: auto; scroll-snap-type: x proximity; scrollbar-color: var(--gold) transparent;
+}
+.dest-track > * { scroll-snap-align: start; }
+.dest.is-pinned .dest-track { overflow: visible; width: max-content; will-change: transform; }
+.dest:not(.is-pinned) .dest-progress, .dest:not(.is-pinned) .dest-hint { display: none; }
 .dest-card { flex: 0 0 auto; width: clamp(280px, 24vw, 360px); display: grid; gap: 18px; align-content: center; }
 .dest-card .st-media { max-height: calc(100vh - 360px); min-height: 320px; }
 .st-media {
@@ -305,3 +313,9 @@ body:has(.intl) .site-header::before {
   .ih-content { padding-bottom: 64px; }
 }
 .ww-teaser[dir="rtl"] .ww-teaser__text, .ww-teaser[dir="rtl"] .ww-teaser__eyebrow { letter-spacing: 0.03em; }
+
+.dest-head--mob { display: none; }
+@media (max-width: 899px) {
+  .dest-head--in { display: none; }
+  .dest-head--mob { display: block; }
+}

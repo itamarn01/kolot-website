@@ -5,7 +5,7 @@ import { SITE_URL } from "./site";
 import type { Page } from "./types";
 
 const DEFAULT_DESC = {
-  he: "KOLOT – קולות: להקה לחתונות ולאירועים. 15 שנה, מעל 1000 חתונות ואירועים, הרכבי קבלת פנים, דיג׳ייז, להקה לבר/בת מצווה ולאירועי חברה.",
+  he: "KOLOT – קולות: להקה לחתונות ולאירועים. 15 שנה, מעל 1,500 חתונות ואירועים, הרכבי קבלת פנים, דיג׳ייז, להקה לבר/בת מצווה ולאירועי חברה.",
   en: "KOLOT – world-class music for weddings and events. Wedding band, reception ensembles, DJs, bar/bat mitzva and corporate events in Israel.",
 };
 

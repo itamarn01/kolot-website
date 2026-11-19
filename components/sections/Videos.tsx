@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Thumbs, Keyboard, A11y } from "swiper/modules";
+import { Autoplay, Thumbs, Keyboard, A11y } from "swiper/modules";
 import type { Swiper as SwiperT } from "swiper";
 import "swiper/css";
 import { Chevron, PlayIcon } from "../icons";
@@ -14,8 +14,7 @@ import type { Lang, Slide } from "@/lib/types";
 export function VideoCarousel({ slides, lang, width }: { slides: Slide[]; lang: Lang; width?: number }) {
   const t = UI[lang];
   const [thumbs, setThumbs] = useState<SwiperT | null>(null);
-  const [prev, setPrev] = useState<HTMLButtonElement | null>(null);
-  const [next, setNext] = useState<HTMLButtonElement | null>(null);
+  const [main, setMain] = useState<SwiperT | null>(null);
   const [playing, setPlaying] = useState<string | null>(null);
   const close = useCallback(() => setPlaying(null), []);
   const thumbFor = (s: Slide) => s.thumb ?? `https://i.ytimg.com/vi/${s.id}/hqdefault.jpg`;
@@ -25,11 +24,11 @@ export function VideoCarousel({ slides, lang, width }: { slides: Slide[]; lang: 
         <div className="videos__main">
           <Swiper
             dir="rtl"
-            modules={[Autoplay, Navigation, Thumbs, Keyboard, A11y]}
+            modules={[Autoplay, Thumbs, Keyboard, A11y]}
+            onSwiper={setMain}
             loop={slides.length > 2}
             speed={500}
             autoplay={{ delay: 5000, pauseOnMouseEnter: true, disableOnInteraction: true }}
-            navigation={{ prevEl: prev, nextEl: next }}
             thumbs={{ swiper: thumbs && !thumbs.destroyed ? thumbs : null }}
             keyboard={{ enabled: true }}
           >
@@ -52,10 +51,10 @@ export function VideoCarousel({ slides, lang, width }: { slides: Slide[]; lang: 
         </div>
         {slides.length > 1 && (
           <>
-            <button ref={setPrev} className="car-arrow car-arrow--prev" type="button" aria-label={t.prev}>
+            <button className="car-arrow car-arrow--prev" type="button" aria-label={t.prev} onClick={() => main?.slidePrev()}>
               <Chevron dir="right" />
             </button>
-            <button ref={setNext} className="car-arrow car-arrow--next" type="button" aria-label={t.next}>
+            <button className="car-arrow car-arrow--next" type="button" aria-label={t.next} onClick={() => main?.slideNext()}>
               <Chevron dir="left" />
             </button>
           </>
