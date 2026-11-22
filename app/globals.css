@@ -840,10 +840,6 @@ html.a11y-no-motion *, html.a11y-no-motion *::before, html.a11y-no-motion *::aft
 /* ==========================================================================
    Contact + footer
    ========================================================================== */
-.contact__form { width: min(1224px, calc(100% - 32px)); margin: 50px auto 0; padding: 10px; }
-.contact__form iframe { width: 100%; min-height: 640px; border: 0; border-radius: 12px; background: #0e1b20; }
-.contact__note { text-align: center; font-size: 14px; color: #bbb; margin-top: 10px; }
-.contact__note a { text-decoration: underline; }
 .to-top {
   display: block; width: max-content; margin: 30px auto 0; padding: 10px;
   color: var(--yellow);

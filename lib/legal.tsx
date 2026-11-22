@@ -48,7 +48,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           </ul>
           <h2>חלקים שאינם נגישים במלואם</h2>
           <p>
-            טופס יצירת הקשר מוטמע מאפליקציית Zooglot, ותכנים מוטמעים מ-YouTube ומאינסטגרם מסופקים על ידי צדדים שלישיים ואינם בשליטתנו המלאה. אם
+            תכנים מוטמעים מ-YouTube ומאינסטגרם מסופקים על ידי צדדים שלישיים ואינם בשליטתנו המלאה. אם
             נתקלתם בקושי – נשמח לקבל את פנייתכם גם בטלפון או בדוא״ל.
           </p>
           <h2>פרטי רכז/ת הנגישות</h2>
@@ -97,8 +97,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           </ul>
           <h2>Known limitations</h2>
           <p>
-            The contact form is embedded from the Zooglot app, and embedded YouTube and Instagram content is provided by third parties that we do not fully
-            control. If anything is hard to use, please contact us by phone or email.
+            Embedded YouTube and Instagram content is provided by third parties that we do not fully control. If anything is hard to use, please contact us by phone or email.
           </p>
           <h2>Accessibility coordinator</h2>
           <ul>
@@ -154,8 +153,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           <h2>עם מי המידע משותף</h2>
           <ul>
             <li>
-              <strong>Zooglot</strong> – מערכת ניהול הלידים שלנו, אליה נשלח הטופס (האפליקציה מאוחסנת ב-Vercel וב-Railway). הטופס המוטמע עשוי להשתמש גם
-              ב-Microsoft Clarity לשיפור חוויית המילוי.
+              <strong>Zooglot</strong> – מערכת ניהול הלידים שלנו (מאוחסנת ב-Railway וב-Supabase), אליה נשלחים פרטי הטופס. ממנה נשלחת אליכם הודעת אישור בוואטסאפ ממספר הלהקה (אם אישרתם זאת בטופס) ומייל אישור דרך Resend.
             </li>
             <li>
               <strong>Google</strong> – Tag Manager / Analytics, רק בהסכמה.
@@ -219,8 +217,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           <h2>Who we share it with</h2>
           <ul>
             <li>
-              <strong>Zooglot</strong> – our lead management app that receives the form (hosted on Vercel and Railway). The embedded form may use Microsoft
-              Clarity to improve the form experience.
+              <strong>Zooglot</strong> – our lead management app (hosted on Railway and Supabase) that receives the form. It sends you a WhatsApp confirmation from the band's number (if you agreed in the form) and a confirmation email through Resend.
             </li>
             <li>
               <strong>Google</strong> – Tag Manager / Analytics, with consent only.
@@ -283,6 +280,13 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
                 <td>עד מחיקה</td>
               </tr>
               <tr>
+                <td>kolot-lead-draft-v1</td>
+                <td>קולות (אחסון מקומי)</td>
+                <td>הכרחית</td>
+                <td>שמירת טופס יצירת קשר שמולא חלקית, עד לשליחה</td>
+                <td>עד שליחה או מחיקה</td>
+              </tr>
+              <tr>
                 <td>_ga, _ga_*</td>
                 <td>Google Analytics (דרך Google Tag Manager)</td>
                 <td>סטטיסטיקה</td>
@@ -302,13 +306,6 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
                 <td>תוכן מוטמע</td>
                 <td>נגן הווידאו – נטען רק כשלוחצים על „נגן”</td>
                 <td>לפי מדיניות Google</td>
-              </tr>
-              <tr>
-                <td>Microsoft Clarity</td>
-                <td>Zooglot (טופס יצירת קשר מוטמע)</td>
-                <td>צד שלישי</td>
-                <td>שיפור חוויית מילוי הטופס</td>
-                <td>לפי מדיניות Microsoft</td>
               </tr>
             </tbody>
           </table>
@@ -354,6 +351,13 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
                 <td>Until deleted</td>
               </tr>
               <tr>
+                <td>kolot-lead-draft-v1</td>
+                <td>KOLOT (local storage)</td>
+                <td>Necessary</td>
+                <td>Keeps a half-filled contact form until it is sent</td>
+                <td>Until sent or deleted</td>
+              </tr>
+              <tr>
                 <td>_ga, _ga_*</td>
                 <td>Google Analytics (via Google Tag Manager)</td>
                 <td>Statistics</td>
@@ -373,13 +377,6 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
                 <td>Embedded content</td>
                 <td>Video player – loaded only when you press play</td>
                 <td>Per Google policy</td>
-              </tr>
-              <tr>
-                <td>Microsoft Clarity</td>
-                <td>Zooglot (embedded contact form)</td>
-                <td>Third party</td>
-                <td>Improves the form experience</td>
-                <td>Per Microsoft policy</td>
               </tr>
             </tbody>
           </table>
@@ -410,7 +407,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
             לעשות בהם שימוש מסחרי ללא אישור בכתב.
           </p>
           <h2>תכנים של צדדים שלישיים</h2>
-          <p>האתר כולל קישורים ותכנים מוטמעים (YouTube, Instagram, Zooglot). איננו אחראים לתכנים או למדיניות של אתרים אלה.</p>
+          <p>האתר כולל קישורים ותכנים מוטמעים (YouTube, Instagram). איננו אחראים לתכנים או למדיניות של אתרים אלה.</p>
           <h2>המלצות לקוחות</h2>
           <p>ההמלצות באתר נכתבו על ידי לקוחות אמיתיים ומובאות כפי שנשלחו אלינו.</p>
           <h2>הגבלת אחריות</h2>
@@ -440,7 +437,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
             commercially without written permission.
           </p>
           <h2>Third-party content</h2>
-          <p>The site contains links and embedded content (YouTube, Instagram, Zooglot). We are not responsible for their content or policies.</p>
+          <p>The site contains links and embedded content (YouTube, Instagram). We are not responsible for their content or policies.</p>
           <h2>Testimonials</h2>
           <p>Testimonials were written by real customers and are shown as they were sent to us.</p>
           <h2>Limitation of liability</h2>

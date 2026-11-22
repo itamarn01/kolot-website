@@ -3,7 +3,7 @@ import SiteHeader from "../SiteHeader";
 import SiteFooter from "../SiteFooter";
 import InternationalPage from "./InternationalPage";
 import { COPY, INTL_ROUTES } from "@/lib/international";
-import { SITE_URL, ZOOGLOT_FORM_INTL } from "@/lib/site";
+import { SITE_URL } from "@/lib/site";
 import type { Lang } from "@/lib/types";
 
 export function intlMetadata(lang: Lang): Metadata {
@@ -31,7 +31,7 @@ export default function IntlRoute({ lang }: { lang: Lang }) {
     <>
       <SiteHeader lang={lang} alt={INTL_ROUTES[lang === "he" ? "en" : "he"]} />
       <InternationalPage lang={lang} />
-      <SiteFooter lang={lang} form={ZOOGLOT_FORM_INTL[lang]} />
+      <SiteFooter lang={lang} worldwide />
     </>
   );
 }

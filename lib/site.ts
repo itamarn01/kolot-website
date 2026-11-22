@@ -11,24 +11,6 @@ export const CONTACT = {
   youtube: "https://www.youtube.com/user/kolotMusic",
 };
 
-/** Lead form – submissions go straight into the Zooglot app. */
-export const ZOOGLOT_FORM: Record<Lang, { src: string; title: string }> = {
-  he: {
-    src: "https://zooglot.vercel.app/form.html?f=" + encodeURIComponent("טופס-ניסוי-d8eb009fa99c319a"),
-    title: "מזל טוב!!",
-  },
-  en: { src: "https://zooglot.vercel.app/form.html?f=Mazal-Tov--a092a5d62d6d2aae", title: "Mazal Tov!!" },
-};
-
-/**
- * Separate Zooglot form for international / luxury inquiries (KOLOT Worldwide page).
- * Create it in Zooglot and paste the embed links here; while null, the regular forms above are used.
- */
-export const ZOOGLOT_FORM_INTL: Record<Lang, { src: string; title: string } | null> = {
-  he: null,
-  en: null,
-};
-
 /**
  * Legal placeholders – fill these in before going live.
  * They are used by the privacy policy, terms and accessibility statement.

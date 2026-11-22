@@ -43,12 +43,26 @@ Hebrew URLs are served through rewrites in `next.config.ts` (Next.js can't prere
 
 * Texts, destinations, partners: `lib/international.ts`
 * **Videos:** put MP4s in `public/media/international/` and set `video` on each story (and `HERO_VIDEO`) in `lib/international.ts`. Until then each card shows a still and links to the Instagram reel.
-* **Separate lead form:** paste the Zooglot embed links into `ZOOGLOT_FORM_INTL` in `lib/site.ts` (falls back to the regular forms while empty).
+* Leads from this page are tagged "Worldwide" in Zooglot.
 * Animations: GSAP ScrollTrigger (pinned horizontal destinations, count-up stats, timeline, word reveals) – all disabled for "reduce motion" / the accessibility menu.
 
-## Contact form → Zooglot
+## Contact form (WhatsApp + email via Zooglot)
 
-The form is the Zooglot embed (Hebrew form on Hebrew pages, English form on English pages). To change it, edit `ZOOGLOT_FORM` in `lib/site.ts`. Submissions go straight into the Zooglot app.
+The form is built into the site (`components/LeadForm.tsx`, fields/texts in `lib/lead.ts`): 4 short steps, Hebrew/English, saved as a draft in the browser until sent.
+
+On submit, `app/api/lead/route.ts` (server) sends the lead to **Zooglot** – `POST /api/webhooks/website-lead` (branch `feature/website-lead` of Zooglot-backend). Zooglot saves/updates the lead in the CRM, sends the visitor a WhatsApp confirmation from the band's linked number (if they kept the checkbox on), and emails the visitor + the band through Resend.
+
+Fallbacks, so a lead is never lost: Zooglot's public form endpoint (lead saved, no automatic WhatsApp/email) → Resend email to the band (if `RESEND_API_KEY` is set on Vercel) → a pre-filled WhatsApp link shown to the visitor.
+
+Vercel environment variables:
+
+| Name | Value |
+| --- | --- |
+| `ZOOGLOT_WEBHOOK_SECRET` | the **same value** as `WEBHOOK_SECRET` in the Zooglot backend (Railway) – required for WhatsApp/emails |
+| `ZOOGLOT_API_URL` | optional, default `https://zooglot-backend.up.railway.app` |
+| `RESEND_API_KEY`, `RESEND_FROM` | optional – only for the last-resort email |
+
+Zooglot (Railway): optional `WEBSITE_LEAD_NOTIFY_EMAIL` (default kolotmusic@gmail.com). Emails are sent from Zooglot's existing `RESEND_FROM`, so its domain must be verified in Resend.
 
 ## Before going live – fill in
 

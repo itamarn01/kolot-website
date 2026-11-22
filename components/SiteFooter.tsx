@@ -1,16 +1,16 @@
 import Banner from "./sections/Banner";
-import ZooglotForm from "./ZooglotForm";
+import LeadForm from "./LeadForm";
 import { CookieSettingsButton } from "./consent";
 import { AtIcon, DoubleUp, FacebookIcon, InstagramIcon, PhoneIcon, YoutubeIcon } from "./icons";
 import { CONTACT, LEGAL_LINKS, UI } from "@/lib/site";
 import type { Lang } from "@/lib/types";
 
-export default function SiteFooter({ lang, form }: { lang: Lang; form?: { src: string; title: string } | null }) {
+export default function SiteFooter({ lang, worldwide = false }: { lang: Lang; worldwide?: boolean }) {
   const t = UI[lang];
   return (
     <>
       <Banner variant="split" color="yellow" title={t.contactTitle} subtitle={t.contactSubtitle} anchor="contact-us" lang={lang} />
-      <ZooglotForm lang={lang} form={form} />
+      <LeadForm lang={lang} worldwide={worldwide} />
       <a className="to-top" href="#top" aria-label={t.backToTop}>
         <DoubleUp />
       </a>
