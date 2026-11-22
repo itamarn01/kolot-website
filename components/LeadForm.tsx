@@ -16,6 +16,7 @@ import {
 } from "@/lib/lead";
 import { CONTACT } from "@/lib/site";
 import type { Lang } from "@/lib/types";
+import PlaceInput from "./PlaceInput";
 import "./lead-form.css";
 
 const DRAFT_KEY = "kolot-lead-draft-v1";
@@ -366,7 +367,25 @@ export default function LeadForm({ lang, worldwide = false }: { lang: Lang; worl
                 {step === 1 && (
                   <>
                     {field("event_date", { type: "date", optional: true, min: today })}
-                    {field("event_location", { optional: true, autoComplete: "off" })}
+                    <div className="lf-field">
+                      <label className="lf-label" htmlFor="lf-event_location">
+                        {t.labels.event_location}
+                        <span className="lf-opt"> ({t.optional})</span>
+                      </label>
+                      <PlaceInput
+                        id="lf-event_location"
+                        name="event_location"
+                        value={f.event_location}
+                        placeholder={t.placeholders.event_location}
+                        describedBy="lf-event_location-hint"
+                        listLabel={t.placesLabel}
+                        onType={(v) => setF((p) => ({ ...p, event_location: v, event_lat: "", event_lng: "" }))}
+                        onPick={(pl) => setF((p) => ({ ...p, event_location: pl.label, event_lat: String(pl.lat), event_lng: String(pl.lon) }))}
+                      />
+                      <p id="lf-event_location-hint" className="lf-hint">
+                        {t.hints.event_location}
+                      </p>
+                    </div>
                   </>
                 )}
                 {step === 2 && (

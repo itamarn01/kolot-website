@@ -5,6 +5,8 @@
  * Env: MONDAY_API_TOKEN (required to enable), MONDAY_BOARD_ID, MONDAY_GROUP_ID (optional overrides)
  */
 
+import { searchPlaces } from "./places";
+
 export const MONDAY_BOARD_ID = process.env.MONDAY_BOARD_ID || "1101725011";
 export const MONDAY_GROUP_ID = process.env.MONDAY_GROUP_ID || "topics"; // "Active Leads"
 
@@ -14,7 +16,8 @@ const COL = {
   eventDate: "weddingdate", // Event date
   phone: "______14", // טלפון 1
   email: "____", // מייל
-  venue: "____6", // אולם (text – the Event location column needs coordinates)
+  location: "location", // Event location (map column: needs coordinates)
+  venue: "____6", // אולם (text) – only when the place couldn't be found on the map
   saleStatus: "______", // סטאטוס מכירה
   stage: "status", // שלב
   nextAction: "status7", // פעולה הבאה
@@ -63,7 +66,9 @@ export function mondayPhone(raw: string): { phone: string; countryShortName: str
 
 const todayIL = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jerusalem" }).format(new Date());
 
-export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en", page: string) {
+type Coords = { lat: number; lng: number } | null;
+
+export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en", page: string, coords: Coords = null) {
   const v: Record<string, unknown> = {};
   const extraNotes: string[] = [];
 
@@ -77,7 +82,11 @@ export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en
   if (phone) v[COL.phone] = phone;
   else if (fields.phone1) extraNotes.push(`טלפון: ${fields.phone1}`);
   if (fields.email) v[COL.email] = { email: fields.email, text: fields.email };
-  if (fields.event_location) v[COL.venue] = fields.event_location;
+  if (fields.event_location) {
+    // the visitor's own wording is the address; the coordinates only place the pin
+    if (coords) v[COL.location] = { lat: String(coords.lat), lng: String(coords.lng), address: fields.event_location };
+    else v[COL.venue] = fields.event_location;
+  }
   v[COL.saleStatus] = { label: "Open" };
   v[COL.stage] = { label: lang === "en" ? "לקוח משאלון אנגלית" : "לקוח משאלון" };
   v[COL.nextAction] = { label: "עוד פרטים" };
@@ -122,9 +131,22 @@ export async function restoreMondayStage(itemId: string, lang: "he" | "en") {
   );
 }
 
+/** Coordinates of the picked suggestion, or the best map match for text typed without picking one. */
+async function locate(fields: Record<string, string>): Promise<Coords> {
+  if (!fields.event_location) return null;
+  const lat = Number(fields.event_lat), lng = Number(fields.event_lng);
+  if (fields.event_lat && fields.event_lng && Number.isFinite(lat) && Number.isFinite(lng)) return { lat, lng };
+  try {
+    const [top] = await searchPlaces(fields.event_location);
+    return top ? { lat: top.lat, lng: top.lon } : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Creates the item. Returns the item id, or throws. */
 export async function sendToMonday(fields: Record<string, string>, lang: "he" | "en", page: string): Promise<string> {
-  const item = buildMondayItem(fields, lang, page);
+  const item = buildMondayItem(fields, lang, page, await locate(fields));
   const data = await mondayQuery(
     "mutation ($board: ID!, $group: String!, $name: String!, $values: JSON!) { create_item (board_id: $board, group_id: $group, item_name: $name, column_values: $values) { id } }",
     { board: MONDAY_BOARD_ID, group: MONDAY_GROUP_ID, name: item.name, values: JSON.stringify(item.columnValues) },

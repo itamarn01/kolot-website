@@ -11,6 +11,9 @@ export type LeadFields = {
   relation_other: string;
   event_date: string;
   event_location: string;
+  /** coordinates of the suggestion the visitor picked (empty if typed freely) */
+  event_lat: string;
+  event_lng: string;
   phone1: string;
   email: string;
   whatsapp_consent: boolean;
@@ -26,6 +29,8 @@ export const EMPTY_LEAD: LeadFields = {
   relation_other: "",
   event_date: "",
   event_location: "",
+  event_lat: "",
+  event_lng: "",
   phone1: "",
   email: "",
   whatsapp_consent: true,
@@ -70,6 +75,8 @@ export function toPayloadFields(f: LeadFields) {
     relation,
     event_date: f.event_date,
     event_location: f.event_location.trim(),
+    event_lat: f.event_location.trim() ? f.event_lat : "",
+    event_lng: f.event_location.trim() ? f.event_lng : "",
     phone1: f.phone1.trim(),
     email: f.email.trim(),
     hear_about_us: hear,
@@ -98,6 +105,7 @@ export const FORM_COPY: Record<
     submit: string;
     sending: string;
     privacy: string;
+    placesLabel: string;
     privacyLink: string;
     privacyHref: string;
     draft: string;
@@ -136,7 +144,7 @@ export const FORM_COPY: Record<
     },
     hints: {
       event_date: "עוד לא סגרתם תאריך? אפשר להשאיר ריק",
-      event_location: "אולם, עיר או מדינה. אפשר גם להשאיר ריק",
+      event_location: "התחילו להקליד ונציע אולמות וערים. אפשר גם להשאיר ריק",
       phone1: "נחזור אליכם למספר הזה",
       referrer: "כדי שנוכל להגיד תודה 🙂",
     },
@@ -160,6 +168,7 @@ export const FORM_COPY: Record<
     skip: "דלגו",
     submit: "בדקו זמינות לתאריך שלי",
     sending: "שולחים…",
+    placesLabel: "הצעות מיקום",
     privacy: "אנחנו מכבדים את פרטיותכם ולא מעבירים פרטים לצד שלישי.",
     privacyLink: "מדיניות פרטיות",
     privacyHref: "/privacy-policy/",
@@ -198,7 +207,7 @@ export const FORM_COPY: Record<
     },
     hints: {
       event_date: "No date yet? Leave it empty",
-      event_location: "Venue, city or country. Can be left empty",
+      event_location: "Start typing a venue or city and pick a suggestion. Can be left empty",
       phone1: "We'll get back to you on this number (country code welcome)",
       referrer: "So we can say thank you 🙂",
     },
@@ -222,6 +231,7 @@ export const FORM_COPY: Record<
     skip: "Skip",
     submit: "Check availability for my date",
     sending: "Sending…",
+    placesLabel: "location suggestions",
     privacy: "We respect your privacy and never share your details.",
     privacyLink: "Privacy policy",
     privacyHref: "/en/privacy-policy/",

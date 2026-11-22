@@ -38,6 +38,8 @@ const FIELD_MAX: Record<string, number> = {
   relation: 80,
   event_date: 10,
   event_location: 200,
+  event_lat: 20,
+  event_lng: 20,
   phone1: 40,
   email: 160,
   hear_about_us: 120,
@@ -152,6 +154,12 @@ export async function POST(req: Request) {
   }
   if (fields.email && !validEmail(fields.email)) delete fields.email;
   if (fields.event_date && !/^\d{4}-\d{2}-\d{2}$/.test(fields.event_date)) delete fields.event_date;
+  // coordinates come from a picked suggestion; drop anything that isn't a real lat/lng pair
+  const lat = Number(fields.event_lat), lng = Number(fields.event_lng);
+  if (!fields.event_location || !(Math.abs(lat) <= 90 && Math.abs(lng) <= 180) || !fields.event_lat || !fields.event_lng) {
+    delete fields.event_lat;
+    delete fields.event_lng;
+  }
 
   // --- monday.com runs in parallel with Zooglot (independent of it)
   const monday: Promise<string | null> = process.env.MONDAY_API_TOKEN
@@ -161,7 +169,8 @@ export async function POST(req: Request) {
       })
     : Promise.resolve(null);
 
-  const zooglot = await sendToZooglot(fields, lang, page, body.whatsapp_consent !== false);
+  const { event_lat: _lat, event_lng: _lng, ...zooglotFields } = fields; // the CRM stores the location as text
+  const zooglot = await sendToZooglot(zooglotFields, lang, page, body.whatsapp_consent !== false);
   const mondayId = await monday;
   if (mondayId) {
     // after the response: undo the board automation that resets "שלב" on new items
@@ -177,7 +186,7 @@ export async function POST(req: Request) {
   // --- fallback email (if configured) so the band hears about it right away
   let emailed = false;
   try {
-    emailed = await fallbackEmail(fields, lang, page, zooglot.reason);
+    emailed = await fallbackEmail(zooglotFields, lang, page, zooglot.reason);
   } catch (e) {
     console.error("[lead] fallback email failed", e);
   }
