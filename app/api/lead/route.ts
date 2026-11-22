@@ -1,8 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { validEmail, validPhone } from "@/lib/lead";
+import { restoreMondayStage, sendToMonday } from "@/lib/monday";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 /**
  * Contact form endpoint.
@@ -18,6 +20,7 @@ export const dynamic = "force-dynamic";
  *   RESEND_API_KEY           optional – fallback email if Zooglot is down
  *   RESEND_FROM              optional – e.g. "KOLOT <website@kolotband.co.il>" (verified domain)
  *   LEAD_NOTIFY_EMAIL        optional – default kolotmusic@gmail.com
+ *   MONDAY_API_TOKEN         optional – also create the lead on monday ("מעקב זוגות" → Active Leads)
  *
  * Until the website-lead endpoint is live (or the secret is set), leads still reach Zooglot through
  * its existing public form endpoint (the one the old iframes used) – saved in the CRM, without the
@@ -78,6 +81,48 @@ async function fallbackEmail(fields: Record<string, string>, lang: string, page:
   return res.ok;
 }
 
+type ZooglotResult = { ok: true; whatsapp: string; via: string } | { ok: false; reason: string };
+
+async function sendToZooglot(fields: Record<string, string>, lang: string, page: string, consent: boolean): Promise<ZooglotResult> {
+  const api = (process.env.ZOOGLOT_API_URL || ZOOGLOT_DEFAULT).replace(/\/+$/, "");
+  const secret = process.env.ZOOGLOT_WEBHOOK_SECRET;
+  let reason = "secret not configured";
+  // 1) website-lead endpoint: CRM + WhatsApp + emails
+  if (secret) {
+    try {
+      const res = await fetch(`${api}/api/webhooks/website-lead`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-webhook-key": secret },
+        body: JSON.stringify({ lang, page, whatsapp_consent: consent, fields }),
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (res.ok) {
+        const data = await res.json().catch(() => ({}));
+        return { ok: true, whatsapp: data.whatsapp || "unknown", via: "zooglot" };
+      }
+      reason = `HTTP ${res.status}`;
+    } catch (e) {
+      reason = e instanceof Error ? e.message : "network error";
+    }
+  }
+  // 2) public form endpoint: the lead is saved in the CRM (no automatic WhatsApp/emails)
+  try {
+    const legacyNotes = [fields.notes, `🌐 נשלח מהאתר kolotband.co.il (${page || "/"})`].filter(Boolean).join("\n");
+    const slug = LEGACY_FORM_SLUG[lang === "en" ? "en" : "he"];
+    const res = await fetch(`${api}/api/public/forms/${encodeURIComponent(slug)}/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...fields, notes: legacyNotes }),
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (res.ok) return { ok: true, whatsapp: "skipped", via: "zooglot-form" };
+    reason += `; form HTTP ${res.status}`;
+  } catch (e) {
+    reason += `; form ${e instanceof Error ? e.message : "error"}`;
+  }
+  return { ok: false, reason };
+}
+
 export async function POST(req: Request) {
   let body: Record<string, unknown>;
   try {
@@ -108,52 +153,36 @@ export async function POST(req: Request) {
   if (fields.email && !validEmail(fields.email)) delete fields.email;
   if (fields.event_date && !/^\d{4}-\d{2}-\d{2}$/.test(fields.event_date)) delete fields.event_date;
 
-  // --- 1) Zooglot
-  const api = (process.env.ZOOGLOT_API_URL || ZOOGLOT_DEFAULT).replace(/\/+$/, "");
-  const secret = process.env.ZOOGLOT_WEBHOOK_SECRET;
-  let reason = "not configured";
-  if (api && secret) {
-    try {
-      const res = await fetch(`${api}/api/webhooks/website-lead`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-webhook-key": secret },
-        body: JSON.stringify({ lang, page, whatsapp_consent: body.whatsapp_consent !== false, fields }),
-        signal: AbortSignal.timeout(15_000),
-      });
-      if (res.ok) {
-        const data = await res.json().catch(() => ({}));
-        return NextResponse.json({ ok: true, whatsapp: data.whatsapp || "unknown" });
-      }
-      reason = `HTTP ${res.status}`;
-    } catch (e) {
-      reason = e instanceof Error ? e.message : "network error";
-    }
-  }
-  console.error(`[lead] Zooglot website-lead unavailable (${reason})`);
+  // --- monday.com runs in parallel with Zooglot (independent of it)
+  const monday: Promise<string | null> = process.env.MONDAY_API_TOKEN
+    ? sendToMonday(fields, lang, page).catch((e) => {
+        console.error("[lead] monday failed:", e instanceof Error ? e.message : e);
+        return null;
+      })
+    : Promise.resolve(null);
 
-  // --- 1b) the Zooglot public form endpoint: the lead is saved in the CRM (no automatic WhatsApp/emails)
-  try {
-    const legacyNotes = [fields.notes, `🌐 נשלח מהאתר kolotband.co.il (${page || "/"})`].filter(Boolean).join("\n");
-    const res = await fetch(`${api}/api/public/forms/${encodeURIComponent(LEGACY_FORM_SLUG[lang])}/submit`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...fields, notes: legacyNotes }),
-      signal: AbortSignal.timeout(15_000),
+  const zooglot = await sendToZooglot(fields, lang, page, body.whatsapp_consent !== false);
+  const mondayId = await monday;
+  if (mondayId) {
+    // after the response: undo the board automation that resets "שלב" on new items
+    after(async () => {
+      await new Promise((r) => setTimeout(r, 8000));
+      await restoreMondayStage(mondayId, lang).catch((e) => console.error("[lead] monday stage fix failed:", e instanceof Error ? e.message : e));
     });
-    if (res.ok) return NextResponse.json({ ok: true, whatsapp: "skipped", via: "zooglot-form" });
-    reason += `; form HTTP ${res.status}`;
-  } catch (e) {
-    reason += `; form ${e instanceof Error ? e.message : "error"}`;
   }
 
-  // --- 2) fallback: email the band so the lead is never lost
+  if (zooglot.ok) return NextResponse.json({ ok: true, whatsapp: zooglot.whatsapp, via: zooglot.via, monday: !!mondayId });
+  console.error(`[lead] Zooglot unavailable (${zooglot.reason})`);
+
+  // --- fallback email (if configured) so the band hears about it right away
+  let emailed = false;
   try {
-    if (await fallbackEmail(fields, lang, page, reason)) {
-      return NextResponse.json({ ok: true, whatsapp: "skipped", via: "email" });
-    }
+    emailed = await fallbackEmail(fields, lang, page, zooglot.reason);
   } catch (e) {
     console.error("[lead] fallback email failed", e);
   }
+  if (mondayId || emailed) return NextResponse.json({ ok: true, whatsapp: "skipped", via: mondayId ? "monday" : "email" });
+
   // --- 3) the client offers a pre-filled WhatsApp link instead
   return NextResponse.json({ ok: false, error: "unavailable" }, { status: 503 });
 }

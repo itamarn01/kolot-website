@@ -52,6 +52,8 @@ The form is built into the site (`components/LeadForm.tsx`, fields/texts in `lib
 
 On submit, `app/api/lead/route.ts` (server) sends the lead to **Zooglot** – `POST /api/webhooks/website-lead` (branch `feature/website-lead` of Zooglot-backend). Zooglot saves/updates the lead in the CRM, sends the visitor a WhatsApp confirmation from the band's linked number (if they kept the checkbox on), and emails the visitor + the band through Resend.
 
+In parallel the lead is also created on **monday.com** (board "מעקב זוגות", group "Active Leads") when `MONDAY_API_TOKEN` is set. The board's "item created → שלב = לקוח חדש ידני" automation is undone 8 seconds later, so website leads show "לקוח משאלון" / "לקוח משאלון אנגלית".
+
 Fallbacks, so a lead is never lost: Zooglot's public form endpoint (lead saved, no automatic WhatsApp/email) → Resend email to the band (if `RESEND_API_KEY` is set on Vercel) → a pre-filled WhatsApp link shown to the visitor.
 
 Vercel environment variables:
@@ -61,6 +63,7 @@ Vercel environment variables:
 | `ZOOGLOT_WEBHOOK_SECRET` | the **same value** as `WEBHOOK_SECRET` in the Zooglot backend (Railway) – required for WhatsApp/emails |
 | `ZOOGLOT_API_URL` | optional, default `https://zooglot-backend.up.railway.app` |
 | `RESEND_API_KEY`, `RESEND_FROM` | optional – only for the last-resort email |
+| `MONDAY_API_TOKEN` | optional – also creates the lead on monday, board "מעקב זוגות" → group "Active Leads" (`lib/monday.ts` maps the fields to the board's columns) |
 
 Zooglot (Railway): optional `WEBSITE_LEAD_NOTIFY_EMAIL` (default kolotmusic@gmail.com). Emails are sent from Zooglot's existing `RESEND_FROM`, so its domain must be verified in Resend.
 
