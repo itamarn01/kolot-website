@@ -371,6 +371,7 @@ html.kh-watching { overflow: hidden; }
 }
 .kh-statement__text { position: relative; }
 .kh-statement__text h2 { margin-block-start: 22px; max-width: 1060px; }
+.kh-line { display: block; }
 .kh-statement__watch { margin-block-start: 40px; }
 
 /* Full-screen colour player (FullscreenWatch) */
@@ -554,7 +555,13 @@ img.kh-reel__video { filter: grayscale(1); }
 .kh-ig__count button:disabled { opacity: 0.3; cursor: default; }
 .kh-ig__count button:not(:disabled):hover { border-color: var(--k-accent) !important; color: var(--k-accent); }
 .kh-ig__side { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 20px; padding: 28px; overflow-y: auto; }
-.kh-ig__caption { white-space: pre-line; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.86); flex: 1; }
+.kh-ig__caption { white-space: pre-line; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
+.kh-ig__stats { display: flex; gap: 20px; font-size: 14px; color: rgba(255, 255, 255, 0.86); border-block: 1px solid var(--k-line); padding-block: 12px; }
+.kh-ig__stats > span { display: inline-flex; align-items: center; gap: 6px; }
+.kh-ig__stats svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
+.kh-ig__stats > span:first-child svg { fill: var(--k-accent); stroke: var(--k-accent); }
+.kh-ig__comments { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.kh-ig__comments li { font-size: 14px; line-height: 1.5; color: rgba(255, 255, 255, 0.72); padding-inline-start: 12px; border-inline-start: 2px solid var(--k-line); overflow-wrap: anywhere; }
 .kh-ig__link { font-size: 15px; color: var(--k-accent); }
 .kh-ig__link:hover { text-decoration: underline; }
 .kh-ig__nav {
@@ -612,15 +619,12 @@ img.kh-reel__video { filter: grayscale(1); }
 .kh-cta__in { position: relative; display: grid; justify-items: center; }
 .kh-cta__in h2 { margin-block: 24px 24px; }
 .kh-cta__actions { display: flex; align-items: center; gap: 16px; margin-block-start: 48px; }
-.kh-cta__phone { font-size: 16px; padding-inline: 8px; }
-.kh-cta__phone:hover { color: var(--k-accent); }
 @media (max-width: 767px) {
   .kh-cta { padding-block: 148px 96px; }
   .kh-cta__beam { top: 40px; height: 88px; }
   .kh-cta__glow { inset-inline: -40%; top: -330px; height: 560px; }
   .kh-cta__actions { flex-direction: column; width: 100%; gap: 12px; }
   .kh-cta__actions .kh-btn { width: 100%; }
-  .kh-cta__phone { margin-block-start: 16px; }
 }
 
 /* ------------------------------------------------------------ footer */
@@ -645,57 +649,100 @@ img.kh-reel__video { filter: grayscale(1); }
   .kh-footer__tag { justify-self: center; }
 }
 
-/* ------------------------------------------------------------ floating WhatsApp (mobile) */
-.kh-wa { display: none; }
-@media (max-width: 767px) {
-  .kh-wa {
-    display: grid;
-    place-items: center;
-    position: fixed;
-    right: 16px;
-    bottom: 16px;
-    z-index: 40;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--k-accent);
-    color: var(--k-on-accent);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-    transition: transform 0.25s var(--k-ease);
-  }
-  .kh-wa:active { transform: scale(0.94); }
-  .kh-wa svg { width: 30px; height: 30px; }
+/* ------------------------------------------------------------ floating WhatsApp (all screens) */
+.kh-wa {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--k-accent);
+  color: var(--k-on-accent);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s var(--k-ease), background-color 0.25s;
 }
+.kh-wa:hover { transform: scale(1.06); background: #fff; }
+.kh-wa:active { transform: scale(0.94); }
+.kh-wa svg { width: 30px; height: 30px; }
+@media (max-width: 767px) { .kh-wa { right: 16px; bottom: 16px; width: 56px; height: 56px; } }
 
 /* Accessibility widget (rendered by RootShell, outside .kh): brand colours. */
 body:has(.kh) .a11y-btn { background: #fff; width: 48px; height: 48px; }
 
-/* ------------------------------------------------------------ inquiry dialog */
-.kh-dialog { padding: 0; border: 0; background: transparent; max-width: none; max-height: none; width: 100%; height: 100%; }
-.kh-dialog::backdrop { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); }
-.kh-dialog__box {
-  position: relative;
-  width: min(1120px, 100% - 24px);
-  margin: 24px auto;
-  background: var(--k-bg);
-  border: 1px solid var(--k-line);
+/* ------------------------------------------------------------ availability form (Funnel.tsx) */
+.kh-cta { min-height: 712px; }
+.kf { position: relative; }
+.kf-intro, .kf-form, .kf-status { animation: kf-in 0.6s var(--k-ease) both; }
+@keyframes kf-in { from { opacity: 0; transform: translateY(24px); } }
+.kf-form { max-width: 760px; margin-inline: auto; text-align: start; display: grid; gap: 40px; }
+.kf-top { display: flex; justify-content: space-between; align-items: center; }
+.kf-back { font-size: 14px; color: var(--k-muted); }
+.kf-back:hover { color: var(--k-text); }
+.kf-dashes { display: flex; gap: 6px; }
+.kf-dashes span { width: 28px; height: 2px; background: var(--k-line); transition: background-color 0.4s; }
+.kf-dashes span.is-on { background: var(--k-accent); }
+.kf-q { display: grid; gap: 28px; animation: kf-slide 0.5s var(--k-ease) both; }
+.kf-q--back { animation-name: kf-slide-back; }
+@keyframes kf-slide { from { opacity: 0; transform: translateX(calc(var(--kf-dir, 1) * 40px)); } }
+@keyframes kf-slide-back { from { opacity: 0; transform: translateX(calc(var(--kf-dir, 1) * -40px)); } }
+[dir="rtl"] .kf { --kf-dir: -1; }
+.kf-title { margin-block-start: -12px; }
+/* Headings get focus programmatically (for screen readers) and should not show a focus frame. */
+.kh .kf-title:focus-visible, .kh .kf-status h3:focus-visible { outline: none; }
+.kf-input, .kf .lf-input {
+  width: 100%;
+  background: transparent !important;
+  border: 0 !important;
+  border-block-end: 1px solid rgba(255, 255, 255, 0.35) !important;
+  border-radius: 0 !important;
+  color: var(--k-text);
+  font: 300 clamp(22px, 2.2vw, 30px) / 1.3 var(--k-body);
+  padding: 10px 0 !important;
+  box-shadow: none !important;
+  outline: none;
+  transition: border-color 0.25s;
+  color-scheme: dark;
 }
-.kh-dialog__scroll { max-height: calc(100dvh - 48px); overflow-y: auto; overscroll-behavior: contain; }
-.kh-dialog__box .lead { margin-top: 0; padding-block: 64px; }
-/* The site's reveal observer only scans on page load; the form mounts later, so show it directly. */
-.kh .kh-dialog [data-reveal] { opacity: 1; transform: none; }
-.kh-dialog__close {
-  position: absolute;
-  inset-block-start: 12px;
-  inset-inline-end: 12px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--k-accent) !important;
-  color: var(--k-on-accent) !important;
-  font-size: 26px !important;
-  line-height: 1;
-  z-index: 1;
+.kf-input:focus, .kf .lf-input:focus { border-block-end-color: var(--k-accent) !important; }
+.kf-input::placeholder, .kf .lf-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+.kf-input:disabled { opacity: 0.35; }
+.kf-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; }
+.kf-field { display: grid; gap: 6px; }
+.kf-field > span, .kf-field > label { font-size: 13px; color: var(--k-muted); }
+.kf .lf-places { background: var(--k-raised); border: 1px solid var(--k-line); }
+.kf-chips { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.kf-chips legend { font-size: 14px; color: var(--k-muted); margin-block-end: 12px; padding: 0; }
+.kf-chips button {
+  border: 1px solid var(--k-line) !important;
+  padding: 12px 22px !important;
+  font-size: 15px !important;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+.kf-chips button:hover { border-color: rgba(255, 255, 255, 0.6) !important; }
+.kf-chips button.is-on { background: var(--k-accent) !important; border-color: var(--k-accent) !important; color: var(--k-on-accent); }
+.kf-chips--big button { padding: 18px 28px !important; font-size: 17px !important; }
+.kf-check { display: flex; gap: 12px; align-items: center; font-size: 15px; color: rgba(255, 255, 255, 0.8); cursor: pointer; }
+.kf-check input { width: 18px; height: 18px; accent-color: var(--k-accent); }
+.kf-privacy { font-size: 13px; color: var(--k-muted); line-height: 1.6; }
+.kf-privacy a { text-decoration: underline; }
+.kf-error { color: #ff8a7a; font-size: 14px; }
+.kf-bottom { display: flex; flex-direction: column; align-items: stretch; gap: 16px; }
+.kf-next { width: 100%; min-height: 60px; font-size: 16px; }
+.kf-talk { align-self: center; font-size: 14px; color: var(--k-muted); text-decoration: underline; text-underline-offset: 4px; }
+.kf-talk:hover { color: var(--k-text); }
+.kf-hp { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+.kf-status { display: grid; justify-items: center; gap: 24px; text-align: center; padding-block: 40px; }
+.kf-status h3 { outline: none; }
+.kf-pulse { width: 14px; height: 14px; border-radius: 50%; background: var(--k-accent); animation: kh-pulse 1s infinite; }
+@media (max-width: 767px) {
+  .kh-cta { min-height: 0; }
+  .kf-form { gap: 28px; }
+  .kf-row { grid-template-columns: 1fr; gap: 24px; }
+  .kf-chips button { padding: 10px 16px !important; }
 }
 
 /* ------------------------------------------------------------ reveal + motion */

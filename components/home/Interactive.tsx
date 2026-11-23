@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import YouTubeModal from "@/components/YouTubeModal";
-import LeadForm from "@/components/LeadForm";
 import type { Lang } from "@/lib/types";
 import type { InstaPost } from "@/lib/instagram";
 import { COPY, type Clip, type Review } from "./copy";
@@ -21,40 +20,21 @@ export function PlayRing({ size = 40 }: { size?: number }) {
   );
 }
 
-/* ------------------------------------------------- inquiry (lead form) */
+/* ------------------------------------------------- availability buttons */
 
-const OPEN_EVENT = "kolot:inquire";
-
-/** Any primary CTA. Opens the multi-step lead form (components/LeadForm) in a dialog. */
+/** Header / hero CTAs: scroll down to the availability section (#contact), where the form opens. */
 export function InquireButton({ children, className = "kh-btn kh-btn--primary" }: { children: ReactNode; className?: string }) {
   return (
-    <button type="button" className={className} onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}>
+    <a
+      href="#contact"
+      className={className}
+      onClick={(e) => {
+        e.preventDefault();
+        document.getElementById("contact")?.scrollIntoView({ behavior: reduced() ? "auto" : "smooth", block: "start" });
+      }}
+    >
       {children}
-    </button>
-  );
-}
-
-export function InquiryDialog({ lang }: { lang: Lang }) {
-  const ref = useRef<HTMLDialogElement>(null);
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    const open = () => {
-      setLoaded(true);
-      ref.current?.showModal();
-    };
-    window.addEventListener(OPEN_EVENT, open);
-    if (location.hash === "#contact-us") open();
-    return () => window.removeEventListener(OPEN_EVENT, open);
-  }, []);
-  return (
-    <dialog ref={ref} className="kh-dialog" aria-label={COPY[lang].formTitle} onClick={(e) => e.target === ref.current && ref.current?.close()}>
-      <div className="kh-dialog__box">
-        <button type="button" className="kh-dialog__close" onClick={() => ref.current?.close()} aria-label={COPY[lang].close}>
-          ×
-        </button>
-        <div className="kh-dialog__scroll">{loaded && <LeadForm lang={lang} />}</div>
-      </div>
-    </dialog>
+    </a>
   );
 }
 
@@ -468,8 +448,8 @@ export function LoopVideo({ src, poster, className }: { src?: string; poster: st
 /* ------------------------------------------------------------ instagram */
 
 const IG_TEXT = {
-  he: { open: "פתיחת הפוסט", view: "לצפייה באינסטגרם ↗", prev: "הפוסט הקודם", next: "הפוסט הבא", close: "סגירה", label: "פוסט מאינסטגרם" },
-  en: { open: "Open post", view: "View on Instagram ↗", prev: "Previous post", next: "Next post", close: "Close", label: "Instagram post" },
+  he: { open: "פתיחת הפוסט", view: "לצפייה באינסטגרם ↗", prev: "הפוסט הקודם", next: "הפוסט הבא", close: "סגירה", label: "פוסט מאינסטגרם", likes: "לייקים", comments: "תגובות" },
+  en: { open: "Open post", view: "View on Instagram ↗", prev: "Previous post", next: "Next post", close: "Close", label: "Instagram post", likes: "likes", comments: "comments" },
 };
 
 function InstaCard({ post, lang, onOpen }: { post: InstaPost; lang: Lang; onOpen: () => void }) {
@@ -596,6 +576,33 @@ function InstaLightbox({ lang, posts, index, onIndex, onClose }: { lang: Lang; p
               <p className="kh-ig__caption" dir="auto">
                 {post.caption}
               </p>
+            )}
+            <div className="kh-ig__stats" dir="ltr">
+              {post.likes !== undefined && (
+                <span>
+                  <svg viewBox="0 0 24 24" aria-hidden>
+                    <path d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.7 3.2 5 6.8 5c2 0 3.4 1.1 4.2 2.4h2C13.8 6.1 15.2 5 17.2 5c3.6 0 5.6 3.7 4.3 6.8C19.5 16.4 12 21 12 21z" />
+                  </svg>
+                  {post.likes.toLocaleString(lang === "he" ? "he-IL" : "en-US")}
+                  <span className="visually-hidden">{t.likes}</span>
+                </span>
+              )}
+              <span>
+                <svg viewBox="0 0 24 24" aria-hidden>
+                  <path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z" />
+                </svg>
+                {post.commentsCount.toLocaleString(lang === "he" ? "he-IL" : "en-US")}
+                <span className="visually-hidden">{t.comments}</span>
+              </span>
+            </div>
+            {post.comments.length > 0 && (
+              <ul className="kh-ig__comments">
+                {post.comments.map((c, i) => (
+                  <li key={i} dir="auto">
+                    {c}
+                  </li>
+                ))}
+              </ul>
             )}
             <a className="kh-ig__link" href={post.permalink} target="_blank" rel="noopener noreferrer">
               {t.view}

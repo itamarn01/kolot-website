@@ -28,6 +28,10 @@ export type InstaPost = {
   caption: string;
   /** Everything the lightbox shows, in order. */
   media: InstaMedia[];
+  likes?: number;
+  commentsCount: number;
+  /** Latest comment texts. The API doesn't return commenters' names for this token, so they show unattributed. */
+  comments: string[];
 };
 
 type GraphMedia = {
@@ -38,6 +42,9 @@ type GraphMedia = {
   permalink: string;
   caption?: string;
   children?: { data?: GraphMedia[] };
+  like_count?: number;
+  comments_count?: number;
+  comments?: { data?: { text?: string }[] };
 };
 
 function toMedia(m: GraphMedia): InstaMedia | null {
@@ -61,13 +68,16 @@ function normalise(m: GraphMedia): InstaPost | null {
     video: isVideo ? m.media_url : undefined,
     isVideo,
     caption: (m.caption ?? "").trim(),
+    likes: m.like_count,
+    commentsCount: m.comments_count ?? 0,
+    comments: (m.comments?.data ?? []).map((c) => (c.text ?? "").trim()).filter(Boolean),
   };
 }
 
 export async function getInstagramPosts(limit = 24): Promise<InstaPost[]> {
   const token = process.env.INSTAGRAM_TOKEN;
   if (!token) return [];
-  const fields = "id,media_type,media_url,thumbnail_url,permalink,caption,children{media_type,media_url,thumbnail_url}";
+  const fields = "id,media_type,media_url,thumbnail_url,permalink,caption,like_count,comments_count,children{media_type,media_url,thumbnail_url},comments.limit(6){text}";
   try {
     // Re-read at most once an hour. Instagram's media links are signed and expire after a while,
     // so they must not be cached much longer than that.

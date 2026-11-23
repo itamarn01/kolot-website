@@ -1,13 +1,12 @@
 import { getInstagramPosts } from "@/lib/instagram";
 import type { Lang } from "@/lib/types";
-import { BENEFITS, CLIPS, COPY, MAIN_VIDEO, STATEMENT, INSTAGRAM, LINEUP, MARQUEE, PHONE, REELS, REVIEWS, WHATSAPP } from "./copy";
+import { BENEFITS, CLIPS, COPY, MAIN_VIDEO, STATEMENT, INSTAGRAM, LINEUP, MARQUEE, REELS, REVIEWS, WHATSAPP } from "./copy";
 import {
   ClipTrack,
   FullscreenWatch,
   HeaderShell,
   HeroVideo,
   InquireButton,
-  InquiryDialog,
   InstaTrack,
   LoopVideo,
   MobileMenu,
@@ -16,6 +15,7 @@ import {
   ShowreelPlayer,
   WatchButton,
 } from "./Interactive";
+import AvailabilitySection from "./Funnel";
 import "./home.css";
 
 const M = "/media/home";
@@ -133,7 +133,8 @@ export default async function HomePage({ lang }: { lang: Lang }) {
           <div className="kh-wrap kh-statement__text" data-reveal="up">
             <Eyebrow>{c.statementEyebrow}</Eyebrow>
             <h2 className="kh-display-l">
-              {c.statement[0]} <span className="kh-accent">{c.statement[1]}</span>
+              <span className="kh-line">{c.statement[0]}</span>
+              <span className="kh-line kh-accent">{c.statement[1]}</span>
             </h2>
             <div className="kh-statement__watch">
               <FullscreenWatch lang={lang} label={c.statementWatch} src={STATEMENT.full} poster={STATEMENT.poster} />
@@ -258,20 +259,7 @@ export default async function HomePage({ lang }: { lang: Lang }) {
         <section className="kh-cta" id="contact">
           <div className="kh-cta__glow" aria-hidden />
           <div className="kh-cta__beam" aria-hidden />
-          <div className="kh-wrap kh-cta__in">
-            <Eyebrow accent>{c.ctaEyebrow}</Eyebrow>
-            <h2 className="kh-display-xl">{c.ctaTitle}</h2>
-            <p className="kh-body-l kh-muted">{c.ctaText}</p>
-            <div className="kh-cta__actions">
-              <InquireButton>{c.available}</InquireButton>
-              <a className="kh-btn kh-btn--outline" href={WHATSAPP} target="_blank" rel="noopener noreferrer">
-                {c.whatsapp}
-              </a>
-              <a className="kh-cta__phone" href={PHONE.href} dir="ltr">
-                {PHONE[lang]}
-              </a>
-            </div>
-          </div>
+          <AvailabilitySection lang={lang} eyebrow={c.ctaEyebrow} title={c.ctaTitle} text={c.ctaText} cta={c.available} />
         </section>
       </main>
 
@@ -306,7 +294,6 @@ export default async function HomePage({ lang }: { lang: Lang }) {
         </svg>
       </a>
 
-      <InquiryDialog lang={lang} />
     </div>
   );
 }

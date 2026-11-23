@@ -190,7 +190,7 @@ export const COPY = {
     meta: ["15 years on stage", "1000+ weddings & events", "Israel & abroad"],
     reviewsEyebrow: "WHAT COUPLES SAY",
     statementEyebrow: "SOUND OF HEART",
-    statement: ["We don't just play at your wedding.", "We celebrate it with you."],
+    statement: ["We're not background music.", "We're part of the celebration."],
     statementWatch: "Watch the video",
     showreelEyebrow: "SHOWREEL 2026",
     showreelTitle: "See us live",
