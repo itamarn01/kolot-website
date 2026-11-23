@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import YouTubeModal from "@/components/YouTubeModal";
 import LeadForm from "@/components/LeadForm";
 import type { Lang } from "@/lib/types";
+import type { InstaPost } from "@/lib/instagram";
 import { COPY, type Clip, type Review } from "./copy";
 
 const reduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -460,4 +461,62 @@ export function LoopVideo({ src, poster, className }: { src?: string; poster: st
   }, [src]);
   if (!src) return <img className={className} src={poster} alt="" loading="lazy" />;
   return <video ref={ref} className={className} src={src} poster={poster} muted loop playsInline preload="none" aria-hidden />;
+}
+
+/* ------------------------------------------------------------ instagram */
+
+function InstaCard({ post, lang }: { post: InstaPost; lang: Lang }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  // Desktop: a reel previews silently while hovered. Every card opens the original post on Instagram.
+  const hover = (on: boolean) => {
+    const v = ref.current;
+    if (!v || reduced()) return;
+    if (on) v.play().catch(() => {});
+    else {
+      v.pause();
+      v.currentTime = 0;
+    }
+  };
+  return (
+    <a
+      className="kh-insta"
+      href={post.permalink}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={post.caption ? `Instagram: ${post.caption.slice(0, 80)}` : "Instagram"}
+      onMouseEnter={() => hover(true)}
+      onMouseLeave={() => hover(false)}
+    >
+      <img src={post.image} alt="" loading="lazy" />
+      {post.video && <video ref={ref} src={post.video} muted loop playsInline preload="none" aria-hidden />}
+      <span className="kh-reelcard__shade" />
+      {post.isVideo && (
+        <span className="kh-reelcard__play">
+          <PlayRing />
+        </span>
+      )}
+      {post.caption && (
+        <span className="kh-insta__caption" dir="auto">
+          {post.caption}
+        </span>
+      )}
+      <span className="visually-hidden">{lang === "he" ? "(נפתח באינסטגרם)" : "(opens on Instagram)"}</span>
+    </a>
+  );
+}
+
+export function InstaTrack({ lang, posts }: { lang: Lang; posts: InstaPost[] }) {
+  const { ref, step } = useTrack();
+  return (
+    <>
+      <div className="kh-wrap kh-insta__nav">
+        <Arrows lang={lang} onPrev={() => step(-1)} onNext={() => step(1)} />
+      </div>
+      <div ref={ref} className="kh-track kh-reels__track">
+        {posts.map((p) => (
+          <InstaCard key={p.id} post={p} lang={lang} />
+        ))}
+      </div>
+    </>
+  );
 }
