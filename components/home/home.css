@@ -582,12 +582,21 @@ body:has(.kh) .a11y-btn { background: #fff; width: 48px; height: 48px; }
 /* ------------------------------------------------------------ inquiry dialog */
 .kh-dialog { padding: 0; border: 0; background: transparent; max-width: none; max-height: none; width: 100%; height: 100%; }
 .kh-dialog::backdrop { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); }
-.kh-dialog__box { position: relative; width: min(560px, 100% - 24px); height: min(760px, 100% - 48px); margin: 24px auto; background: var(--k-bg); border: 1px solid var(--k-line); }
-.kh-dialog__frame { width: 100%; height: 100%; border: 0; }
+.kh-dialog__box {
+  position: relative;
+  width: min(1120px, 100% - 24px);
+  margin: 24px auto;
+  background: var(--k-bg);
+  border: 1px solid var(--k-line);
+}
+.kh-dialog__scroll { max-height: calc(100dvh - 48px); overflow-y: auto; overscroll-behavior: contain; }
+.kh-dialog__box .lead { margin-top: 0; padding-block: 64px; }
+/* The site's reveal observer only scans on page load; the form mounts later, so show it directly. */
+.kh .kh-dialog [data-reveal] { opacity: 1; transform: none; }
 .kh-dialog__close {
   position: absolute;
-  inset-block-start: -14px;
-  inset-inline-end: -14px;
+  inset-block-start: 12px;
+  inset-inline-end: 12px;
   width: 40px;
   height: 40px;
   border-radius: 50%;

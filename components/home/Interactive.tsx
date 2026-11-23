@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import YouTubeModal from "@/components/YouTubeModal";
-import { ZOOGLOT_FORM } from "@/lib/site";
+import LeadForm from "@/components/LeadForm";
 import type { Lang } from "@/lib/types";
 import { COPY, type Clip, type Review } from "./copy";
 
@@ -20,11 +20,11 @@ export function PlayRing({ size = 40 }: { size?: number }) {
   );
 }
 
-/* ------------------------------------------------------- inquiry (Zooglot) */
+/* ------------------------------------------------- inquiry (lead form) */
 
 const OPEN_EVENT = "kolot:inquire";
 
-/** Any primary CTA. Opens the Zooglot funnel in a dialog. */
+/** Any primary CTA. Opens the multi-step lead form (components/LeadForm) in a dialog. */
 export function InquireButton({ children, className = "kh-btn kh-btn--primary" }: { children: ReactNode; className?: string }) {
   return (
     <button type="button" className={className} onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}>
@@ -36,7 +36,6 @@ export function InquireButton({ children, className = "kh-btn kh-btn--primary" }
 export function InquiryDialog({ lang }: { lang: Lang }) {
   const ref = useRef<HTMLDialogElement>(null);
   const [loaded, setLoaded] = useState(false);
-  const form = ZOOGLOT_FORM[lang];
   useEffect(() => {
     const open = () => {
       setLoaded(true);
@@ -52,7 +51,7 @@ export function InquiryDialog({ lang }: { lang: Lang }) {
         <button type="button" className="kh-dialog__close" onClick={() => ref.current?.close()} aria-label={COPY[lang].close}>
           ×
         </button>
-        {loaded && <iframe src={form.src} title={form.title} className="kh-dialog__frame" />}
+        <div className="kh-dialog__scroll">{loaded && <LeadForm lang={lang} />}</div>
       </div>
     </dialog>
   );
