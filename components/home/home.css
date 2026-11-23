@@ -839,3 +839,50 @@ body:has(.kh) .a11y-btn { background: #fff; width: 48px; height: 48px; }
   .kh *, .kh *::before, .kh *::after { animation: none !important; transition: none !important; }
   .kh [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* ------------------------------------------------------------ motion (components/home/Motion.tsx) */
+/* 5. Scroll progress line, filling from the reading side. */
+.kh-scrollbar {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 60;
+  height: 2px;
+  background: var(--k-accent);
+  transform: scaleX(var(--p, 0));
+  transform-origin: right;
+  pointer-events: none;
+}
+[dir="ltr"] .kh-scrollbar { transform-origin: left; }
+
+/* 1. Headings: each word sits in a mask and rises in with its line. */
+.kh-w { display: inline-block; overflow: hidden; overflow: visible clip; vertical-align: top; padding-block: 0.12em; margin-block: -0.12em; }
+.kh-w__i { display: inline-block; }
+.kh [data-split] .kh-w__i {
+  transform: translateY(115%);
+  transition: transform 1s var(--k-ease);
+  transition-delay: calc(var(--line, 0) * 110ms + 80ms);
+}
+.kh [data-split][data-in] .kh-w__i { transform: none; }
+
+/* 2. Counting numbers keep their width. */
+.kh-count { display: inline-block; font-variant-numeric: tabular-nums; text-align: center; }
+
+/* 3. Parallax layers, slightly oversized so the edges never show. */
+.kh [data-parallax] { will-change: transform; }
+.kh .kh-hero__video[data-parallax] { transform: translate3d(0, var(--py, 0), 0); }
+.kh .kh-statement__clips[data-parallax], .kh .kh-ww__img[data-parallax] { transform: translate3d(0, var(--py, 0), 0) scale(1.2); }
+
+/* 4. Cards and rows come in one after another. */
+.kh [data-stagger] > * { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--k-ease), transform 0.8s var(--k-ease); transition-delay: calc(var(--n, 0) * 80ms); }
+.kh [data-stagger][data-in] > * { opacity: 1; transform: none; }
+.kh .kh-lineup__list[data-stagger] > * { transform: translateX(32px); }
+[dir="ltr"] .kh .kh-lineup__list[data-stagger] > * { transform: translateX(-32px); }
+.kh .kh-lineup__list[data-stagger][data-in] > * { transform: none; }
+
+/* 6. Magnetic yellow buttons (the variables are only set for a fine pointer). */
+.kh .kh-btn--primary, .kh .kh-wa { translate: var(--mx, 0) var(--my, 0); transition-property: background-color, color, border-color, translate, transform; transition-duration: 0.25s, 0.25s, 0.25s, 0.35s, 0.35s; transition-timing-function: var(--k-ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  .kh [data-split] .kh-w__i, .kh [data-stagger] > * { transform: none; opacity: 1; transition: none; }
+}

@@ -45,7 +45,7 @@ function Countdown({ days, lang, text }: { days: number; lang: Lang; text: Count
     let raf = 0;
     const tick = (now: number) => {
       const p = Math.min(1, (now - t0) / dur);
-      const v = Math.round(from + (days - from) * (1 - Math.pow(2, -10 * p)));
+      const v = p < 1 ? Math.round(from + (days - from) * (1 - Math.pow(2, -10 * p))) : days;
       shownRef.current = v;
       setShown(v);
       if (p < 1) raf = requestAnimationFrame(tick);
