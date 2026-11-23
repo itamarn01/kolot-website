@@ -1,5 +1,6 @@
 import type { Lang } from "@/lib/types";
 import { COPY, WHATSAPP } from "./copy";
+import AvailabilitySection from "./Funnel";
 import { HeaderShell, InquireButton, MobileMenu } from "./Interactive";
 
 /** Header, footer and the floating WhatsApp button, shared by the homepage and the new-design pages. */
@@ -36,7 +37,7 @@ export function SiteHeader({ lang, alt }: { lang: Lang; alt?: string }) {
           >
             {c.langShort}
           </a>
-          <InquireButton className="kh-btn kh-btn--primary kh-header__cta" href={`${c.home}#contact`}>
+          <InquireButton className="kh-btn kh-btn--primary kh-header__cta" href="#contact">
             {c.headerCta}
           </InquireButton>
           <MobileMenu lang={lang} />
@@ -46,10 +47,16 @@ export function SiteHeader({ lang, alt }: { lang: Lang; alt?: string }) {
   );
 }
 
+/** The availability section ("Your evening starts here" + the step-by-step form), then the footer. On every page. */
 export function SiteFooter({ lang }: { lang: Lang }) {
   const c = COPY[lang];
   return (
     <>
+      <section className="kh-cta" id="contact">
+        <div className="kh-cta__glow" aria-hidden />
+        <div className="kh-cta__beam" aria-hidden />
+        <AvailabilitySection lang={lang} eyebrow={c.ctaEyebrow} title={c.ctaTitle} text={c.ctaText} cta={c.available} />
+      </section>
       <footer className="kh-footer">
         <div className="kh-wrap kh-footer__in">
           <img

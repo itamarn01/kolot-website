@@ -14,7 +14,6 @@ import {
   ShowreelPlayer,
   WatchButton,
 } from "./Interactive";
-import AvailabilitySection from "./Funnel";
 import Motion from "./Motion";
 import { SiteFooter, SiteHeader } from "./Shell";
 import "./home.css";
@@ -247,12 +246,6 @@ export default async function HomePage({ lang }: { lang: Lang }) {
           </div>
         </section>
 
-        {/* ----------------------------------------------------- final CTA */}
-        <section className="kh-cta" id="contact">
-          <div className="kh-cta__glow" aria-hidden />
-          <div className="kh-cta__beam" aria-hidden />
-          <AvailabilitySection lang={lang} eyebrow={c.ctaEyebrow} title={c.ctaTitle} text={c.ctaText} cta={c.available} />
-        </section>
       </main>
 
       <SiteFooter lang={lang} />

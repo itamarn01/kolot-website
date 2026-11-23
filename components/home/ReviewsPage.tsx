@@ -1,7 +1,6 @@
 import type { Lang } from "@/lib/types";
 import { REVIEWS, reviewWho } from "@/lib/reviews";
-import { COPY, WHATSAPP } from "./copy";
-import { InquireButton } from "./Interactive";
+import { COPY } from "./copy";
 import Motion from "./Motion";
 import { SiteFooter, SiteHeader } from "./Shell";
 import "./home.css";
@@ -40,17 +39,6 @@ export default function ReviewsPage({ lang }: { lang: Lang }) {
           </div>
         </section>
 
-        <section className="kh-sec kh-rv-cta">
-          <div className="kh-wrap">
-            <h2 className="kh-display-l">{c.reviewsCta}</h2>
-            <div className="kh-rv-cta__btns">
-              <InquireButton href={`${c.home}#contact`}>{c.available}</InquireButton>
-              <a className="kh-btn kh-btn--outline" href={WHATSAPP} target="_blank" rel="noopener noreferrer">
-                {c.whatsapp}
-              </a>
-            </div>
-          </div>
-        </section>
       </main>
       <SiteFooter lang={lang} />
       <Motion />

@@ -266,7 +266,7 @@ export default function AvailabilitySection({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           lang,
-          page: (lang === "he" ? "/" : "/en/") + " · Homepage",
+          page: `${decodeURI(window.location.pathname)} · ${document.title.split(" – ")[0]}`,
           fields: payload(),
           whatsapp_consent: f.whatsapp_consent,
           company: honeypot.current?.value || "",
