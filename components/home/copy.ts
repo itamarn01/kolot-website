@@ -9,19 +9,10 @@ export const YOUTUBE = "https://www.youtube.com/user/kolotMusic";
 
 const M = "/media/home";
 
-export type Review = { quote: string; who: string; lang: Lang };
 /** A square clip. `youtube` = video id, opened in the YouTube lightbox; `video` = local MP4 played inline. */
 export type Clip = { title: { he: string; en: string }; poster: string; time?: string; youtube?: string; video?: string };
 export type Reel = { title: { he: string; en: string }; poster: string; video?: string };
 
-export const REVIEWS: Review[] = [
-  { quote: "חתונה כל כך כיפית, שמחה ומרגשת. והרבה מזה בזכותכם.", who: "דביר ואביה · סקויה", lang: "he" },
-  { quote: "כולם שואלים אותי: מי הייתה הלהקה? מי היה הדיג׳יי?", who: "נועה ודורון · האחוזה בית חנן", lang: "he" },
-  { quote: "What a phenomenal job the band did. You created the atmosphere with music.", who: "Eden & Sammy · Bayaar", lang: "en" },
-  { quote: "אתם פשוט הייתם משהו אחר… לא מאמין כמה טוב היה.", who: "דרור ושירה · רוקח ת״א", lang: "he" },
-  { quote: "We really loved the music and it made the day so special.", who: "Mikey & Odelia · Olmaya", lang: "en" },
-  { quote: "הרמתם ברמות ועשיתם הכי הרבה שמח שיש! מההתחלה ועד הסוף.", who: "יקרת ואורי · עין חמד", lang: "he" },
-];
 
 const T = "/media/video-thumbs";
 
@@ -104,11 +95,12 @@ export const COPY = {
     home: "/",
     alt: "/en/",
     nav: [
-      { label: "הרכבים", href: "#lineup" },
-      { label: "וידאו", href: "#showreel" },
-      { label: "עלינו", href: "#why" },
+      { label: "הרכבים", href: "/#lineup" },
+      { label: "וידאו", href: "/#showreel" },
+      { label: "המלצות", href: "/reviews/" },
+      { label: "עלינו", href: "/#why" },
       { label: "Worldwide", href: "/international/" },
-      { label: "צור קשר", href: "#contact" },
+      { label: "צור קשר", href: "/#contact" },
     ],
     langShort: "EN",
     langLabel: "English",
@@ -123,6 +115,10 @@ export const COPY = {
     check: "בדיקת זמינות לתאריך",
     meta: ["15 שנה על הבמה", "1000+ חתונות ואירועים", "ישראל וחו״ל"],
     reviewsEyebrow: "WHAT COUPLES SAY",
+    allReviews: "לכל ההמלצות",
+    reviewsTitle: "מה הזוגות אומרים.",
+    reviewsText: "הודעות ששלחו לנו זוגות והורים אחרי האירוע, בדיוק כמו שהן הגיעו.",
+    reviewsCta: "רוצים שזה יהיה האירוע שלכם?",
     statementEyebrow: "SOUND OF HEART",
     statement: ["אנחנו לא רק מנגנים ברקע.", "אנחנו חלק מהשמחה שלכם."],
     statementWatch: "צפו בווידאו",
@@ -147,11 +143,12 @@ export const COPY = {
     whatsapp: "וואטסאפ",
     available: "בדיקת זמינות",
     footerNav: [
-      { label: "הרכבים", href: "#lineup" },
-      { label: "וידאו", href: "#showreel" },
-      { label: "עלינו", href: "#why" },
+      { label: "הרכבים", href: "/#lineup" },
+      { label: "וידאו", href: "/#showreel" },
+      { label: "המלצות", href: "/reviews/" },
+      { label: "עלינו", href: "/#why" },
       { label: "Worldwide", href: "/international/" },
-      { label: "צור קשר", href: "#contact" },
+      { label: "צור קשר", href: "/#contact" },
       { label: "Instagram", href: INSTAGRAM },
       { label: "YouTube", href: YOUTUBE },
     ],
@@ -170,11 +167,12 @@ export const COPY = {
     home: "/en/",
     alt: "/",
     nav: [
-      { label: "Line-up", href: "#lineup" },
-      { label: "Video", href: "#showreel" },
-      { label: "About", href: "#why" },
+      { label: "Line-up", href: "/en/#lineup" },
+      { label: "Video", href: "/en/#showreel" },
+      { label: "Reviews", href: "/en/reviews/" },
+      { label: "About", href: "/en/#why" },
       { label: "Worldwide", href: "/en/international/" },
-      { label: "Contact", href: "#contact" },
+      { label: "Contact", href: "/en/#contact" },
     ],
     langShort: "עב",
     langLabel: "עברית",
@@ -189,6 +187,10 @@ export const COPY = {
     check: "Check availability",
     meta: ["15 years on stage", "1000+ weddings & events", "Israel & abroad"],
     reviewsEyebrow: "WHAT COUPLES SAY",
+    allReviews: "All reviews",
+    reviewsTitle: "What couples say.",
+    reviewsText: "Messages couples and parents sent us after their event, exactly as they arrived.",
+    reviewsCta: "Want this to be your event?",
     statementEyebrow: "SOUND OF HEART",
     statement: ["We're not background music.", "We're part of the celebration."],
     statementWatch: "Watch the video",
@@ -213,11 +215,12 @@ export const COPY = {
     whatsapp: "WhatsApp",
     available: "Check availability",
     footerNav: [
-      { label: "Line-up", href: "#lineup" },
-      { label: "Video", href: "#showreel" },
-      { label: "About", href: "#why" },
+      { label: "Line-up", href: "/en/#lineup" },
+      { label: "Video", href: "/en/#showreel" },
+      { label: "Reviews", href: "/en/reviews/" },
+      { label: "About", href: "/en/#why" },
       { label: "Worldwide", href: "/en/international/" },
-      { label: "Contact", href: "#contact" },
+      { label: "Contact", href: "/en/#contact" },
       { label: "Instagram", href: INSTAGRAM },
       { label: "YouTube", href: YOUTUBE },
     ],

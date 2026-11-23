@@ -5,7 +5,10 @@ import { createPortal } from "react-dom";
 import YouTubeModal from "@/components/YouTubeModal";
 import type { Lang } from "@/lib/types";
 import type { InstaPost } from "@/lib/instagram";
-import { COPY, type Clip, type Review } from "./copy";
+import { COPY, type Clip } from "./copy";
+
+/** A carousel card: the quote word for word, and who sent it. */
+export type ReviewCard = { id: string; quote: string; who: string; lang: Lang };
 
 const reduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -23,14 +26,17 @@ export function PlayRing({ size = 40 }: { size?: number }) {
 /* ------------------------------------------------- availability buttons */
 
 /** Header / hero CTAs: scroll down to the availability section (#contact), where the form opens. */
-export function InquireButton({ children, className = "kh-btn kh-btn--primary" }: { children: ReactNode; className?: string }) {
+export function InquireButton({ children, className = "kh-btn kh-btn--primary", href = "#contact" }: { children: ReactNode; className?: string; href?: string }) {
   return (
     <a
-      href="#contact"
+      href={href}
       className={className}
       onClick={(e) => {
+        // On the homepage, glide to the form; on other pages, go to the homepage form.
+        const form = document.getElementById("contact");
+        if (!form) return;
         e.preventDefault();
-        document.getElementById("contact")?.scrollIntoView({ behavior: reduced() ? "auto" : "smooth", block: "start" });
+        form.scrollIntoView({ behavior: reduced() ? "auto" : "smooth", block: "start" });
       }}
     >
       {children}
@@ -244,7 +250,7 @@ function Arrows({ lang, onPrev, onNext }: { lang: Lang; onPrev: () => void; onNe
 
 /* ------------------------------------------------------------ reviews */
 
-export function ReviewsCarousel({ lang, reviews }: { lang: Lang; reviews: Review[] }) {
+export function ReviewsCarousel({ lang, reviews }: { lang: Lang; reviews: ReviewCard[] }) {
   const { ref, step } = useTrack();
   const [idx, setIdx] = useState(0);
   const paused = useRef(false);
@@ -280,13 +286,13 @@ export function ReviewsCarousel({ lang, reviews }: { lang: Lang; reviews: Review
       onBlur={() => (paused.current = false)}
     >
       <div ref={ref} className="kh-track kh-reviews__track" onScroll={onScroll} tabIndex={0} aria-roledescription="carousel">
-        {reviews.map((r, i) => (
-          <figure key={i} className="kh-review" lang={r.lang} dir={r.lang === "he" ? "rtl" : "ltr"}>
+        {reviews.map((r) => (
+          <figure key={r.id} className="kh-review" lang={r.lang} dir={r.lang === "he" ? "rtl" : "ltr"}>
             <div>
               <div className="kh-label kh-accent" aria-label="5/5">
                 ★★★★★
               </div>
-              <blockquote>“{r.quote}”</blockquote>
+              <blockquote className="kh-review__quote">“{r.quote}”</blockquote>
             </div>
             <figcaption>{r.who}</figcaption>
           </figure>

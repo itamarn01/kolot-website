@@ -16,7 +16,7 @@ import { useEffect, useRef } from "react";
 
 const HEADINGS = ".kh-sec h2.kh-display-l, .kh-statement h2, .kh-ww h2, .kh-benefit h3";
 const COUNTS = ".kh-hero__meta p, .kh-benefit h3, .kh-benefit p";
-const STAGGER = ".kh-track, .kh-lineup__list";
+const STAGGER = ".kh-track, .kh-lineup__list, .kh-rv-grid";
 const PARALLAX = ".kh-statement__clips, .kh-ww__img";
 
 function splitWords(el: HTMLElement) {
