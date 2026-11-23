@@ -9,7 +9,6 @@ import { useEffect, useRef } from "react";
  *  3. Background videos and photos scroll a little slower than the page (parallax).
  *  4. Cards in the horizontal tracks and line-up rows come in one after another.
  *  5. A thin yellow scroll-progress line along the top.
- *  6. Yellow buttons lean towards the mouse when it comes close (desktop only).
  *
  * Everything works by adding data-* attributes and CSS variables to the server-rendered markup,
  * so React never sees a changed class. Visitors who ask for reduced motion only get the progress line.
@@ -19,7 +18,6 @@ const HEADINGS = ".kh-sec h2.kh-display-l, .kh-statement h2, .kh-ww h2, .kh-bene
 const COUNTS = ".kh-hero__meta p, .kh-benefit h3, .kh-benefit p";
 const STAGGER = ".kh-track, .kh-lineup__list";
 const PARALLAX = ".kh-statement__clips, .kh-ww__img";
-const MAGNETS = ".kh-btn--primary, .kh-wa";
 
 function splitWords(el: HTMLElement) {
   const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
@@ -176,32 +174,6 @@ export default function Motion() {
       [...heads, ...groups, ...counts].forEach((el) => io.observe(el));
       cleanups.push(() => io.disconnect());
 
-      // 6. Magnetic buttons, only with a real mouse.
-      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-        let mraf = 0;
-        let mx = 0;
-        let my = 0;
-        const pull = () => {
-          mraf = 0;
-          document.querySelectorAll<HTMLElement>(MAGNETS).forEach((b) => {
-            const r = b.getBoundingClientRect();
-            if (!r.width) return;
-            const dx = mx - (r.left + r.width / 2);
-            const dy = my - (r.top + r.height / 2);
-            const reach = Math.max(r.width, r.height) / 2 + 60;
-            const near = Math.hypot(dx, dy) < reach;
-            b.style.setProperty("--mx", near ? `${(dx * 0.22).toFixed(1)}px` : "0px");
-            b.style.setProperty("--my", near ? `${(dy * 0.3).toFixed(1)}px` : "0px");
-          });
-        };
-        const onMove = (e: PointerEvent) => {
-          mx = e.clientX;
-          my = e.clientY;
-          if (!mraf) mraf = requestAnimationFrame(pull);
-        };
-        addEventListener("pointermove", onMove, { passive: true });
-        cleanups.push(() => removeEventListener("pointermove", onMove));
-      }
     }
 
     onScroll();

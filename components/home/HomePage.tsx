@@ -195,7 +195,15 @@ export default async function HomePage({ lang }: { lang: Lang }) {
                 <h2 className="kh-display-l kh-title">{c.reelsTitle}</h2>
               </div>
               <a className="kh-reels__ig" dir="ltr" href={INSTAGRAM} target="_blank" rel="noopener noreferrer">
-                @kolotband ↗
+                <svg viewBox="0 0 24 24" aria-hidden>
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4.2" />
+                  <circle className="kh-ig__dot" cx="17.4" cy="6.6" r="1.1" />
+                </svg>
+                @kolotband
+                <svg className="kh-reels__arrow" viewBox="0 0 14 14" aria-hidden>
+                  <path d="M3 11 11 3M5 3h6v6" />
+                </svg>
               </a>
             </div>
           </div>
