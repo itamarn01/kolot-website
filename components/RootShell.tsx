@@ -11,7 +11,8 @@ export default function RootShell({ lang, children }: { lang: Lang; children: Re
   return (
     // The original site renders both languages with an RTL page structure; English text blocks set dir="ltr" themselves.
     <html lang={lang === "he" ? "he-IL" : "en-US"} dir="rtl" className={fontVars}>
-      <body id="top">
+      {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla's cz-shortcut-listen) add attributes to <body>. */}
+      <body id="top" suppressHydrationWarning>
         <a className="skip-link" href="#main">
           {UI[lang].skip}
         </a>
