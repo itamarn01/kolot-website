@@ -1,6 +1,6 @@
 import { after } from "next/server";
 import { applyReply, isDraft, parseDraft, renderDraft, type Draft } from "@/lib/bot/draft";
-import { extractReview, transcribe } from "@/lib/bot/extract";
+import { extractReview } from "@/lib/bot/extract";
 import { updateJson, writeFile } from "@/lib/bot/github";
 import { downloadFile, keyboard, tg, type TgMessage, type TgUpdate } from "@/lib/bot/telegram";
 import type { Review } from "@/lib/reviews";
@@ -9,7 +9,7 @@ import type { Review } from "@/lib/reviews";
  * Telegram webhook for the reviews bot. Netanel and Yaniv send it a review (text, screenshot or voice
  * note); it shows a draft to approve, then commits it to content/reviews.json and the site republishes.
  * Env: TELEGRAM_BOT_TOKEN, TELEGRAM_WEBHOOK_SECRET, TELEGRAM_ALLOWED_IDS, GITHUB_TOKEN,
- * ANTHROPIC_API_KEY (screenshots), OPENAI_API_KEY (voice notes).
+ * GEMINI_API_KEY (reads text, screenshots and voice notes; optional GEMINI_MODEL).
  */
 
 export const maxDuration = 120;
@@ -87,7 +87,8 @@ async function onReview(m: TgMessage) {
   let ex;
   if (audio) {
     const { bytes } = await downloadFile(audio.file_id);
-    ex = await extractReview({ transcript: await transcribe(bytes) });
+    const mime = audio.mime_type && audio.mime_type !== "audio/opus" ? audio.mime_type : "audio/ogg";
+    ex = await extractReview({ audio: bytes, mediaType: mime });
   } else if (m.photo?.length || imageDoc) {
     const fileId = imageDoc?.file_id ?? m.photo![m.photo!.length - 1].file_id;
     const { bytes, path } = await downloadFile(fileId);
