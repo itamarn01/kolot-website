@@ -165,6 +165,8 @@ export function HeroVideo({ lang }: { lang: Lang }) {
         <source src="/media/showreel/hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)" />
         <source src="/media/showreel/hero-desktop.mp4" type="video/mp4" />
       </video>
+      {/* Clicking the dark area around the framed player closes it (the veil is the video's box-shadow, which isn't clickable). */}
+      {watching && <div className="kh-hero__backdrop" onClick={close} aria-hidden />}
       <video
         ref={full}
         className={`kh-hero__full${watching ? " is-on" : ""}`}
@@ -432,7 +434,7 @@ export function FullscreenWatch({ lang, label, src, poster }: { lang: Lang; labe
         // Portal to <body>: an animated ancestor (data-reveal transform) would otherwise trap position: fixed inside the section.
         createPortal(
           <div className="kh" dir={lang === "he" ? "rtl" : "ltr"}>
-            <div className={`kh-fs${open ? " is-on" : ""}`} aria-hidden={!open}>
+            <div className={`kh-fs${open ? " is-on" : ""}`} aria-hidden={!open} onClick={(e) => e.target === e.currentTarget && close()}>
               <video ref={ref} src={open ? src : undefined} poster={poster} playsInline preload="none" controls={open} onEnded={close} />
               {open && (
                 <button type="button" className="kh-hero__close" onClick={close} aria-label={COPY[lang].close} autoFocus>
@@ -465,9 +467,14 @@ export function LoopVideo({ src, poster, className }: { src?: string; poster: st
 
 /* ------------------------------------------------------------ instagram */
 
-function InstaCard({ post, lang }: { post: InstaPost; lang: Lang }) {
+const IG_TEXT = {
+  he: { open: "פתיחת הפוסט", view: "לצפייה באינסטגרם ↗", prev: "הפוסט הקודם", next: "הפוסט הבא", close: "סגירה", label: "פוסט מאינסטגרם" },
+  en: { open: "Open post", view: "View on Instagram ↗", prev: "Previous post", next: "Next post", close: "Close", label: "Instagram post" },
+};
+
+function InstaCard({ post, lang, onOpen }: { post: InstaPost; lang: Lang; onOpen: () => void }) {
   const ref = useRef<HTMLVideoElement>(null);
-  // Desktop: a reel previews silently while hovered. Every card opens the original post on Instagram.
+  // Desktop: a reel previews silently while hovered.
   const hover = (on: boolean) => {
     const v = ref.current;
     if (!v || reduced()) return;
@@ -481,9 +488,13 @@ function InstaCard({ post, lang }: { post: InstaPost; lang: Lang }) {
     <a
       className="kh-insta"
       href={post.permalink}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={post.caption ? `Instagram: ${post.caption.slice(0, 80)}` : "Instagram"}
+      aria-label={`${IG_TEXT[lang].open}${post.caption ? `: ${post.caption.slice(0, 80)}` : ""}`}
+      onClick={(e) => {
+        // Ctrl/Cmd/middle-click still opens Instagram in a new tab; a plain click opens the lightbox.
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        onOpen();
+      }}
       onMouseEnter={() => hover(true)}
       onMouseLeave={() => hover(false)}
     >
@@ -500,23 +511,121 @@ function InstaCard({ post, lang }: { post: InstaPost; lang: Lang }) {
           {post.caption}
         </span>
       )}
-      <span className="visually-hidden">{lang === "he" ? "(נפתח באינסטגרם)" : "(opens on Instagram)"}</span>
     </a>
+  );
+}
+
+function InstaLightbox({ lang, posts, index, onIndex, onClose }: { lang: Lang; posts: InstaPost[]; index: number; onIndex: (i: number) => void; onClose: () => void }) {
+  const t = IG_TEXT[lang];
+  const post = posts[index];
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
+  const [slide, setSlide] = useState(0);
+  const go = useCallback((d: 1 | -1) => onIndex((index + d + posts.length) % posts.length), [index, onIndex, posts.length]);
+  useEffect(() => setSlide(0), [index]);
+
+  // Carousel: track the visible item and pause any video that scrolled out of view.
+  const onMediaScroll = () => {
+    const el = mediaRef.current;
+    if (!el) return;
+    const i = Math.round(el.scrollLeft / el.clientWidth);
+    if (i === slide) return;
+    setSlide(i);
+    [...el.children].forEach((c, k) => k !== i && c instanceof HTMLVideoElement && c.pause());
+  };
+  const slideTo = (i: number) => mediaRef.current?.scrollTo({ left: i * mediaRef.current.clientWidth, behavior: reduced() ? "auto" : "smooth" });
+
+  useEffect(() => {
+    const prevFocus = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+    const html = document.documentElement;
+    const prevOverflow = html.style.overflow;
+    html.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = prevOverflow;
+      prevFocus?.focus();
+    };
+  }, []);
+
+  useEffect(() => {
+    const key = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      // Arrow keys follow reading direction: in Hebrew, ← is "next".
+      else if (e.key === "ArrowLeft") go(lang === "he" ? 1 : -1);
+      else if (e.key === "ArrowRight") go(lang === "he" ? -1 : 1);
+    };
+    window.addEventListener("keydown", key);
+    return () => window.removeEventListener("keydown", key);
+  }, [go, lang, onClose]);
+
+  const [prevGlyph, nextGlyph] = lang === "he" ? ["→", "←"] : ["←", "→"];
+  return createPortal(
+    <div className="kh" dir={lang === "he" ? "rtl" : "ltr"}>
+      <div className="kh-ig" role="dialog" aria-modal="true" aria-label={t.label} onClick={(e) => e.target === e.currentTarget && onClose()}>
+        <button ref={closeRef} type="button" className="kh-hero__close kh-ig__close" onClick={onClose} aria-label={t.close}>
+          ×
+        </button>
+        <button type="button" className="kh-ig__nav kh-ig__nav--prev" onClick={() => go(-1)} aria-label={t.prev}>
+          {prevGlyph}
+        </button>
+        <div className="kh-ig__box" key={post.id}>
+          <div className="kh-ig__media" dir="ltr" ref={mediaRef} onScroll={onMediaScroll}>
+            {post.media.map((m, i) =>
+              m.type === "video" ? (
+                <video key={i} src={m.src} poster={m.poster} controls playsInline loop autoPlay={i === 0} />
+              ) : (
+                <img key={i} src={m.src} alt="" loading={i === 0 ? "eager" : "lazy"} />
+              ),
+            )}
+          </div>
+          {post.media.length > 1 && (
+            <div className="kh-ig__count" dir="ltr">
+              <button type="button" onClick={() => slideTo(Math.max(0, slide - 1))} disabled={slide === 0} aria-label="‹">
+                ‹
+              </button>
+              <span className="kh-label kh-muted">
+                {slide + 1} / {post.media.length}
+              </span>
+              <button type="button" onClick={() => slideTo(Math.min(post.media.length - 1, slide + 1))} disabled={slide === post.media.length - 1} aria-label="›">
+                ›
+              </button>
+            </div>
+          )}
+          <div className="kh-ig__side">
+            {post.caption && (
+              <p className="kh-ig__caption" dir="auto">
+                {post.caption}
+              </p>
+            )}
+            <a className="kh-ig__link" href={post.permalink} target="_blank" rel="noopener noreferrer">
+              {t.view}
+            </a>
+          </div>
+        </div>
+        <button type="button" className="kh-ig__nav kh-ig__nav--next" onClick={() => go(1)} aria-label={t.next}>
+          {nextGlyph}
+        </button>
+      </div>
+    </div>,
+    document.body,
   );
 }
 
 export function InstaTrack({ lang, posts }: { lang: Lang; posts: InstaPost[] }) {
   const { ref, step } = useTrack();
+  const [open, setOpen] = useState<number | null>(null);
+  const close = useCallback(() => setOpen(null), []);
   return (
     <>
       <div className="kh-wrap kh-insta__nav">
         <Arrows lang={lang} onPrev={() => step(-1)} onNext={() => step(1)} />
       </div>
       <div ref={ref} className="kh-track kh-reels__track">
-        {posts.map((p) => (
-          <InstaCard key={p.id} post={p} lang={lang} />
+        {posts.map((p, i) => (
+          <InstaCard key={p.id} post={p} lang={lang} onOpen={() => setOpen(i)} />
         ))}
       </div>
+      {open !== null && <InstaLightbox lang={lang} posts={posts} index={open} onIndex={setOpen} onClose={close} />}
     </>
   );
 }
