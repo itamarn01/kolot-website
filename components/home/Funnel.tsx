@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import PlaceInput from "@/components/PlaceInput";
-import { EMPTY_LEAD, RELATION_OPTIONS, toPayloadFields, validPhone, type LeadFields } from "@/lib/lead";
+import { EMPTY_LEAD, HEAR_OPTIONS, RELATION_OPTIONS, toPayloadFields, validPhone, type LeadFields } from "@/lib/lead";
 import type { Lang } from "@/lib/types";
 import { WHATSAPP } from "./copy";
 import "@/components/lead-form.css";
@@ -18,7 +18,17 @@ const INTERESTS = [
   { value: "הרכב קבלת פנים", he: "הרכב קבלת פנים", en: "Reception ensemble" },
   { value: "דיג׳יי", he: "דיג׳יי", en: "DJ" },
   { value: "עוד מתלבטים", he: "עוד מתלבטים", en: "Not sure yet" },
+  { value: "אחר", he: "אחר", en: "Other" },
 ];
+
+/** Whole days from today to an ISO date (local time). */
+function daysUntil(iso: string): number | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+  const [y, m, d] = iso.split("-").map(Number);
+  const now = new Date();
+  const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.round((Date.UTC(y, m - 1, d) - today) / 86400000);
+}
 
 const T = {
   he: {
@@ -53,6 +63,11 @@ const T = {
     failCta: "שליחה בוואטסאפ",
     waPrefill: "היי קולות! פנייה מהאתר:",
     interestsLabel: "מעוניינים ב",
+    otherPh: "ספרו לנו במה מדובר",
+    countdown: (d: number) => (d === 0 ? "זה היום! 🎉" : d === 1 ? "מחר! 🎉" : `עוד ${d.toLocaleString("he-IL")} ימים לאירוע 🎉`),
+    hear: "איך שמעתם עלינו? (לא חובה)",
+    referrer: "מי המליץ? (כדי שנוכל להגיד תודה)",
+    hearOther: "איפה?",
     close: "סגירה",
     talk: "מעדיפים לדבר ישירות?",
   },
@@ -88,6 +103,11 @@ const T = {
     failCta: "Send on WhatsApp",
     waPrefill: "Hi KOLOT! A request from the website:",
     interestsLabel: "Interested in",
+    otherPh: "Tell us what you have in mind",
+    countdown: (d: number) => (d === 0 ? "That's today! 🎉" : d === 1 ? "That's tomorrow! 🎉" : `That's ${d.toLocaleString("en-US")} days away 🎉`),
+    hear: "How did you hear about us? (optional)",
+    referrer: "Who recommended us? (so we can say thank you)",
+    hearOther: "Where?",
     close: "Close",
     talk: "Rather talk to us directly?",
   },
@@ -116,6 +136,7 @@ export default function AvailabilitySection({
   const [f, setF] = useState<LeadFields>(EMPTY_LEAD);
   const [noDate, setNoDate] = useState(false);
   const [interests, setInterests] = useState<string[]>([]);
+  const [interestOther, setInterestOther] = useState("");
   const [err, setErr] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
   const startedAt = useRef(0);
@@ -171,7 +192,8 @@ export default function AvailabilitySection({
 
   const payload = () => {
     const fields = toPayloadFields({ ...f, event_date: noDate ? "" : f.event_date });
-    const wants = interests.length ? `${t.interestsLabel}: ${interests.join(", ")}` : "";
+    const picked = interests.map((v) => (v === "אחר" && interestOther.trim() ? `אחר (${interestOther.trim()})` : v));
+    const wants = picked.length ? `${t.interestsLabel}: ${picked.join(", ")}` : "";
     return { ...fields, notes: [wants, fields.notes].filter(Boolean).join("\n") };
   };
 
@@ -288,7 +310,7 @@ export default function AvailabilitySection({
                 <div className="kf-row">
                   <label className="kf-field">
                     <span>{t.date}</span>
-                    <input className="kf-input" type="date" min={today} value={noDate ? "" : f.event_date} disabled={noDate} onChange={(e) => set("event_date", e.target.value)} />
+                    <input className="kf-input" type="date" aria-label={t.date} min={today} value={noDate ? "" : f.event_date} disabled={noDate} onChange={(e) => set("event_date", e.target.value)} />
                   </label>
                   <div className="kf-field">
                     <label htmlFor="kf-venue">{t.venue}</label>
@@ -303,6 +325,14 @@ export default function AvailabilitySection({
                     />
                   </div>
                 </div>
+                {(() => {
+                  const d = noDate ? null : daysUntil(f.event_date);
+                  return d !== null && d >= 0 ? (
+                    <p className="kf-countdown" aria-live="polite">
+                      {t.countdown(d)}
+                    </p>
+                  ) : null;
+                })()}
                 <label className="kf-check">
                   <input type="checkbox" checked={noDate} onChange={(e) => setNoDate(e.target.checked)} />
                   <span>{t.noDate}</span>
@@ -319,6 +349,9 @@ export default function AvailabilitySection({
                   </button>
                 ))}
               </fieldset>
+            )}
+            {step === 2 && interests.includes("אחר") && (
+              <input className="kf-input kf-reveal" placeholder={t.otherPh} aria-label={t.otherPh} value={interestOther} maxLength={200} onChange={(e) => setInterestOther(e.target.value)} autoFocus />
             )}
 
             {step === 3 && (
@@ -340,6 +373,20 @@ export default function AvailabilitySection({
                   <input type="checkbox" checked={f.whatsapp_consent} onChange={(e) => set("whatsapp_consent", e.target.checked)} />
                   <span>{t.wa}</span>
                 </label>
+                <fieldset className="kf-chips kf-chips--small">
+                  <legend>{t.hear}</legend>
+                  {HEAR_OPTIONS.map((o) => (
+                    <button type="button" key={o.value} className={f.hear_about_us === o.value ? "is-on" : ""} aria-pressed={f.hear_about_us === o.value} onClick={() => set("hear_about_us", f.hear_about_us === o.value ? "" : o.value)}>
+                      {o[lang]}
+                    </button>
+                  ))}
+                </fieldset>
+                {f.hear_about_us === "המלצה" && (
+                  <input className="kf-input kf-input--small kf-reveal" placeholder={t.referrer} aria-label={t.referrer} value={f.referrer} maxLength={120} onChange={(e) => set("referrer", e.target.value)} />
+                )}
+                {f.hear_about_us === "אחר" && (
+                  <input className="kf-input kf-input--small kf-reveal" placeholder={t.hearOther} aria-label={t.hearOther} value={f.hear_other} maxLength={120} onChange={(e) => set("hear_other", e.target.value)} />
+                )}
                 <p className="kf-privacy">
                   {t.privacy}
                   <a href={t.privacyHref}>{t.privacyLink}</a>.

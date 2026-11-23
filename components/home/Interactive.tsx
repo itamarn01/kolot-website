@@ -448,8 +448,8 @@ export function LoopVideo({ src, poster, className }: { src?: string; poster: st
 /* ------------------------------------------------------------ instagram */
 
 const IG_TEXT = {
-  he: { open: "פתיחת הפוסט", view: "לצפייה באינסטגרם ↗", prev: "הפוסט הקודם", next: "הפוסט הבא", close: "סגירה", label: "פוסט מאינסטגרם", likes: "לייקים", comments: "תגובות" },
-  en: { open: "Open post", view: "View on Instagram ↗", prev: "Previous post", next: "Next post", close: "Close", label: "Instagram post", likes: "likes", comments: "comments" },
+  he: { open: "פתיחת הפוסט", view: "לצפייה באינסטגרם", prev: "הפוסט הקודם", next: "הפוסט הבא", close: "סגירה", label: "פוסט מאינסטגרם", likes: "לייקים", comments: "תגובות" },
+  en: { open: "Open post", view: "View on Instagram", prev: "Previous post", next: "Next post", close: "Close", label: "Instagram post", likes: "likes", comments: "comments" },
 };
 
 function InstaCard({ post, lang, onOpen }: { post: InstaPost; lang: Lang; onOpen: () => void }) {
@@ -572,41 +572,59 @@ function InstaLightbox({ lang, posts, index, onIndex, onClose }: { lang: Lang; p
             </div>
           )}
           <div className="kh-ig__side">
+            {/* Text runs in <bdi> so English and Hebrew comments both line up with the page's reading side. */}
+            <div className="kh-ig__head">
+              <span className="kh-ig__avatar kh-ig__avatar--band" aria-hidden>
+                <img src="/media/home/logo-header.svg" alt="" />
+              </span>
+              <span className="kh-ig__user">kolotband</span>
+            </div>
             {post.caption && (
-              <p className="kh-ig__caption" dir="auto">
-                {post.caption}
+              <p className="kh-ig__caption">
+                <bdi>{post.caption}</bdi>
               </p>
             )}
-            <div className="kh-ig__stats" dir="ltr">
-              {post.likes !== undefined && (
-                <span>
-                  <svg viewBox="0 0 24 24" aria-hidden>
-                    <path d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.7 3.2 5 6.8 5c2 0 3.4 1.1 4.2 2.4h2C13.8 6.1 15.2 5 17.2 5c3.6 0 5.6 3.7 4.3 6.8C19.5 16.4 12 21 12 21z" />
-                  </svg>
-                  {post.likes.toLocaleString(lang === "he" ? "he-IL" : "en-US")}
-                  <span className="visually-hidden">{t.likes}</span>
-                </span>
-              )}
-              <span>
-                <svg viewBox="0 0 24 24" aria-hidden>
-                  <path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z" />
-                </svg>
-                {post.commentsCount.toLocaleString(lang === "he" ? "he-IL" : "en-US")}
-                <span className="visually-hidden">{t.comments}</span>
-              </span>
-            </div>
             {post.comments.length > 0 && (
               <ul className="kh-ig__comments">
                 {post.comments.map((c, i) => (
-                  <li key={i} dir="auto">
-                    {c}
+                  <li key={i}>
+                    <span className="kh-ig__avatar" aria-hidden>
+                      <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="9" r="4" />
+                        <path d="M4.5 20c1.2-3.6 4.1-5.5 7.5-5.5s6.3 1.9 7.5 5.5" />
+                      </svg>
+                    </span>
+                    <bdi>{c}</bdi>
                   </li>
                 ))}
               </ul>
             )}
-            <a className="kh-ig__link" href={post.permalink} target="_blank" rel="noopener noreferrer">
-              {t.view}
-            </a>
+            <div className="kh-ig__foot">
+              <div className="kh-ig__stats">
+                {post.likes !== undefined && (
+                  <span>
+                    <svg viewBox="0 0 24 24" aria-hidden>
+                      <path d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.7 3.2 5 6.8 5c2 0 3.4 1.1 4.2 2.4h2C13.8 6.1 15.2 5 17.2 5c3.6 0 5.6 3.7 4.3 6.8C19.5 16.4 12 21 12 21z" />
+                    </svg>
+                    {post.likes.toLocaleString(lang === "he" ? "he-IL" : "en-US")} {t.likes}
+                  </span>
+                )}
+                <span>
+                  <svg viewBox="0 0 24 24" aria-hidden>
+                    <path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z" />
+                  </svg>
+                  {post.commentsCount.toLocaleString(lang === "he" ? "he-IL" : "en-US")} {t.comments}
+                </span>
+              </div>
+              <a className="kh-ig__link" href={post.permalink} target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden>
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4.2" />
+                  <circle cx="17.4" cy="6.6" r="1" className="kh-ig__dot" />
+                </svg>
+                <span>{t.view}</span>
+              </a>
+            </div>
           </div>
         </div>
         <button type="button" className="kh-ig__nav kh-ig__nav--next" onClick={() => go(1)} aria-label={t.next}>

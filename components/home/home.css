@@ -554,16 +554,37 @@ img.kh-reel__video { filter: grayscale(1); }
 .kh-ig__count button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--k-line) !important; font-size: 18px !important; line-height: 1; }
 .kh-ig__count button:disabled { opacity: 0.3; cursor: default; }
 .kh-ig__count button:not(:disabled):hover { border-color: var(--k-accent) !important; color: var(--k-accent); }
-.kh-ig__side { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 20px; padding: 28px; overflow-y: auto; }
+.kh-ig__side { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 18px; padding: 24px; overflow-y: auto; text-align: start; }
+.kh-ig__head { display: flex; align-items: center; gap: 10px; padding-block-end: 14px; border-block-end: 1px solid var(--k-line); }
+.kh-ig__user { font-size: 15px; font-weight: 700; }
+.kh-ig__avatar { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--k-raised); border: 1px solid var(--k-line); color: rgba(255, 255, 255, 0.55); overflow: hidden; }
+.kh-ig__avatar svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.kh-ig__avatar--band { background: #000; border-color: var(--k-accent); }
+.kh-ig__avatar--band img { width: 22px; height: auto; }
 .kh-ig__caption { white-space: pre-line; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
-.kh-ig__stats { display: flex; gap: 20px; font-size: 14px; color: rgba(255, 255, 255, 0.86); border-block: 1px solid var(--k-line); padding-block: 12px; }
+.kh-ig__comments { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.kh-ig__comments li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.5; color: rgba(255, 255, 255, 0.78); overflow-wrap: anywhere; }
+.kh-ig__comments li bdi { padding-block-start: 6px; }
+.kh-ig__foot { margin-block-start: auto; display: grid; gap: 16px; padding-block-start: 16px; border-block-start: 1px solid var(--k-line); }
+.kh-ig__stats { display: flex; gap: 18px; font-size: 14px; color: rgba(255, 255, 255, 0.86); }
 .kh-ig__stats > span { display: inline-flex; align-items: center; gap: 6px; }
 .kh-ig__stats svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
 .kh-ig__stats > span:first-child svg { fill: var(--k-accent); stroke: var(--k-accent); }
-.kh-ig__comments { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.kh-ig__comments li { font-size: 14px; line-height: 1.5; color: rgba(255, 255, 255, 0.72); padding-inline-start: 12px; border-inline-start: 2px solid var(--k-line); overflow-wrap: anywhere; }
-.kh-ig__link { font-size: 15px; color: var(--k-accent); }
-.kh-ig__link:hover { text-decoration: underline; }
+/* "View on Instagram": pinned to the bottom, on the far (inline-end) side. */
+.kh-ig__link {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  border: 1px solid var(--k-line);
+  font-size: 14px;
+  transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+}
+.kh-ig__link svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; transition: transform 0.35s var(--k-ease); }
+.kh-ig__link .kh-ig__dot { fill: currentColor; stroke: none; }
+.kh-ig__link:hover { background: var(--k-accent); border-color: var(--k-accent); color: var(--k-on-accent); }
+.kh-ig__link:hover svg { transform: rotate(-8deg) scale(1.1); }
 .kh-ig__nav {
   justify-self: center;
   width: 48px;
@@ -575,11 +596,12 @@ img.kh-reel__video { filter: grayscale(1); }
 }
 .kh-ig__nav:hover { border-color: var(--k-accent) !important; color: var(--k-accent); }
 @media (max-width: 900px) {
-  .kh-ig { grid-template-columns: 1fr; align-content: center; padding-block: 64px 16px; }
+  .kh-ig { grid-template-columns: 1fr; align-content: start; padding-block: 72px 24px; overflow-y: auto; overscroll-behavior: contain; }
+  .kh-ig__close { position: fixed; }
   .kh-ig__nav { display: none; }
-  .kh-ig__box { grid-template-columns: 1fr; width: 100%; max-height: none; border: 0; overflow-y: auto; }
-  .kh-ig__media { width: 100%; max-height: 70svh; aspect-ratio: auto; height: 70svh; }
-  .kh-ig__side { grid-column: 1; grid-row: auto; padding: 16px 20px; max-height: 22svh; }
+  .kh-ig__box { grid-template-columns: 1fr; width: 100%; max-height: none; border: 0; }
+  .kh-ig__media { width: 100%; max-height: none; aspect-ratio: auto; height: 64svh; }
+  .kh-ig__side { grid-column: 1; grid-row: auto; padding: 16px 20px; overflow: visible; }
 }
 
 /* ------------------------------------------------------------ why */
@@ -606,7 +628,8 @@ img.kh-reel__video { filter: grayscale(1); }
 }
 
 /* ------------------------------------------------------------ final CTA */
-.kh-cta { position: relative; overflow: hidden; padding-block: 196px 180px; text-align: center; }
+/* overflow-y stays visible so the venue suggestions can extend below the section; x is clipped for the wide glow. */
+.kh-cta { position: relative; overflow-x: clip; overflow-y: visible; padding-block: 196px 180px; text-align: center; }
 .kh-cta__glow {
   position: absolute;
   inset-inline: 5%;
@@ -614,6 +637,7 @@ img.kh-reel__video { filter: grayscale(1); }
   height: 900px;
   background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(247, 193, 30, 0.2), rgba(247, 193, 30, 0) 70%);
   pointer-events: none;
+  clip-path: inset(520px 0 0 0); /* only the part inside the section shows */
 }
 .kh-cta__beam { position: absolute; top: 48px; left: 50%; width: 1px; height: 120px; background: linear-gradient(180deg, rgba(247, 193, 30, 0), var(--k-accent)); }
 .kh-cta__in { position: relative; display: grid; justify-items: center; }
@@ -622,7 +646,7 @@ img.kh-reel__video { filter: grayscale(1); }
 @media (max-width: 767px) {
   .kh-cta { padding-block: 148px 96px; }
   .kh-cta__beam { top: 40px; height: 88px; }
-  .kh-cta__glow { inset-inline: -40%; top: -330px; height: 560px; }
+  .kh-cta__glow { inset-inline: -40%; top: -330px; height: 560px; clip-path: inset(330px 0 0 0); }
   .kh-cta__actions { flex-direction: column; width: 100%; gap: 12px; }
   .kh-cta__actions .kh-btn { width: 100%; }
 }
@@ -685,7 +709,8 @@ body:has(.kh) .a11y-btn { background: #fff; width: 48px; height: 48px; }
 .kf-dashes { display: flex; gap: 6px; }
 .kf-dashes span { width: 28px; height: 2px; background: var(--k-line); transition: background-color 0.4s; }
 .kf-dashes span.is-on { background: var(--k-accent); }
-.kf-q { display: grid; gap: 28px; animation: kf-slide 0.5s var(--k-ease) both; }
+/* position + z-index: the question (and its venue list) stacks above the Continue button below it. */
+.kf-q { position: relative; z-index: 2; display: grid; gap: 28px; animation: kf-slide 0.5s var(--k-ease) both; }
 .kf-q--back { animation-name: kf-slide-back; }
 @keyframes kf-slide { from { opacity: 0; transform: translateX(calc(var(--kf-dir, 1) * 40px)); } }
 @keyframes kf-slide-back { from { opacity: 0; transform: translateX(calc(var(--kf-dir, 1) * -40px)); } }
@@ -708,6 +733,8 @@ body:has(.kh) .a11y-btn { background: #fff; width: 48px; height: 48px; }
   color-scheme: dark;
 }
 .kf-input:focus, .kf .lf-input:focus { border-block-end-color: var(--k-accent) !important; }
+/* Focus shows as the yellow underline, so the boxed focus ring is dropped for these fields. */
+.kh .kf-input:focus-visible, .kh .kf .lf-input:focus-visible { outline: none; }
 .kf-input::placeholder, .kf .lf-input::placeholder { color: rgba(255, 255, 255, 0.3); }
 .kf-input:disabled { opacity: 0.35; }
 .kf-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; }
@@ -725,6 +752,32 @@ body:has(.kh) .a11y-btn { background: #fff; width: 48px; height: 48px; }
 .kf-chips button:hover { border-color: rgba(255, 255, 255, 0.6) !important; }
 .kf-chips button.is-on { background: var(--k-accent) !important; border-color: var(--k-accent) !important; color: var(--k-on-accent); }
 .kf-chips--big button { padding: 18px 28px !important; font-size: 17px !important; }
+.kf-countdown { color: var(--k-accent); font-size: 16px; margin-block-start: -8px; animation: kf-in 0.4s var(--k-ease) both; }
+.kf-reveal { animation: kf-in 0.35s var(--k-ease) both; }
+.kf-chips--small button { padding: 9px 16px !important; font-size: 14px !important; }
+.kf .kf-input--small { font-size: 18px; }
+/* Venue suggestions: float above everything instead of pushing the page, in the site's style. */
+.kf .lf-place { position: relative; }
+.kf .lf-places {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + 6px);
+  z-index: 30;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--k-raised);
+  border: 1px solid var(--k-line);
+  border-radius: 0;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+  animation: kf-in 0.2s var(--k-ease) both;
+}
+.kf .lf-place-opt { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 0; cursor: pointer; text-align: start; }
+.kf .lf-place-opt:hover, .kf .lf-place-opt.is-active { background: rgba(247, 193, 30, 0.12); }
+.kf .lf-place-opt svg { stroke: var(--k-accent); }
+.kf .lf-place-title { font-weight: 400; font-family: var(--k-body); }
 .kf-check { display: flex; gap: 12px; align-items: center; font-size: 15px; color: rgba(255, 255, 255, 0.8); cursor: pointer; }
 .kf-check input { width: 18px; height: 18px; accent-color: var(--k-accent); }
 .kf-privacy { font-size: 13px; color: var(--k-muted); line-height: 1.6; }
