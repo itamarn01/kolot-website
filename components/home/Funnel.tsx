@@ -21,6 +21,58 @@ const INTERESTS = [
   { value: "אחר", he: "אחר", en: "Other" },
 ];
 
+type CountdownText = { before: string; after: string; today: string; tomorrow: string };
+
+/**
+ * "204 days to go": fades in and the number races up to the real count (easing out, about a second).
+ * Picking another date runs from the number shown to the new one.
+ */
+function Countdown({ days, lang, text }: { days: number; lang: Lang; text: CountdownText }) {
+  const [shown, setShown] = useState(0);
+  const [landed, setLanded] = useState(false);
+  const shownRef = useRef(0);
+  useEffect(() => {
+    if (days < 2) return;
+    const from = shownRef.current;
+    if (from === days || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      shownRef.current = days;
+      setShown(days);
+      return;
+    }
+    setLanded(false);
+    const dur = Math.min(1400, 600 + Math.abs(days - from) * 2);
+    const t0 = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const v = Math.round(from + (days - from) * (1 - Math.pow(2, -10 * p)));
+      shownRef.current = v;
+      setShown(v);
+      if (p < 1) raf = requestAnimationFrame(tick);
+      else setLanded(true);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [days]);
+
+  if (days < 2) {
+    return (
+      <p className="kf-countdown" aria-live="polite">
+        <span className="kf-countdown__word">{days === 0 ? text.today : text.tomorrow}</span>
+      </p>
+    );
+  }
+  return (
+    <p className="kf-countdown" aria-live="polite" aria-label={`${text.before} ${days} ${text.after}`}>
+      <span className="kf-countdown__word">{text.before}</span>
+      <span className={`kf-countdown__num${landed ? " is-landed" : ""}`} aria-hidden="true">
+        {shown.toLocaleString(lang === "he" ? "he-IL" : "en-US")}
+      </span>
+      <span className="kf-countdown__word">{text.after}</span>
+    </p>
+  );
+}
+
 /** Whole days from today to an ISO date (local time). */
 function daysUntil(iso: string): number | null {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
@@ -63,8 +115,8 @@ const T = {
     failCta: "שליחה בוואטסאפ",
     waPrefill: "היי קולות! פנייה מהאתר:",
     interestsLabel: "מעוניינים ב",
-    otherPh: "ספרו לנו במה מדובר",
-    countdown: (d: number) => (d === 0 ? "זה היום! 🎉" : d === 1 ? "מחר! 🎉" : `עוד ${d.toLocaleString("he-IL")} ימים לאירוע 🎉`),
+    otherPh: "דברו איתנו",
+    countdown: { before: "עוד", after: "ימים לאירוע 🎉", today: "זה היום! 🎉", tomorrow: "מחר! 🎉" },
     hear: "איך שמעתם עלינו? (לא חובה)",
     referrer: "מי המליץ? (כדי שנוכל להגיד תודה)",
     hearOther: "איפה?",
@@ -103,8 +155,8 @@ const T = {
     failCta: "Send on WhatsApp",
     waPrefill: "Hi KOLOT! A request from the website:",
     interestsLabel: "Interested in",
-    otherPh: "Tell us what you have in mind",
-    countdown: (d: number) => (d === 0 ? "That's today! 🎉" : d === 1 ? "That's tomorrow! 🎉" : `That's ${d.toLocaleString("en-US")} days away 🎉`),
+    otherPh: "Talk to us",
+    countdown: { before: "That's", after: "days away 🎉", today: "That's today! 🎉", tomorrow: "That's tomorrow! 🎉" },
     hear: "How did you hear about us? (optional)",
     referrer: "Who recommended us? (so we can say thank you)",
     hearOther: "Where?",
@@ -328,9 +380,7 @@ export default function AvailabilitySection({
                 {(() => {
                   const d = noDate ? null : daysUntil(f.event_date);
                   return d !== null && d >= 0 ? (
-                    <p className="kf-countdown" aria-live="polite">
-                      {t.countdown(d)}
-                    </p>
+                    <Countdown days={d} lang={lang} text={t.countdown} />
                   ) : null;
                 })()}
                 <label className="kf-check">
@@ -351,7 +401,7 @@ export default function AvailabilitySection({
               </fieldset>
             )}
             {step === 2 && interests.includes("אחר") && (
-              <input className="kf-input kf-reveal" placeholder={t.otherPh} aria-label={t.otherPh} value={interestOther} maxLength={200} onChange={(e) => setInterestOther(e.target.value)} autoFocus />
+              <input className="kf-input kf-draw" placeholder={t.otherPh} aria-label={t.otherPh} value={interestOther} maxLength={200} onChange={(e) => setInterestOther(e.target.value)} autoFocus />
             )}
 
             {step === 3 && (

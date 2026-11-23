@@ -554,7 +554,7 @@ img.kh-reel__video { filter: grayscale(1); }
 .kh-ig__count button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--k-line) !important; font-size: 18px !important; line-height: 1; }
 .kh-ig__count button:disabled { opacity: 0.3; cursor: default; }
 .kh-ig__count button:not(:disabled):hover { border-color: var(--k-accent) !important; color: var(--k-accent); }
-.kh-ig__side { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 18px; padding: 24px; overflow-y: auto; text-align: start; }
+.kh-ig__side { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 18px; padding: 24px; max-height: calc(88svh - 2px); overflow-y: auto; text-align: start; }
 .kh-ig__head { display: flex; align-items: center; gap: 10px; padding-block-end: 14px; border-block-end: 1px solid var(--k-line); }
 .kh-ig__user { font-size: 15px; font-weight: 700; }
 .kh-ig__avatar { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--k-raised); border: 1px solid var(--k-line); color: rgba(255, 255, 255, 0.55); overflow: hidden; }
@@ -601,7 +601,7 @@ img.kh-reel__video { filter: grayscale(1); }
   .kh-ig__nav { display: none; }
   .kh-ig__box { grid-template-columns: 1fr; width: 100%; max-height: none; border: 0; }
   .kh-ig__media { width: 100%; max-height: none; aspect-ratio: auto; height: 64svh; }
-  .kh-ig__side { grid-column: 1; grid-row: auto; padding: 16px 20px; overflow: visible; }
+  .kh-ig__side { grid-column: 1; grid-row: auto; padding: 16px 20px 24px; max-height: none; overflow: visible; }
 }
 
 /* ------------------------------------------------------------ why */
@@ -751,8 +751,41 @@ body:has(.kh) .a11y-btn { background: #fff; width: 48px; height: 48px; }
 }
 .kf-chips button:hover { border-color: rgba(255, 255, 255, 0.6) !important; }
 .kf-chips button.is-on { background: var(--k-accent) !important; border-color: var(--k-accent) !important; color: var(--k-on-accent); }
-.kf-chips--big button { padding: 18px 28px !important; font-size: 17px !important; }
-.kf-countdown { color: var(--k-accent); font-size: 16px; margin-block-start: -8px; animation: kf-in 0.4s var(--k-ease) both; }
+.kf-chips--big { gap: 8px; }
+.kf-chips--big button { padding: 18px 24px !important; font-size: 17px !important; }
+/* Days to the event: fades up, the number counts up and gives a small bounce when it lands. */
+.kf-countdown {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 12px;
+  margin: -8px 0 0;
+  color: var(--k-accent);
+  font-size: 22px;
+  animation: kf-count-in 0.6s var(--k-ease) both;
+}
+@keyframes kf-count-in { from { opacity: 0; transform: translateY(16px); filter: blur(6px); } }
+.kf-countdown__num {
+  display: inline-block;
+  min-width: 2ch;
+  font-family: var(--k-display, inherit);
+  font-size: 56px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  text-shadow: 0 0 32px rgba(247, 193, 30, 0.35);
+}
+.kf-countdown__num.is-landed { animation: kf-land 0.45s cubic-bezier(0.34, 1.8, 0.64, 1); }
+@keyframes kf-land { 40% { transform: scale(1.14); } }
+@media (max-width: 700px) {
+  .kf-countdown { font-size: 18px; }
+  .kf-countdown__num { font-size: 44px; }
+}
+/* The "Other" text field: its underline draws in from the reading side, then the text fades up. */
+.kf-draw { animation: kf-draw 0.55s var(--k-ease) both; }
+@keyframes kf-draw { from { clip-path: inset(0 0 0 100%); opacity: 0.2; } }
+[dir="ltr"] .kf-draw { animation-name: kf-draw-ltr; }
+@keyframes kf-draw-ltr { from { clip-path: inset(0 100% 0 0); opacity: 0.2; } }
 .kf-reveal { animation: kf-in 0.35s var(--k-ease) both; }
 .kf-chips--small button { padding: 9px 16px !important; font-size: 14px !important; }
 .kf .kf-input--small { font-size: 18px; }
