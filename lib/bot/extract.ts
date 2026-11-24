@@ -55,11 +55,19 @@ export class GeminiBusy extends Error {
 const BUSY = new Set([429, 500, 502, 503, 504]);
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/** Called before each retry so the bot can show it's still working. */
+export type OnRetry = (attempt: number, total: number) => Promise<unknown> | void;
+
 /**
  * Overload ("503 high demand") is common and short-lived: retry the main model, then try lighter ones.
+ * Under load Gemini can also just hang, so every call has a time limit and all tries share one deadline
+ * that ends well before Vercel stops the function (maxDuration 120s): the bot always gets to answer.
  * GEMINI_MODEL sets the main model; GEMINI_FALLBACK_MODELS (comma-separated) the backups.
  */
-async function callGemini(key: string, body: string): Promise<Response> {
+async function callGemini(key: string, body: string, budgetMs: number, onRetry?: OnRetry): Promise<Response> {
+  const deadline = Date.now() + budgetMs;
+  // a healthy answer takes a few seconds; text gets several short tries, media fewer long ones
+  const perCall = budgetMs <= 45_000 ? 15_000 : 40_000;
   const main = process.env.GEMINI_MODEL || "gemini-3.6-flash";
   const backups = (process.env.GEMINI_FALLBACK_MODELS ?? "gemini-flash-latest,gemini-flash-lite-latest")
     .split(",")
@@ -68,17 +76,29 @@ async function callGemini(key: string, body: string): Promise<Response> {
   const tries: { model: string; wait: number }[] = [
     { model: main, wait: 0 },
     { model: main, wait: 2000 },
-    { model: main, wait: 5000 },
     ...backups.map((model) => ({ model, wait: 1000 })),
+    { model: main, wait: 3000 },
   ];
   let last = "";
   for (const [i, t] of tries.entries()) {
+    if (i > 0) await onRetry?.(i + 1, tries.length);
     if (t.wait) await sleep(t.wait);
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${t.model}:generateContent`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-      body,
-    });
+    const left = deadline - Date.now();
+    if (left < 5000) break;
+    let res: Response;
+    try {
+      res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${t.model}:generateContent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+        body,
+        signal: AbortSignal.timeout(Math.min(left, perCall)),
+      });
+    } catch (e) {
+      // timed out or the connection dropped: same as busy
+      last = `${t.model} ${(e as Error).name}`;
+      console.warn(`[gemini] try ${i + 1}: ${last}`);
+      continue;
+    }
     if (res.ok) return res;
     last = `${t.model} ${res.status} ${(await res.text()).slice(0, 300)}`;
     console.warn(`[gemini] try ${i + 1}: ${last}`);
@@ -88,11 +108,14 @@ async function callGemini(key: string, body: string): Promise<Response> {
       throw new Error(`Gemini failed: ${last}`);
     }
   }
-  console.error(`[gemini] all models busy: ${last}`);
+  console.error(`[gemini] gave up: ${last}`);
   throw new GeminiBusy();
 }
 
-export async function extractReview(input: Input): Promise<Extracted> {
+/** Text has a plain fallback, so it waits less; screenshots and voice notes get most of the function's time. */
+const BUDGET = { text: 45_000, media: 95_000 };
+
+export async function extractReview(input: Input, onRetry?: OnRetry): Promise<Extracted> {
   const key = process.env.GEMINI_API_KEY;
   if (!key) {
     if (!("text" in input)) throw new Error("Reading screenshots and voice notes needs GEMINI_API_KEY.");
@@ -113,7 +136,7 @@ export async function extractReview(input: Input): Promise<Extracted> {
   });
   let res: Response;
   try {
-    res = await callGemini(key, body);
+    res = await callGemini(key, body, "text" in input ? BUDGET.text : BUDGET.media, onRetry);
   } catch (e) {
     // Gemini overloaded: a forwarded text still becomes a draft as-is (fix the name by replying to it).
     if (e instanceof GeminiBusy && "text" in input) {

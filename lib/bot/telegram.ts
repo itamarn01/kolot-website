@@ -35,6 +35,7 @@ export type TgMessage = {
   audio?: { file_id: string; mime_type?: string; file_name?: string };
   document?: { file_id: string; mime_type?: string; file_name?: string };
   reply_to_message?: TgMessage;
+  pinned_message?: TgMessage;
 };
 
 export type TgUpdate = {

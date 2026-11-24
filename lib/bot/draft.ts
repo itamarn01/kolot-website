@@ -32,7 +32,7 @@ export function renderDraft(d: Draft): string {
     `📌 עמוד הבית: ${d.pinned ? "כן, בראש הקרוסלה" : "לא"}`,
     ...(d.audioFileId ? [`🎙 הקלטה: ${d.audioFileId}`] : []),
     "",
-    "↩️ לתיקון: השיבו (Reply) להודעה הזו עם שם · מקום, או עם ״ציטוט:״ ואחריו הנוסח המתוקן.",
+    "↩️ לתיקון: שלחו שם · מקום (למשל: דנה ויוסי · האחוזה), או ״ציטוט:״ ואחריו הנוסח המתוקן.",
   ].join("\n");
 }
 
@@ -73,6 +73,19 @@ export function applyReply(d: Draft, reply: string): Draft {
   }
   const parts = t.split(/\s+[·•|]\s+|\s+-\s+|\n/).map((s) => s.trim()).filter(Boolean);
   next.name = parts[0] ?? d.name;
-  if (parts[1]) next.venue = parts.slice(1).join(" ");
+  if (parts[1]) next.venue = cleanVenue(parts.slice(1).join(" "));
   return next;
 }
+
+/** "התחתנו בגאיה" → "גאיה", "we got married at Olmaya" → "Olmaya". */
+function cleanVenue(v: string): string {
+  return (
+    v
+      .replace(/^(?:התחתנו|חגגנו|החתונה (?:היתה|הייתה)|האירוע היה|היינו)\s+ב-?\s*/, "")
+      .replace(/^(?:we )?(?:got married|celebrated|were) (?:at|in) /i, "")
+      .trim() || v
+  );
+}
+
+/** A short message sent right after a draft, without Reply: most likely names / venue for it. */
+export const looksLikeDraftFix = (t: string) => t.trim().length <= 80 && t.trim().split("\n").length <= 3;

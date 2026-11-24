@@ -1,5 +1,5 @@
 import { after } from "next/server";
-import { applyReply, isDraft, parseDraft, renderDraft, type Draft } from "@/lib/bot/draft";
+import { applyReply, isDraft, looksLikeDraftFix, parseDraft, renderDraft, type Draft } from "@/lib/bot/draft";
 import { extractReview } from "@/lib/bot/extract";
 import { updateJson, writeFile } from "@/lib/bot/github";
 import { downloadFile, keyboard, tg, type TgMessage, type TgUpdate } from "@/lib/bot/telegram";
@@ -37,13 +37,14 @@ const HELP = [
   "• הודעה קולית",
   "",
   "אני אכין טיוטה, אחרי זה:",
-  "↩️ השיבו לטיוטה עם ״שמות · מקום״ (למשל: דנה ויוסי · האחוזה)",
+  "↩️ שלחו את השמות והמקום (למשל: דנה ויוסי · האחוזה). הם נכנסים לטיוטה הפתוחה",
   "✅ לחצו ״פרסום באתר״, והאתר מתעדכן תוך 1–2 דקות.",
   "",
   "📲 אחרי הפרסום תקבלו הודעה מוכנה לזוג, עם לינק שמעתיק את ההמלצה ופותח את גוגל.",
   "",
   "/list – ההמלצות האחרונות באתר (הסרה / בקשת ביקורת בגוגל)",
   "/google – הודעה מוכנה ללקוחות שעוד לא כתבו כלום",
+  "/status – בדיקת חיבור (אם הבוט עונה לאט)",
 ].join("\n");
 
 export async function POST(req: Request) {
@@ -70,7 +71,15 @@ async function handle(u: TgUpdate) {
     if (m.text === "/start" || m.text === "/help") return void (await say(chat, `${HELP}\n\nה-ID שלך: ${from}`));
     if (m.text === "/list") return await listRecent(chat);
     if (m.text === "/google") return await sendGoogleAsk(chat);
-    if (m.reply_to_message && isDraft(m.reply_to_message.text) && m.text) return await onReply(m);
+    if (m.text === "/status") return await sendStatus(chat);
+    if (m.reply_to_message && isDraft(m.reply_to_message.text) && m.text) return await onReply(m, m.reply_to_message);
+    // names / venue sent as a plain message right after a draft (no Reply): they belong to the open draft
+    if (m.text && !m.text.startsWith("/") && looksLikeDraftFix(m.text)) {
+      const open = await openDraft(chat);
+      const d = open && parseDraft(open.text!);
+      // only while the draft still lacks a name or venue, so a short new review isn't swallowed
+      if (open && d && !d.anonymous && (!d.name || !d.venue)) return await onReply(m, open);
+    }
     await onReview(m);
   } catch (e) {
     await say(chat, `⚠️ משהו השתבש: ${(e as Error).message}`);
@@ -109,18 +118,20 @@ async function onReview(m: TgMessage) {
   const imageDoc = m.document?.mime_type?.startsWith("image/") ? m.document : undefined;
   const wait = await say(chat, audio ? "🎧 מתמלל ומכין טיוטה…" : m.photo || imageDoc ? "👀 קורא את צילום המסך…" : "✍️ מכין טיוטה…");
 
+  const busy = (n: number, total: number) =>
+    tg("editMessageText", { chat_id: chat, message_id: wait.message_id, text: `⏳ גוגל עמוס כרגע, מנסה שוב (${n}/${total})…` }).catch(() => {});
   let ex;
   if (audio) {
     const { bytes } = await downloadFile(audio.file_id);
     const mime = audio.mime_type && audio.mime_type !== "audio/opus" ? audio.mime_type : "audio/ogg";
-    ex = await extractReview({ audio: bytes, mediaType: mime });
+    ex = await extractReview({ audio: bytes, mediaType: mime }, busy);
   } else if (m.photo?.length || imageDoc) {
     const fileId = imageDoc?.file_id ?? m.photo![m.photo!.length - 1].file_id;
     const { bytes, path } = await downloadFile(fileId);
     const mediaType = path.endsWith(".png") ? "image/png" : path.endsWith(".webp") ? "image/webp" : "image/jpeg";
-    ex = await extractReview({ image: bytes, mediaType });
+    ex = await extractReview({ image: bytes, mediaType }, busy);
   } else if (m.text || m.caption) {
-    ex = await extractReview({ text: (m.text ?? m.caption)! });
+    ex = await extractReview({ text: (m.text ?? m.caption)! }, busy);
   } else {
     await tg("editMessageText", { chat_id: chat, message_id: wait.message_id, text: "לא הבנתי מה לשמור. שלחו טקסט, צילום מסך או הודעה קולית." });
     return;
@@ -139,11 +150,36 @@ async function onReview(m: TgMessage) {
     audioFileId: audio?.file_id ?? null,
   };
   await tg("editMessageText", { chat_id: chat, message_id: wait.message_id, text: renderDraft(d), reply_markup: draftButtons(d) });
+  await pin(chat, wait.message_id);
 }
 
-/** A reply to a draft fixes its name / venue / quote in place. */
-async function onReply(m: TgMessage) {
-  const draftMsg = m.reply_to_message!;
+/**
+ * The draft waiting for approval is pinned in the chat: that's how the bot (which keeps no database)
+ * finds it when names / venue arrive without Reply. Publishing or cancelling unpins it.
+ */
+async function openDraft(chat: number): Promise<TgMessage | null> {
+  const c = await tg<{ pinned_message?: TgMessage }>("getChat", { chat_id: chat }).catch(() => null);
+  const p = c?.pinned_message;
+  return p && isDraft(p.text) ? p : null;
+}
+const pin = (chat: number, id: number) => tg("pinChatMessage", { chat_id: chat, message_id: id, disable_notification: true }).catch(() => {});
+const unpin = (chat: number, id: number) => tg("unpinChatMessage", { chat_id: chat, message_id: id }).catch(() => {});
+
+/** /status: what Telegram says about the webhook (delays and failed deliveries show up here). */
+async function sendStatus(chat: number) {
+  const w = await tg<{ url: string; pending_update_count: number; last_error_date?: number; last_error_message?: string }>("getWebhookInfo", {});
+  const when = (t?: number) => (t ? new Date(t * 1000).toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" }) : "—");
+  await say(chat, [
+    "🔧 מצב הבוט",
+    `כתובת: ${w.url || "—"}`,
+    `הודעות שממתינות: ${w.pending_update_count}`,
+    `שגיאה אחרונה: ${w.last_error_message ? `${w.last_error_message} (${when(w.last_error_date)})` : "אין"}`,
+    `Gemini: ${process.env.GEMINI_MODEL || "gemini-3.6-flash"}${process.env.GEMINI_API_KEY ? "" : " (חסר GEMINI_API_KEY!)"}`,
+  ].join("\n"));
+}
+
+/** A reply to a draft (or names / venue right after it) fixes its name / venue / quote in place. */
+async function onReply(m: TgMessage, draftMsg: TgMessage) {
   const d = applyReply(parseDraft(draftMsg.text!), m.text!);
   await tg("editMessageText", { chat_id: m.chat.id, message_id: draftMsg.message_id, text: renderDraft(d), reply_markup: draftButtons(d) });
   await tg("setMessageReaction", { chat_id: m.chat.id, message_id: m.message_id, reaction: [{ type: "emoji", emoji: "👌" }] }).catch(() => {});
@@ -192,6 +228,7 @@ async function onButton(q: NonNullable<TgUpdate["callback_query"]>) {
 
     if (data === "drop") {
       await ack("בוטל");
+      await unpin(chat, id);
       return void (await tg("deleteMessage", { chat_id: chat, message_id: id }));
     }
     if (data === "anon" || data === "pin" || data === "lang") {
@@ -222,6 +259,7 @@ async function onButton(q: NonNullable<TgUpdate["callback_query"]>) {
     if (data === "pub" || data === "pub:a" || data === "pub:t") {
       await ack("מפרסם…");
       await edit(`⏳ מפרסם…\n\n${d.quote}`);
+      await unpin(chat, id);
       const rid = `t${Date.now().toString(36)}`;
       let audio: string | undefined;
       if (data === "pub:a" && d.audioFileId) {
