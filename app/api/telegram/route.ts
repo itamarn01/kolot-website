@@ -3,7 +3,7 @@ import { applyReply, isDraft, parseDraft, renderDraft, type Draft } from "@/lib/
 import { extractReview } from "@/lib/bot/extract";
 import { updateJson, writeFile } from "@/lib/bot/github";
 import { downloadFile, keyboard, tg, type TgMessage, type TgUpdate } from "@/lib/bot/telegram";
-import type { Review } from "@/lib/reviews";
+import { googleAskMessage, reviewAskMessage, type Review } from "@/lib/reviews";
 
 /**
  * Telegram webhook for the reviews bot. Netanel and Yaniv send it a review (text, screenshot or voice
@@ -40,7 +40,10 @@ const HELP = [
   "↩️ השיבו לטיוטה עם ״שמות · מקום״ (למשל: דנה ויוסי · האחוזה)",
   "✅ לחצו ״פרסום באתר״, והאתר מתעדכן תוך 1–2 דקות.",
   "",
-  "/list – ההמלצות האחרונות באתר (עם אפשרות להסיר)",
+  "📲 אחרי הפרסום תקבלו הודעה מוכנה לזוג, עם לינק שמעתיק את ההמלצה ופותח את גוגל.",
+  "",
+  "/list – ההמלצות האחרונות באתר (הסרה / בקשת ביקורת בגוגל)",
+  "/google – הודעה מוכנה ללקוחות שעוד לא כתבו כלום",
 ].join("\n");
 
 export async function POST(req: Request) {
@@ -66,6 +69,7 @@ async function handle(u: TgUpdate) {
   try {
     if (m.text === "/start" || m.text === "/help") return void (await say(chat, `${HELP}\n\nה-ID שלך: ${from}`));
     if (m.text === "/list") return await listRecent(chat);
+    if (m.text === "/google") return await sendGoogleAsk(chat);
     if (m.reply_to_message && isDraft(m.reply_to_message.text) && m.text) return await onReply(m);
     await onReview(m);
   } catch (e) {
@@ -75,6 +79,27 @@ async function handle(u: TgUpdate) {
 
 async function say(chat: number, text: string, extra: Record<string, unknown> = {}) {
   return tg<TgMessage>("sendMessage", { chat_id: chat, text, ...extra });
+}
+
+/** A message ready to send on WhatsApp: clean text to copy, plus a button that opens WhatsApp with it. */
+async function sayForWhatsApp(chat: number, text: string) {
+  return say(chat, text, {
+    link_preview_options: { is_disabled: true },
+    reply_markup: keyboard([[{ text: "📲 שליחה בווטסאפ", url: `https://wa.me/?text=${encodeURIComponent(text)}` }]]),
+  });
+}
+
+/** After a review is published: the message asking the couple to post it on Google too. */
+async function sendReviewAsk(chat: number, r: Pick<Review, "id" | "lang">, fresh: boolean) {
+  await say(chat, `👇 הודעה מוכנה לזוג: העתיקו לצ'אט שלהם או לחצו ״שליחה בווטסאפ״.${fresh ? "\n(הלינק יעבוד בעוד 1–2 דקות, כשהאתר מתעדכן)" : ""}`);
+  await sayForWhatsApp(chat, reviewAskMessage(r));
+}
+
+/** For clients who didn't write anything: the short kolotband.co.il/google link, in Hebrew and English. */
+async function sendGoogleAsk(chat: number) {
+  await say(chat, "👇 הודעות מוכנות ללקוחות שעוד לא כתבו המלצה (עברית ואנגלית):");
+  await sayForWhatsApp(chat, googleAskMessage("he"));
+  await sayForWhatsApp(chat, googleAskMessage("en"));
 }
 
 /** New review in: build a draft. */
@@ -145,7 +170,15 @@ async function onButton(q: NonNullable<TgUpdate["callback_query"]>) {
     }
     if (data.startsWith("rmn:")) {
       await ack();
-      return void (await tg("editMessageReplyMarkup", { chat_id: chat, message_id: id, reply_markup: keyboard([[{ text: "🗑 הסרה מהאתר", callback_data: `rm:${data.slice(4)}` }]]) }));
+      return void (await tg("editMessageReplyMarkup", { chat_id: chat, message_id: id, reply_markup: reviewButtons(data.slice(4)) }));
+    }
+    if (data.startsWith("ask:")) {
+      await ack();
+      const { readFile } = await import("@/lib/bot/github");
+      const all = JSON.parse((await readFile(REVIEWS)).text) as Review[];
+      const r = all.find((x) => x.id === data.slice(4));
+      if (!r) return void (await say(chat, "ההמלצה הזאת כבר לא באתר."));
+      return void (await sendReviewAsk(chat, r, false));
     }
     if (data.startsWith("rmy:")) {
       await ack("מסיר…");
@@ -209,7 +242,8 @@ async function onButton(q: NonNullable<TgUpdate["callback_query"]>) {
       };
       await updateJson<Review[]>(REVIEWS, `Reviews bot: add ${review.name ?? "anonymous"}${review.venue ? ` (${review.venue})` : ""}`, (all) => [review, ...all]);
       const who = review.name ? `${review.name}${review.venue ? ` · ${review.venue}` : ""}` : "אנונימי";
-      return void (await edit(`✅ פורסם! יופיע באתר תוך 1–2 דקות\nkolot-website.vercel.app/reviews/\n\n${d.quote}\n— ${who}`, keyboard([[{ text: "🗑 הסרה מהאתר", callback_data: `rm:${rid}` }]])));
+      await edit(`✅ פורסם! יופיע באתר תוך 1–2 דקות\nkolotband.co.il/reviews/\n\n${d.quote}\n— ${who}`, keyboard([[{ text: "🗑 הסרה מהאתר", callback_data: `rm:${rid}` }]]));
+      return void (await sendReviewAsk(chat, review, true));
     }
     await ack();
   } catch (e) {
@@ -217,6 +251,9 @@ async function onButton(q: NonNullable<TgUpdate["callback_query"]>) {
     await say(chat, `⚠️ משהו השתבש: ${(e as Error).message}`);
   }
 }
+
+const reviewButtons = (rid: string) =>
+  keyboard([[{ text: "📲 בקשה לגוגל", callback_data: `ask:${rid}` }, { text: "🗑 הסרה מהאתר", callback_data: `rm:${rid}` }]]);
 
 /** The latest reviews on the site, each with a remove button. Reads GitHub so it's always current. */
 async function listRecent(chat: number) {
@@ -226,6 +263,6 @@ async function listRecent(chat: number) {
   for (const r of all.slice(0, 6)) {
     const who = r.name ? `${r.name}${r.venue ? ` · ${r.venue}` : ""}` : "אנונימי";
     const quote = r.quote.length > 280 ? `${r.quote.slice(0, 280)}…` : r.quote;
-    await say(chat, `${quote}\n— ${who}${r.pinned ? " 📌" : ""}${r.audio ? " 🎙" : ""}`, { reply_markup: keyboard([[{ text: "🗑 הסרה מהאתר", callback_data: `rm:${r.id}` }]]) });
+    await say(chat, `${quote}\n— ${who}${r.pinned ? " 📌" : ""}${r.audio ? " 🎙" : ""}`, { reply_markup: reviewButtons(r.id) });
   }
 }

@@ -2,6 +2,10 @@ import type { Lang } from "./types";
 
 export const SITE_URL = "https://kolotband.co.il";
 
+/** KOLOT on Google ("להקת קולות"). The write-review link opens the review form straight away (sign-in needed). */
+export const GOOGLE_PLACE_ID = "ChIJOWWWtzy7HRUR8_F-uRHL5Go";
+export const GOOGLE_REVIEW_URL = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
+
 export const CONTACT = {
   email: "kolotmusic@gmail.com",
   phone: "055-5081080",

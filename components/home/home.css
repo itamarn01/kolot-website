@@ -1069,3 +1069,36 @@ html.kh-menu-open .a11y-btn { opacity: 0; pointer-events: none; transform: scale
 .kh-footer__legal button { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
 .kh-footer__legal button:hover { color: var(--k-text); }
 .kh-footer__legal { flex-wrap: wrap; }
+
+/* ------------------------------------------------------------ /r/<id>: a couple posts their review on Google */
+.kh-ask { min-height: 100svh; display: flex; flex-direction: column; }
+.kh-ask__head { display: flex; justify-content: center; padding: 28px 20px 4px; }
+.kh-ask__head img { width: 72px; height: auto; }
+.kh-ask main { flex: 1; width: 100%; max-width: 600px; margin-inline: auto; padding: 24px 20px 48px; display: grid; gap: 32px; align-content: start; }
+.kh-ask__intro { text-align: center; }
+.kh-ask__intro h1 { margin-block: 12px 18px; }
+.kh-ask__action { display: grid; gap: 18px; }
+.kh-ask__go { width: 100%; min-height: 62px; font-size: 19px; font-weight: 600; white-space: normal; text-align: center; }
+.kh-ask__go span { font-size: 20px; }
+.kh-ask__status { min-height: 1.5em; margin-block: -6px -4px; text-align: center; font-size: 15px; color: var(--k-accent); }
+.kh-ask__action[data-state="idle"] .kh-ask__status { display: none; }
+.kh-ask__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: step; }
+.kh-ask__steps li { counter-increment: step; display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: center; font-size: 16px; line-height: 1.45; }
+.kh-ask__steps li::before {
+  content: counter(step);
+  width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1px solid var(--k-accent); color: var(--k-accent);
+  font-family: var(--k-label); font-size: 13px;
+}
+/* once copied, step 1 is done */
+.kh-ask__action[data-state="copied"] .kh-ask__steps li:first-child { color: var(--k-muted); }
+.kh-ask__action[data-state="copied"] .kh-ask__steps li:first-child::before { content: "✓"; background: var(--k-accent); color: var(--k-on-accent); }
+.kh-ask__copy { justify-self: center; color: var(--k-muted); font-size: 15px; text-decoration: underline; text-underline-offset: 4px; }
+.kh-ask__copy:hover { color: var(--k-text); }
+.kh-ask__quote { margin: 0; padding: 26px 24px; background: var(--k-raised); border-block-start: 2px solid var(--k-accent); display: grid; gap: 14px; }
+.kh-ask__quote .kh-label { letter-spacing: 0.12em; }
+.kh-ask__quote blockquote { margin: 0; font-size: 18px; font-weight: 300; line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere; }
+.kh-ask__quote figcaption { font-size: 15px; color: var(--k-muted); }
+.kh-ask__note { text-align: center; font-size: 14px; color: var(--k-muted); }
+.kh-ask__foot { text-align: center; padding: 8px 20px 32px; font-size: 13px; }

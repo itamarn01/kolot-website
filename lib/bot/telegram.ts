@@ -21,7 +21,7 @@ export async function downloadFile(fileId: string): Promise<{ bytes: Buffer; pat
   return { bytes: Buffer.from(await res.arrayBuffer()), path: file.file_path };
 }
 
-export type Button = { text: string; callback_data: string };
+export type Button = { text: string; callback_data: string } | { text: string; url: string };
 export const keyboard = (rows: Button[][]) => ({ inline_keyboard: rows });
 
 export type TgMessage = {

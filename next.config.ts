@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { GOOGLE_REVIEW_URL } from "./lib/site";
 
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -36,6 +37,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Short link for asking any client for a Google review: kolotband.co.il/google
+      { source: "/google", destination: GOOGLE_REVIEW_URL, permanent: false },
       // Old WordPress URLs that have no page of their own anymore
       { source: "/hello-world", destination: "/", permanent: true },
       { source: "/testimonial/:slug*", destination: "/#testimonials", permanent: true },

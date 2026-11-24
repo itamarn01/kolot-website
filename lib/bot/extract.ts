@@ -45,6 +45,53 @@ export function guessLang(s: string): "he" | "en" {
 
 type Part = { text: string } | { inlineData: { mimeType: string; data: string } };
 
+/** Every model was overloaded or rate-limited. The message is what the bot shows. */
+export class GeminiBusy extends Error {
+  constructor() {
+    super("Gemini עמוס כרגע (עומס זמני אצל גוגל). נסו לשלוח שוב בעוד דקה–שתיים.");
+  }
+}
+
+const BUSY = new Set([429, 500, 502, 503, 504]);
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Overload ("503 high demand") is common and short-lived: retry the main model, then try lighter ones.
+ * GEMINI_MODEL sets the main model; GEMINI_FALLBACK_MODELS (comma-separated) the backups.
+ */
+async function callGemini(key: string, body: string): Promise<Response> {
+  const main = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+  const backups = (process.env.GEMINI_FALLBACK_MODELS ?? "gemini-flash-latest,gemini-flash-lite-latest")
+    .split(",")
+    .map((m) => m.trim())
+    .filter((m) => m && m !== main);
+  const tries: { model: string; wait: number }[] = [
+    { model: main, wait: 0 },
+    { model: main, wait: 2000 },
+    { model: main, wait: 5000 },
+    ...backups.map((model) => ({ model, wait: 1000 })),
+  ];
+  let last = "";
+  for (const [i, t] of tries.entries()) {
+    if (t.wait) await sleep(t.wait);
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${t.model}:generateContent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+      body,
+    });
+    if (res.ok) return res;
+    last = `${t.model} ${res.status} ${(await res.text()).slice(0, 300)}`;
+    console.warn(`[gemini] try ${i + 1}: ${last}`);
+    const isBackup = t.model !== main;
+    // a backup that doesn't exist for this key (404/400) is skipped; any other error on the main model is real
+    if (!BUSY.has(res.status) && !(isBackup && (res.status === 404 || res.status === 400))) {
+      throw new Error(`Gemini failed: ${last}`);
+    }
+  }
+  console.error(`[gemini] all models busy: ${last}`);
+  throw new GeminiBusy();
+}
+
 export async function extractReview(input: Input): Promise<Extracted> {
   const key = process.env.GEMINI_API_KEY;
   if (!key) {
@@ -59,17 +106,21 @@ export async function extractReview(input: Input): Promise<Extracted> {
           { text: "image" in input ? "Screenshot of the client's message." : "Voice note from the client." },
         ];
 
-  const model = process.env.GEMINI_MODEL || "gemini-3.6-flash";
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: SYSTEM }] },
-      contents: [{ role: "user", parts }],
-      generationConfig: { responseMimeType: "application/json", responseJsonSchema: SCHEMA, temperature: 0 },
-    }),
+  const body = JSON.stringify({
+    systemInstruction: { parts: [{ text: SYSTEM }] },
+    contents: [{ role: "user", parts }],
+    generationConfig: { responseMimeType: "application/json", responseJsonSchema: SCHEMA, temperature: 0 },
   });
-  if (!res.ok) throw new Error(`Gemini failed: ${res.status} ${(await res.text()).slice(0, 300)}`);
+  let res: Response;
+  try {
+    res = await callGemini(key, body);
+  } catch (e) {
+    // Gemini overloaded: a forwarded text still becomes a draft as-is (fix the name by replying to it).
+    if (e instanceof GeminiBusy && "text" in input) {
+      return { quote: input.text.trim(), lang: guessLang(input.text), signature: null, isReview: true };
+    }
+    throw e;
+  }
   const data = (await res.json()) as {
     candidates?: { content?: { parts?: { text?: string }[] }; finishReason?: string }[];
     promptFeedback?: { blockReason?: string };

@@ -67,6 +67,8 @@ export default function LangHint({ lang }: { lang: Lang }) {
   }, []);
 
   useEffect(() => {
+    // a couple's /r/<id> page is already in the language of their own review
+    if (/^\/(en\/)?r\//.test(location.pathname)) return;
     try {
       if (!landedNow() || localStorage.getItem(CHOSE)) return;
       const last = Number(localStorage.getItem(KEY)) || 0;

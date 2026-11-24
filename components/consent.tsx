@@ -5,9 +5,9 @@ import type { Lang } from "@/lib/types";
 
 export const GTM_ID = "GTM-W5DWRFJ6";
 const KEY = "kolot-consent-v1";
-/** Pages that never show the notice: /contact is a one-job page (the Instagram bio link) and the notice
- * covered its main button. Without a choice only necessary storage is used, so nothing non-essential loads there. */
-const QUIET = /^\/(en\/)?contact\/?$/;
+/** Pages that never show the notice: /contact (the Instagram bio link) and /r/<id> (a couple's "post it on Google"
+ * page) are one-job pages and the notice covered their main button. Without a choice only necessary storage is used, so nothing non-essential loads there. */
+const QUIET = /^\/(en\/)?(contact|r\/[^/]+)\/?$/;
 
 export type Consent = { necessary: true; analytics: boolean; marketing: boolean; date: string };
 
