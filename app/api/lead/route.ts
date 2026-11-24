@@ -1,6 +1,7 @@
 import { NextResponse, after } from "next/server";
 import { validEmail, validPhone } from "@/lib/lead";
 import { restoreMondayStage, sendToMonday } from "@/lib/monday";
+import { normalizeSource } from "@/lib/source";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -142,7 +143,9 @@ export async function POST(req: Request) {
   if (limited(ip)) return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
 
   const lang = body.lang === "en" ? "en" : "he";
-  const page = String(body.page || "").slice(0, 200);
+  const source = normalizeSource(body.source) || "website";
+  // the source rides along in the page label, so Zooglot's lead note and the band email show it too
+  const page = `${String(body.page || "").slice(0, 200)} · מקור: ${source}`;
   const raw = (body.fields || {}) as Record<string, unknown>;
   const fields: Record<string, string> = {};
   for (const [k, max] of Object.entries(FIELD_MAX)) {
@@ -163,7 +166,7 @@ export async function POST(req: Request) {
 
   // --- monday.com runs in parallel with Zooglot (independent of it)
   const monday: Promise<string | null> = process.env.MONDAY_API_TOKEN
-    ? sendToMonday(fields, lang, page).catch((e) => {
+    ? sendToMonday(fields, lang, page, source).catch((e) => {
         console.error("[lead] monday failed:", e instanceof Error ? e.message : e);
         return null;
       })

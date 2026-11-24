@@ -15,6 +15,7 @@ import {
   type LeadFields,
 } from "@/lib/lead";
 import { CONTACT } from "@/lib/site";
+import { leadSource } from "@/lib/source";
 import type { Lang } from "@/lib/types";
 import PlaceInput from "./PlaceInput";
 import "./lead-form.css";
@@ -189,6 +190,7 @@ export default function LeadForm({ lang, worldwide = false }: { lang: Lang; worl
           whatsapp_consent: f.whatsapp_consent,
           company: honeypot.current?.value || "",
           started_at: startedAt.current,
+          source: leadSource(),
         }),
       });
       const data = await res.json().catch(() => ({}));

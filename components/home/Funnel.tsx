@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import PlaceInput from "@/components/PlaceInput";
 import { EMPTY_LEAD, HEAR_OPTIONS, RELATION_OPTIONS, toPayloadFields, validPhone, type LeadFields } from "@/lib/lead";
 import type { Lang } from "@/lib/types";
+import { leadSource } from "@/lib/source";
 import { WHATSAPP } from "./copy";
 import "@/components/lead-form.css";
 
@@ -174,15 +175,18 @@ export default function AvailabilitySection({
   title,
   text,
   cta,
+  startOpen = false,
 }: {
   lang: Lang;
   eyebrow: string;
   title: string;
   text: string;
   cta: string;
+  /** skip the intro and open on the first question (the /contact page) */
+  startOpen?: boolean;
 }) {
   const t = T[lang];
-  const [phase, setPhase] = useState<Phase>("intro");
+  const [phase, setPhase] = useState<Phase>(startOpen ? "form" : "intro");
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState<1 | -1>(1);
   const [f, setF] = useState<LeadFields>(EMPTY_LEAD);
@@ -197,6 +201,10 @@ export default function AvailabilitySection({
   const rootRef = useRef<HTMLDivElement>(null);
 
   const set = <K extends keyof LeadFields>(k: K, v: LeadFields[K]) => setF((p) => ({ ...p, [k]: v }));
+
+  useEffect(() => {
+    if (startOpen) startedAt.current = Date.now();
+  }, [startOpen]);
 
   // Focus the new question so keyboard and screen-reader users land on it.
   useEffect(() => {
@@ -271,6 +279,7 @@ export default function AvailabilitySection({
           whatsapp_consent: f.whatsapp_consent,
           company: honeypot.current?.value || "",
           started_at: startedAt.current,
+          source: leadSource(),
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -311,6 +320,8 @@ export default function AvailabilitySection({
               <button type="button" className="kf-back" onClick={() => go(step - 1)}>
                 {lang === "he" ? "→" : "←"} {t.back}
               </button>
+            ) : startOpen ? (
+              <span />
             ) : (
               <button type="button" className="kf-back" onClick={() => setPhase("intro")}>
                 {lang === "he" ? "→" : "←"} {t.back}

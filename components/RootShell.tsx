@@ -3,6 +3,8 @@ import { fontVars } from "@/app/fonts";
 import { ConsentProvider } from "./consent";
 import AccessibilityWidget from "./AccessibilityWidget";
 import RevealObserver from "./Reveal";
+import SourceTracker from "./SourceTracker";
+import LangHint from "./LangHint";
 import { UI } from "@/lib/site";
 import type { Lang } from "@/lib/types";
 
@@ -21,6 +23,8 @@ export default function RootShell({ lang, children }: { lang: Lang; children: Re
           <AccessibilityWidget lang={lang} />
         </ConsentProvider>
         <RevealObserver />
+        <SourceTracker />
+        <LangHint lang={lang} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

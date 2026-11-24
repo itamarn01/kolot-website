@@ -25,6 +25,7 @@ const COL = {
   referrer: "text_mm05h4s4", // מי המליץ
   contactDate: "_____________", // תאריך התקשרות
   howArrived: "_________", // איך הגיעו
+  origin: "short_text19x5pzh7", // origin (text): "website", "ig"… (the board has a second, unused "origin" column)
 };
 
 // labels that exist on the board's status columns
@@ -69,7 +70,7 @@ type Coords = { lat: number; lng: number } | null;
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
-export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en", page: string, coords: Coords = null) {
+export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en", page: string, coords: Coords = null, source = "website") {
   const v: Record<string, unknown> = {};
   /** free-text lines that go into the item's first update (not the הערות column) */
   const info: [string, string][] = [];
@@ -101,6 +102,7 @@ export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en
     v[COL.referrer] = fields.referrer;
     info.push(["מי המליץ", fields.referrer]);
   }
+  v[COL.origin] = source || "website";
   v[COL.contactDate] = { date: todayIL() };
   v[COL.howArrived] = `אתר kolotband.co.il${page ? ` (${page})` : ""}`;
 
@@ -154,10 +156,10 @@ async function locate(fields: Record<string, string>): Promise<Coords> {
 }
 
 /** Creates the item. Returns the item id, or throws. */
-export async function sendToMonday(fields: Record<string, string>, lang: "he" | "en", page: string): Promise<string> {
-  const item = buildMondayItem(fields, lang, page, await locate(fields));
+export async function sendToMonday(fields: Record<string, string>, lang: "he" | "en", page: string, source = "website"): Promise<string> {
+  const item = buildMondayItem(fields, lang, page, await locate(fields), source);
   const data = await mondayQuery(
-    "mutation ($board: ID!, $group: String!, $name: String!, $values: JSON!) { create_item (board_id: $board, group_id: $group, item_name: $name, column_values: $values) { id } }",
+    "mutation ($board: ID!, $group: String!, $name: String!, $values: JSON!) { create_item (board_id: $board, group_id: $group, item_name: $name, column_values: $values, create_labels_if_missing: true) { id } }",
     { board: MONDAY_BOARD_ID, group: MONDAY_GROUP_ID, name: item.name, values: JSON.stringify(item.columnValues) },
   );
   const id = String(data?.create_item?.id || "");

@@ -936,3 +936,27 @@ body:has(.kh) .a11y-btn { background: #fff; width: 48px; height: 48px; }
   .kh-rv blockquote { font-size: 17px; }
   .kh-rv-cta { padding-block: 20px 110px; }
 }
+
+/* ------------------------------------------------- /contact: only the form (Instagram bio link) */
+.kh-contact { min-height: 100svh; display: flex; flex-direction: column; position: relative; isolation: isolate; background: transparent; }
+/* the showreel fills the screen and stays put while the form scrolls; the shade keeps the form readable */
+.kh-contact__video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: grayscale(1); background: var(--k-bg); }
+.kh-contact__shade { position: fixed; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10, 10, 10, 0.6) 0%, rgba(10, 10, 10, 0.82) 30%, rgba(10, 10, 10, 0.9) 100%); }
+.kh-contact__head { display: flex; justify-content: space-between; align-items: center; padding: 20px var(--k-gutter, 20px); max-width: 1200px; width: 100%; margin-inline: auto; }
+.kh-contact__head img { width: 72px; height: auto; display: block; }
+.kh-contact main { flex: 1; }
+.kh-contact .kh-contact__form { padding-block: 24px 56px; }
+.kh-contact__intro { text-align: center; margin-bottom: 32px; }
+.kh-contact__intro h1 { margin-top: 8px; }
+.kh-contact__foot { text-align: center; padding: 24px 20px 40px; display: grid; gap: 14px; justify-items: center; }
+.kh-contact__links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.kh-contact__legal { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; font-size: 12px; }
+.kh-contact__legal a { color: var(--k-muted); }
+
+/* ------------------------------------------------- English display text
+   barlev ships in one weight only (regular), so "bold" was a heavy browser-made bold. In English the
+   real regular weight plus a light stroke reads bold but slimmer. Hebrew keeps the original look. */
+:is(.kh-display-xl, .kh-display-l, .kh-menu a, .kh-marquee__q):lang(en) {
+  font-weight: 400;
+  -webkit-text-stroke: 0.018em currentColor;
+}
