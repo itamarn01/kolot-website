@@ -93,6 +93,7 @@ const T = {
     q: ["איך קוראים לך?", "מתי ואיפה חוגגים?", "מה תרצו באירוע?", "מה הטלפון שלך?"],
     name: "שם מלא",
     relation: "ומה הקשר שלך לאירוע?",
+    relationOther: "ספרו לנו, למשל: אח של הכלה",
     date: "תאריך האירוע",
     noDate: "עוד אין לנו תאריך",
     venue: "איפה? (לא חובה)",
@@ -133,6 +134,7 @@ const T = {
     q: ["What's your name?", "When and where is the party?", "What would you like?", "What's your phone number?"],
     name: "Full name",
     relation: "And how are you related to the event?",
+    relationOther: "Tell us, e.g. the bride's brother",
     date: "Event date",
     noDate: "We don't have a date yet",
     venue: "Where? (optional)",
@@ -357,7 +359,7 @@ export default function AvailabilitySection({
                   onChange={(e) => set("contact_name", e.target.value)}
                   autoFocus
                 />
-                <fieldset className="kf-chips">
+                <fieldset className="kf-chips kf-chips--row">
                   <legend>{t.relation}</legend>
                   {RELATION_OPTIONS.map((o) => (
                     <button type="button" key={o.value} className={f.relation === o.value ? "is-on" : ""} aria-pressed={f.relation === o.value} onClick={() => set("relation", f.relation === o.value ? "" : o.value)}>
@@ -365,6 +367,17 @@ export default function AvailabilitySection({
                     </button>
                   ))}
                 </fieldset>
+                {f.relation === "אחר" && (
+                  <input
+                    className="kf-input kf-input--small kf-reveal"
+                    placeholder={t.relationOther}
+                    aria-label={t.relationOther}
+                    value={f.relation_other}
+                    maxLength={80}
+                    onChange={(e) => set("relation_other", e.target.value)}
+                    autoFocus
+                  />
+                )}
               </>
             )}
 

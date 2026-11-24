@@ -5,6 +5,9 @@ import type { Lang } from "@/lib/types";
 
 export const GTM_ID = "GTM-W5DWRFJ6";
 const KEY = "kolot-consent-v1";
+/** Pages that never show the notice: /contact is a one-job page (the Instagram bio link) and the notice
+ * covered its main button. Without a choice only necessary storage is used, so nothing non-essential loads there. */
+const QUIET = /^\/(en\/)?contact\/?$/;
 
 export type Consent = { necessary: true; analytics: boolean; marketing: boolean; date: string };
 
@@ -65,7 +68,7 @@ export function ConsentProvider({ lang, children }: { lang: Lang; children: Reac
         const c = JSON.parse(raw) as Consent;
         setConsent(c);
         setDraft({ analytics: c.analytics, marketing: c.marketing });
-      } else setShow(true);
+      } else if (!QUIET.test(location.pathname)) setShow(true);
     } catch {
       setShow(true);
     }

@@ -1,5 +1,6 @@
 import type { Lang } from "@/lib/types";
-import { COPY, PHONE, WHATSAPP } from "./copy";
+import { COPY } from "./copy";
+import { WhatsAppFab } from "./Shell";
 import AvailabilitySection from "./Funnel";
 import "./home.css";
 
@@ -38,14 +39,6 @@ export default function ContactPage({ lang }: { lang: Lang }) {
       </main>
 
       <footer className="kh-contact__foot">
-        <div className="kh-contact__links">
-          <a className="kh-btn kh-btn--outline" href={WHATSAPP} target="_blank" rel="noopener noreferrer">
-            {he ? "וואטסאפ" : "WhatsApp"}
-          </a>
-          <a className="kh-btn kh-btn--outline" href={PHONE.href} dir="ltr">
-            {PHONE[lang]}
-          </a>
-        </div>
         <div className="kh-contact__legal">
           {c.legal.map((l) => (
             <a key={l.href} href={l.href}>
@@ -54,6 +47,7 @@ export default function ContactPage({ lang }: { lang: Lang }) {
           ))}
         </div>
       </footer>
+      <WhatsAppFab lang={lang} />
     </div>
   );
 }

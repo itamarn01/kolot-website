@@ -828,6 +828,11 @@ html.kh-menu-open .a11y-btn { opacity: 0; pointer-events: none; transform: scale
 .kf-chips button:hover { border-color: rgba(255, 255, 255, 0.6) !important; }
 .kf-chips button.is-on { background: var(--k-accent) !important; border-color: var(--k-accent) !important; color: var(--k-on-accent); }
 .kf-chips--big { gap: 8px; }
+/* phones: the five "how are you related" chips share one row in both languages */
+@media (max-width: 767px) {
+  .kf-chips--row { flex-wrap: nowrap; gap: 5px; min-inline-size: 0; } /* a fieldset won't shrink below its content without this */
+  .kf-chips--row button { flex: 1 1 auto; min-width: 0; padding: 10px 4px !important; font-size: 12.5px !important; white-space: nowrap; }
+}
 .kf-chips--big button { padding: 18px 24px !important; font-size: 17px !important; }
 /* Days to the event: fades up, the number counts up and gives a small bounce when it lands. */
 .kf-countdown {
