@@ -23,7 +23,6 @@ const COL = {
   nextAction: "status7", // פעולה הבאה
   hearAbout: "_______________", // How'd You Hear About Us?
   referrer: "text_mm05h4s4", // מי המליץ
-  notes: "_____", // הערות
   contactDate: "_____________", // תאריך התקשרות
   howArrived: "_________", // איך הגיעו
 };
@@ -68,19 +67,22 @@ const todayIL = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jerusal
 
 type Coords = { lat: number; lng: number } | null;
 
+const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
 export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en", page: string, coords: Coords = null) {
   const v: Record<string, unknown> = {};
-  const extraNotes: string[] = [];
+  /** free-text lines that go into the item's first update (not the הערות column) */
+  const info: [string, string][] = [];
 
   if (fields.contact_name) v[COL.contact] = fields.contact_name;
   if (fields.relation) {
     if (RELATION_LABELS.has(fields.relation)) v[COL.relation] = { label: fields.relation };
-    else extraNotes.push(`קרבה: ${fields.relation}`);
+    else info.push(["קרבה", fields.relation]);
   }
   if (fields.event_date) v[COL.eventDate] = { date: fields.event_date };
   const phone = mondayPhone(fields.phone1 || "");
   if (phone) v[COL.phone] = phone;
-  else if (fields.phone1) extraNotes.push(`טלפון: ${fields.phone1}`);
+  else if (fields.phone1) info.push(["טלפון", fields.phone1]);
   if (fields.email) v[COL.email] = { email: fields.email, text: fields.email };
   if (fields.event_location) {
     // the visitor's own wording is the address; the coordinates only place the pin
@@ -91,17 +93,24 @@ export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en
   v[COL.stage] = { label: lang === "en" ? "לקוח משאלון אנגלית" : "לקוח משאלון" };
   v[COL.nextAction] = { label: "עוד פרטים" };
   if (fields.hear_about_us) {
-    const mapped = HEAR_MAP[fields.hear_about_us];
-    v[COL.hearAbout] = { label: mapped || "אחר" };
-    if (!mapped || fields.hear_about_us === "גוגל") extraNotes.push(`איך שמעו: ${fields.hear_about_us}`);
+    // the status column keeps the board's filters working; the visitor's exact answer goes in the update
+    v[COL.hearAbout] = { label: HEAR_MAP[fields.hear_about_us] || "אחר" };
+    info.push(["איך שמעו עלינו", fields.hear_about_us]);
   }
-  if (fields.referrer) v[COL.referrer] = fields.referrer;
+  if (fields.referrer) {
+    v[COL.referrer] = fields.referrer;
+    info.push(["מי המליץ", fields.referrer]);
+  }
   v[COL.contactDate] = { date: todayIL() };
   v[COL.howArrived] = `אתר kolotband.co.il${page ? ` (${page})` : ""}`;
-  const notes = [fields.notes, ...extraNotes, "🌐 ליד מהאתר"].filter(Boolean).join(" | ");
-  v[COL.notes] = notes.slice(0, 1900);
 
-  return { name: fields.contact_name || fields.phone1 || "ליד מהאתר", columnValues: v };
+  const lines = [
+    `<p><strong>🌐 ליד חדש מהאתר kolotband.co.il</strong>${page ? ` · ${esc(page)}` : ""} · ${lang === "en" ? "אנגלית" : "עברית"}</p>`,
+    ...info.map(([k, val]) => `<p><strong>${esc(k)}:</strong> ${esc(val)}</p>`),
+    fields.notes ? `<p><strong>הערות:</strong><br>${esc(fields.notes).replace(/\n/g, "<br>")}</p>` : "",
+  ].filter(Boolean);
+
+  return { name: fields.contact_name || fields.phone1 || "ליד מהאתר", columnValues: v, update: lines.join("") };
 }
 
 async function mondayQuery(query: string, variables: Record<string, unknown>) {
@@ -151,5 +160,13 @@ export async function sendToMonday(fields: Record<string, string>, lang: "he" | 
     "mutation ($board: ID!, $group: String!, $name: String!, $values: JSON!) { create_item (board_id: $board, group_id: $group, item_name: $name, column_values: $values) { id } }",
     { board: MONDAY_BOARD_ID, group: MONDAY_GROUP_ID, name: item.name, values: JSON.stringify(item.columnValues) },
   );
-  return String(data?.create_item?.id || "");
+  const id = String(data?.create_item?.id || "");
+  // notes, how they heard about us, who recommended: a new update on the item, not the הערות column
+  if (id && item.update) {
+    await mondayQuery("mutation ($item: ID!, $body: String!) { create_update (item_id: $item, body: $body) { id } }", {
+      item: id,
+      body: item.update,
+    }).catch((e) => console.error("[lead] monday update failed:", e instanceof Error ? e.message : e));
+  }
+  return id;
 }
