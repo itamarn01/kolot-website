@@ -1026,6 +1026,8 @@ html.kh-menu-open .a11y-btn { opacity: 0; pointer-events: none; transform: scale
   font-weight: 400;
   -webkit-text-stroke: 0.018em currentColor;
 }
+/* The outlined marquee row is see-through text drawn only by its stroke: keep that stroke yellow. */
+.kh-marquee__row--outline .kh-marquee__q:lang(en) { -webkit-text-stroke: 1.5px var(--k-accent); }
 
 /* ------------------------------------------------- legal pages (privacy, cookies, accessibility, terms) */
 .kh-legal { padding-block: 168px 96px; }
