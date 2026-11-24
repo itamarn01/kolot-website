@@ -154,6 +154,7 @@ export const COPY = {
     ],
     legal: [
       { label: "פרטיות", href: "/privacy-policy/" },
+      { label: "עוגיות", href: "/cookie-policy/" },
       { label: "נגישות", href: "/accessibility-statement/" },
       { label: "תנאי שימוש", href: "/terms/" },
     ],
@@ -226,6 +227,7 @@ export const COPY = {
     ],
     legal: [
       { label: "Privacy", href: "/en/privacy-policy/" },
+      { label: "Cookies", href: "/en/cookie-policy/" },
       { label: "Accessibility", href: "/en/accessibility-statement/" },
       { label: "Terms", href: "/en/terms/" },
     ],

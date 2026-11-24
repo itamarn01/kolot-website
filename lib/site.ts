@@ -16,11 +16,15 @@ export const CONTACT = {
  * They are used by the privacy policy, terms and accessibility statement.
  */
 export const LEGAL = {
-  businessName: "[שם העסק המשפטי / Legal business name]",
-  businessId: "[ח.פ / ע.מ – Business ID]",
-  address: "[כתובת העסק / Business address]",
-  accessibilityContact: "[שם רכז/ת הנגישות / Accessibility coordinator]",
-  lastUpdated: "18/11/2026",
+  owner: {
+    he: { name: "להקת קולות", person: "נתנאל יוסף", id: "עוסק מורשה 036897734", address: "הגליל 20, חיפה" },
+    en: { name: "KOLOT band", person: "Netanel Yosef", id: "Licensed dealer (Osek Murshe) no. 036897734", address: "20 HaGalil St., Haifa, Israel" },
+  },
+  accessibility: {
+    he: { name: "נתנאל יוסף", phone: "054-3038000", phoneHref: "tel:+972543038000" },
+    en: { name: "Netanel Yosef", phone: "+972 54-303-8000", phoneHref: "tel:+972543038000" },
+  },
+  lastUpdated: "24/11/2026",
 };
 
 export type NavItem = { label: string; href: string; children?: NavItem[]; highlight?: boolean };

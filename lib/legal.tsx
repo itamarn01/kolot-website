@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import { CONTACT, LEGAL } from "./site";
 import type { Lang } from "./types";
 
-/** Highlights values that still have to be filled in (see LEGAL in lib/site.ts). */
-const P = ({ children }: { children: ReactNode }) => <span className="placeholder">{children}</span>;
+const O = LEGAL.owner;
+const A = LEGAL.accessibility;
 
 export type LegalKey = "accessibility" | "privacy" | "cookies" | "terms";
 
@@ -51,21 +51,22 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
             תכנים מוטמעים מ-YouTube ומאינסטגרם מסופקים על ידי צדדים שלישיים ואינם בשליטתנו המלאה. אם
             נתקלתם בקושי – נשמח לקבל את פנייתכם גם בטלפון או בדוא״ל.
           </p>
-          <h2>פרטי רכז/ת הנגישות</h2>
-          <ul>
-            <li>
-              שם: <P>{LEGAL.accessibilityContact}</P>
-            </li>
-            <li>טלפון: {phone}</li>
-            <li>דוא״ל: {mail}</li>
-          </ul>
+          <h2>רכז הנגישות</h2>
+          <div className="kh-legal__card">
+            <p>
+              <strong>{A.he.name}</strong>
+            </p>
+            <p>
+              טלפון: <a href={A.he.phoneHref} dir="ltr">{A.he.phone}</a>
+            </p>
+            <p>דוא״ל: {mail}</p>
+          </div>
           <p>נשתדל להשיב לכל פנייה בתוך 14 ימי עבודה. בפנייה מומלץ לפרט את העמוד, תיאור הבעיה וסוג הדפדפן/הטכנולוגיה המסייעת.</p>
           <h2>הסדרי נגישות בשירות</h2>
           <p>
             השירות של קולות ניתן באולמות ובמקומות האירוע שבחרו הלקוחות. נגישות המבנה היא באחריות בעלי המקום. פגישות תכנון יכולות להתקיים גם בטלפון
             או בשיחת וידאו לפי בקשה.
           </p>
-          <p>תאריך עדכון ההצהרה: {LEGAL.lastUpdated}</p>
         </>
       ),
     },
@@ -100,15 +101,16 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
             Embedded YouTube and Instagram content is provided by third parties that we do not fully control. If anything is hard to use, please contact us by phone or email.
           </p>
           <h2>Accessibility coordinator</h2>
-          <ul>
-            <li>
-              Name: <P>{LEGAL.accessibilityContact}</P>
-            </li>
-            <li>Phone: {phone}</li>
-            <li>Email: {mail}</li>
-          </ul>
+          <div className="kh-legal__card">
+            <p>
+              <strong>{A.en.name}</strong>
+            </p>
+            <p>
+              Phone: <a href={A.en.phoneHref}>{A.en.phone}</a>
+            </p>
+            <p>Email: {mail}</p>
+          </div>
           <p>We aim to answer within 14 business days. Please tell us the page, the problem and the browser / assistive technology you use.</p>
-          <p>Last updated: {LEGAL.lastUpdated}</p>
         </>
       ),
     },
@@ -125,9 +127,15 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
             13) ולתקנות הגנת הפרטיות (אבטחת מידע), התשע״ז-2017.
           </p>
           <h2>מי אחראי על המידע</h2>
-          <p>
-            <P>{LEGAL.businessName}</P>, <P>{LEGAL.businessId}</P>, <P>{LEGAL.address}</P> („קולות”, „אנחנו”). ליצירת קשר בנושאי פרטיות: {mail}.
-          </p>
+          <div className="kh-legal__card">
+            <p>
+              <strong>{O.he.name}</strong> – {O.he.person}
+            </p>
+            <p>{O.he.id}</p>
+            <p>{O.he.address}</p>
+            <p>ליצירת קשר בנושאי פרטיות: {mail}</p>
+          </div>
+          <p>(להלן: „קולות” או „אנחנו”).</p>
           <h2>איזה מידע נאסף</h2>
           <ul>
             <li>
@@ -145,7 +153,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           <h2>למה אנחנו משתמשים במידע</h2>
           <ul>
             <li>לחזור אליכם, להציע הצעת מחיר ולתאם את האירוע.</li>
-            <li>לנהל את קשרי הלקוחות שלנו (מערכת Zooglot).</li>
+            <li>לנהל את הפניות וקשרי הלקוחות שלנו.</li>
             <li>לשפר את האתר ואת השירות (בהסכמה בלבד).</li>
             <li>לעמוד בדרישות החוק.</li>
           </ul>
@@ -153,7 +161,8 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           <h2>עם מי המידע משותף</h2>
           <ul>
             <li>
-              <strong>Zooglot</strong> – מערכת ניהול הלידים שלנו (מאוחסנת ב-Railway וב-Supabase), אליה נשלחים פרטי הטופס. ממנה נשלחת אליכם הודעת אישור בוואטסאפ ממספר הלהקה (אם אישרתם זאת בטופס) ומייל אישור דרך Resend.
+              <strong>מערכות ניהול הלקוחות שלנו</strong> – פרטי הטופס נשמרים במערכות לניהול פניות ולקוחות, המאוחסנות אצל ספקי ענן. משם נשלחים אליכם הודעת
+              אישור בוואטסאפ ממספר הלהקה (אם אישרתם זאת בטופס) ומייל אישור.
             </li>
             <li>
               <strong>Google</strong> – Tag Manager / Analytics, רק בהסכמה.
@@ -176,7 +185,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           <h2>קטינים</h2>
           <p>האתר אינו מיועד לאיסוף מידע מקטינים מתחת לגיל 18 ללא הסכמת הורה.</p>
           <h2>שינויים</h2>
-          <p>נעדכן מדיניות זו מעת לעת. עדכון אחרון: {LEGAL.lastUpdated}</p>
+          <p>נעדכן מדיניות זו מעת לעת. תאריך העדכון האחרון מופיע בראש העמוד.</p>
         </>
       ),
     },
@@ -189,9 +198,15 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
             (1981, including Amendment 13) and the Privacy Protection (Data Security) Regulations (2017).
           </p>
           <h2>Who is responsible</h2>
-          <p>
-            <P>{LEGAL.businessName}</P>, <P>{LEGAL.businessId}</P>, <P>{LEGAL.address}</P> (“KOLOT”, “we”). Privacy contact: {mail}.
-          </p>
+          <div className="kh-legal__card">
+            <p>
+              <strong>{O.en.name}</strong> – {O.en.person}
+            </p>
+            <p>{O.en.id}</p>
+            <p>{O.en.address}</p>
+            <p>Privacy contact: {mail}</p>
+          </div>
+          <p>(“KOLOT”, “we”).</p>
           <h2>What we collect</h2>
           <ul>
             <li>
@@ -209,7 +224,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           <h2>How we use it</h2>
           <ul>
             <li>To get back to you, send a quote and plan your event.</li>
-            <li>To manage our customer relationships (Zooglot CRM).</li>
+            <li>To manage enquiries and our customer relationships.</li>
             <li>To improve the website and our service (with consent only).</li>
             <li>To comply with the law.</li>
           </ul>
@@ -217,7 +232,8 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           <h2>Who we share it with</h2>
           <ul>
             <li>
-              <strong>Zooglot</strong> – our lead management app (hosted on Railway and Supabase) that receives the form. It sends you a WhatsApp confirmation from the band's number (if you agreed in the form) and a confirmation email through Resend.
+              <strong>Our customer management systems</strong> – the form details are stored in the systems we use to manage enquiries and customers, hosted
+              by cloud providers. They send you a WhatsApp confirmation from the band's number (if you agreed in the form) and a confirmation email.
             </li>
             <li>
               <strong>Google</strong> – Tag Manager / Analytics, with consent only.
@@ -237,7 +253,7 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
             {mail} and we will respond within 30 days. You may also contact the Israeli Privacy Protection Authority.
           </p>
           <h2>Changes</h2>
-          <p>We may update this policy from time to time. Last updated: {LEGAL.lastUpdated}</p>
+          <p>We may update this policy from time to time. The date of the latest update is shown at the top of this page.</p>
         </>
       ),
     },
@@ -287,6 +303,27 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
                 <td>עד שליחה או מחיקה</td>
               </tr>
               <tr>
+                <td>kolot_src</td>
+                <td>קולות (אחסון מקומי)</td>
+                <td>הכרחית</td>
+                <td>מאיפה הגעתם לאתר (למשל מאינסטגרם), כדי לצרף את המקור לפנייה</td>
+                <td>30 יום</td>
+              </tr>
+              <tr>
+                <td>kolot_lang_hint, kolot_lang_chosen</td>
+                <td>קולות (אחסון מקומי)</td>
+                <td>הכרחית</td>
+                <td>הצעת השפה מוצגת פעם אחת בלבד, ולא אחרי שבחרתם שפה</td>
+                <td>עד מחיקה</td>
+              </tr>
+              <tr>
+                <td>kolot_seen</td>
+                <td>קולות (אחסון לביקור הנוכחי)</td>
+                <td>הכרחית</td>
+                <td>זיהוי העמוד הראשון בביקור</td>
+                <td>עד סגירת הלשונית</td>
+              </tr>
+              <tr>
                 <td>_ga, _ga_*</td>
                 <td>Google Analytics (דרך Google Tag Manager)</td>
                 <td>סטטיסטיקה</td>
@@ -311,8 +348,9 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           </table>
           </div>
           <h2>איך לחסום עוגיות</h2>
-          <p>בנוסף לבאנר, ניתן לחסום או למחוק עוגיות בהגדרות הדפדפן. חסימת עוגיות הכרחיות עלולה לפגוע בתפקוד האתר.</p>
-          <p>עדכון אחרון: {LEGAL.lastUpdated}</p>
+          <p>
+            עד שתאשרו בחלונית העוגיות, נעשה שימוש בעוגיות הכרחיות בלבד. בנוסף, ניתן לחסום או למחוק עוגיות בהגדרות הדפדפן. חסימת עוגיות הכרחיות עלולה לפגוע בתפקוד האתר.
+          </p>
         </>
       ),
     },
@@ -358,6 +396,27 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
                 <td>Until sent or deleted</td>
               </tr>
               <tr>
+                <td>kolot_src</td>
+                <td>KOLOT (local storage)</td>
+                <td>Necessary</td>
+                <td>Where you came from (e.g. Instagram), attached to your enquiry</td>
+                <td>30 days</td>
+              </tr>
+              <tr>
+                <td>kolot_lang_hint, kolot_lang_chosen</td>
+                <td>KOLOT (local storage)</td>
+                <td>Necessary</td>
+                <td>The language suggestion shows once, and never after you pick a language</td>
+                <td>Until deleted</td>
+              </tr>
+              <tr>
+                <td>kolot_seen</td>
+                <td>KOLOT (session storage)</td>
+                <td>Necessary</td>
+                <td>Spots the first page of a visit</td>
+                <td>Until the tab is closed</td>
+              </tr>
+              <tr>
                 <td>_ga, _ga_*</td>
                 <td>Google Analytics (via Google Tag Manager)</td>
                 <td>Statistics</td>
@@ -382,8 +441,9 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           </table>
           </div>
           <h2>Blocking cookies</h2>
-          <p>You can also block or delete cookies in your browser settings. Blocking necessary storage may affect how the site works.</p>
-          <p>Last updated: {LEGAL.lastUpdated}</p>
+          <p>
+            Until you accept in the cookie notice, only necessary storage is used. You can also block or delete cookies in your browser settings. Blocking necessary storage may affect how the site works.
+          </p>
         </>
       ),
     },
@@ -413,11 +473,10 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           <h2>הגבלת אחריות</h2>
           <p>אנו עושים מאמץ שהאתר יהיה זמין ומדויק, אך הוא ניתן כמות שהוא (AS IS) ואיננו אחראים לנזק שייגרם משימוש בו או מהסתמכות על המידע בו.</p>
           <h2>דין וסמכות שיפוט</h2>
-          <p>על תנאים אלה יחולו דיני מדינת ישראל, וסמכות השיפוט הבלעדית נתונה לבתי המשפט המוסמכים במחוז <P>[מחוז]</P>.</p>
+          <p>על תנאים אלה יחולו דיני מדינת ישראל, וסמכות השיפוט הבלעדית נתונה לבתי המשפט המוסמכים במחוז חיפה.</p>
           <p>
             יצירת קשר: {mail} | {phone}
           </p>
-          <p>עדכון אחרון: {LEGAL.lastUpdated}</p>
         </>
       ),
     },
@@ -444,12 +503,11 @@ export const LEGAL_PAGES: Record<LegalKey, Record<Lang, { title: string; body: R
           <p>The site is provided “as is”. We are not liable for damage caused by using it or by relying on its content.</p>
           <h2>Governing law</h2>
           <p>
-            These terms are governed by the laws of the State of Israel; the competent courts of <P>[district]</P> have exclusive jurisdiction.
+            These terms are governed by the laws of the State of Israel; the competent courts of the Haifa district have exclusive jurisdiction.
           </p>
           <p>
             Contact: {mail} | {phone}
           </p>
-          <p>Last updated: {LEGAL.lastUpdated}</p>
         </>
       ),
     },

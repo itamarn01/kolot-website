@@ -2,6 +2,7 @@ import type { Lang } from "@/lib/types";
 import { COPY, WHATSAPP } from "./copy";
 import AvailabilitySection from "./Funnel";
 import { HeaderShell, InquireButton, MobileMenu } from "./Interactive";
+import { CookieSettingsButton } from "../consent";
 
 /** Header, footer and the floating WhatsApp button, shared by the homepage and the new-design pages. */
 
@@ -85,6 +86,7 @@ export function SiteFooter({ lang }: { lang: Lang }) {
                 {l.label}
               </a>
             ))}
+            <CookieSettingsButton label={lang === "he" ? "הגדרות עוגיות" : "Cookie settings"} />
           </div>
           <p className="kh-label kh-footer__tag">TURN IT UP</p>
         </div>

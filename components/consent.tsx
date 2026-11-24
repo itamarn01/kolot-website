@@ -26,35 +26,27 @@ function loadGtm() {
 
 const T = {
   he: {
-    title: "האתר משתמש בעוגיות 🍪",
-    body: "אנחנו משתמשים בעוגיות הכרחיות כדי שהאתר יעבוד, ובאישורך גם בעוגיות סטטיסטיקה (Google Tag Manager / Analytics) ושיווק כדי לשפר את האתר. אפשר לשנות את הבחירה בכל עת.",
-    policy: "למדיניות העוגיות",
-    accept: "אישור הכל",
+    body: "האתר משתמש בעוגיות",
+    policy: "פרטים",
+    accept: "אישור",
     reject: "רק הכרחיות",
     settings: "הגדרות",
-    save: "שמירת הבחירה",
+    save: "שמירה",
     necessary: "הכרחיות",
-    necessaryD: "נדרשות לתפקוד האתר (שמירת הבחירה שלך, הגדרות נגישות).",
     analytics: "סטטיסטיקה",
-    analyticsD: "Google Tag Manager / Google Analytics – מדידת שימוש אנונימית.",
-    marketing: "שיווק ותוכן מוטמע",
-    marketingD: "תוכן מרשתות חברתיות (אינסטגרם) ופרסום ממומן.",
+    marketing: "שיווק",
     policyHref: "/cookie-policy/",
   },
   en: {
-    title: "This site uses cookies 🍪",
-    body: "We use necessary cookies to make the site work and, with your permission, statistics (Google Tag Manager / Analytics) and marketing cookies to improve it. You can change your choice at any time.",
-    policy: "Cookie policy",
-    accept: "Accept all",
+    body: "This site uses cookies",
+    policy: "Details",
+    accept: "Accept",
     reject: "Necessary only",
     settings: "Settings",
-    save: "Save my choice",
+    save: "Save",
     necessary: "Necessary",
-    necessaryD: "Required for the site to work (remembering this choice, accessibility settings).",
     analytics: "Statistics",
-    analyticsD: "Google Tag Manager / Google Analytics – anonymous usage measurement.",
-    marketing: "Marketing & embedded content",
-    marketingD: "Social media embeds (Instagram) and advertising.",
+    marketing: "Marketing",
     policyHref: "/en/cookie-policy/",
   },
 };
@@ -84,6 +76,7 @@ export function ConsentProvider({ lang, children }: { lang: Lang; children: Reac
     if (consent?.analytics) loadGtm();
   }, [consent]);
 
+
   const save = useCallback((c: Omit<Consent, "necessary" | "date">) => {
     const full: Consent = { necessary: true, ...c, date: new Date().toISOString() };
     setConsent(full);
@@ -107,38 +100,32 @@ export function ConsentProvider({ lang, children }: { lang: Lang; children: Reac
     <ConsentCtx.Provider value={{ consent, save, open }}>
       {children}
       {ready && show && (
-        <div className="cookie" role="dialog" aria-modal="false" aria-labelledby="cookie-title">
-          <div>
-            <h2 id="cookie-title">{t.title}</h2>
-            <p style={{ margin: 0 }}>
-              {t.body} <a href={t.policyHref}>{t.policy}</a>
-            </p>
-          </div>
+        <div className="cookie" role="dialog" aria-modal="false" aria-labelledby="cookie-title" dir={lang === "he" ? "rtl" : "ltr"} lang={lang}>
+          <p className="cookie__text" id="cookie-title">
+            {t.body} · <a href={t.policyHref}>{t.policy}</a>
+          </p>
           <div className="cookie__actions">
-            <button className="cookie__btn" type="button" onClick={() => setPrefs((v) => !v)} aria-expanded={prefs}>
-              {t.settings}
+            <button className="cookie__btn cookie__btn--primary" type="button" onClick={() => save({ analytics: true, marketing: true })}>
+              {t.accept}
             </button>
             <button className="cookie__btn" type="button" onClick={() => save({ analytics: false, marketing: false })}>
               {t.reject}
             </button>
-            <button className="cookie__btn cookie__btn--primary" type="button" onClick={() => save({ analytics: true, marketing: true })}>
-              {t.accept}
+            <button className="cookie__link" type="button" onClick={() => setPrefs((v) => !v)} aria-expanded={prefs}>
+              {t.settings}
             </button>
           </div>
           {prefs && (
             <div className="cookie__prefs">
               {(
                 [
-                  ["necessary", t.necessary, t.necessaryD],
-                  ["analytics", t.analytics, t.analyticsD],
-                  ["marketing", t.marketing, t.marketingD],
+                  ["necessary", t.necessary],
+                  ["analytics", t.analytics],
+                  ["marketing", t.marketing],
                 ] as const
-              ).map(([k, label, d]) => (
+              ).map(([k, label]) => (
                 <div className="cookie__pref" key={k}>
-                  <div>
-                    <strong>{label}</strong>
-                    <small>{d}</small>
-                  </div>
+                  <strong>{label}</strong>
                   <label className="switch">
                     <input
                       type="checkbox"

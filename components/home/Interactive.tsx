@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import YouTubeModal from "@/components/YouTubeModal";
 import type { Lang } from "@/lib/types";
@@ -57,32 +57,78 @@ export function HeaderShell({ children }: { children: ReactNode }) {
   return <header className={`kh-header${solid ? " is-solid" : ""}`}>{children}</header>;
 }
 
+/**
+ * Full-screen menu on phones. It fades in softly and the links rise one after another; closing fades it out.
+ * The panel is rendered next to the header, not inside it: once the page scrolls the header gets a blur,
+ * and a blurred parent would shrink a fixed child to the header's own strip.
+ */
 export function MobileMenu({ lang }: { lang: Lang }) {
   const c = COPY[lang];
-  const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false); // in the DOM (not hidden)
+  const [open, setOpen] = useState(false); // animated to the open state
+  const [host, setHost] = useState<HTMLElement | null>(null);
+  const burger = useRef<HTMLButtonElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  // the page wrapper (.kh) carries the colours, fonts and direction the menu needs
+  useEffect(() => setHost((burger.current?.closest(".kh") as HTMLElement | null) ?? document.body), []);
+
+  const show = () => {
+    clearTimeout(closeTimer.current);
+    setMounted(true);
+    requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
+  };
+  const hide = () => {
+    setOpen(false);
+    clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setMounted(false), 400);
+  };
+
   useEffect(() => {
-    document.documentElement.style.overflow = open ? "hidden" : "";
-    const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.documentElement.style.overflow = mounted ? "hidden" : "";
+    // the accessibility button hides while the menu is open (CSS: html.kh-menu-open)
+    document.documentElement.classList.toggle("kh-menu-open", mounted);
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && hide();
     window.addEventListener("keydown", esc);
     return () => window.removeEventListener("keydown", esc);
-  }, [open]);
+  }, [mounted]);
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
+
+  const panel = (
+    <nav id="kh-menu" className={`kh-menu${open ? " is-open" : ""}`} aria-label={c.menu} hidden={!mounted}>
+      <ul style={{ "--n": c.nav.length } as CSSProperties}>
+        {c.nav.map((n, i) => (
+          <li key={n.href} style={{ "--i": i } as CSSProperties}>
+            <a href={n.href} onClick={hide}>
+              <span className="kh-menu__n" aria-hidden>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              {n.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p className="kh-label kh-menu__tag" dir="ltr" aria-hidden>
+        TURN IT UP.
+      </p>
+    </nav>
+  );
+
   return (
     <>
-      <button type="button" className={`kh-burger${open ? " is-open" : ""}`} aria-expanded={open} aria-controls="kh-menu" aria-label={open ? c.close : c.menu} onClick={() => setOpen(!open)}>
+      <button
+        ref={burger}
+        type="button"
+        className={`kh-burger${open ? " is-open" : ""}`}
+        aria-expanded={open}
+        aria-controls="kh-menu"
+        aria-label={open ? c.close : c.menu}
+        onClick={() => (open ? hide() : show())}
+      >
         <span />
         <span />
       </button>
-      <nav id="kh-menu" className={`kh-menu${open ? " is-open" : ""}`} aria-label={c.menu} hidden={!open}>
-        <ul>
-          {c.nav.map((n) => (
-            <li key={n.href}>
-              <a href={n.href} onClick={() => setOpen(false)}>
-                {n.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {host && createPortal(panel, host)}
     </>
   );
 }
@@ -119,7 +165,8 @@ export function HeroVideo({ lang }: { lang: Lang }) {
       const f = full.current;
       if (!f) return;
       const mobile = window.matchMedia("(max-width: 767px)").matches;
-      const src = `/media/showreel/showreel-${mobile ? "mobile" : "desktop"}-color.mp4`;
+      // phones get a 720p encode (~2.4 Mbps, 17 MB): the 1080p file stalled on weak mobile connections
+      const src = mobile ? "/media/showreel/showreel-mobile-color-720.mp4" : "/media/showreel/showreel-desktop-color.mp4";
       if (!f.src.endsWith(src)) f.src = src;
       f.currentTime = 0;
       f.muted = false;
