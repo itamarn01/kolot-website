@@ -9,7 +9,8 @@ const repo = () => process.env.GITHUB_REPO ?? "itamarn01/kolot-website";
 
 function headers() {
   return {
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    // reads also work without a token (the repo is public), e.g. the review page on a local dev server
+    ...(process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
     "User-Agent": "kolot-reviews-bot",

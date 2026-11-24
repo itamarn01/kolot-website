@@ -99,8 +99,8 @@ async function sayForWhatsApp(chat: number, text: string) {
 }
 
 /** After a review is published: the message asking the couple to post it on Google too. */
-async function sendReviewAsk(chat: number, r: Pick<Review, "id" | "lang">, fresh: boolean) {
-  await say(chat, `👇 הודעה מוכנה לזוג: העתיקו לצ'אט שלהם או לחצו ״שליחה בווטסאפ״.${fresh ? "\n(הלינק יעבוד בעוד 1–2 דקות, כשהאתר מתעדכן)" : ""}`);
+async function sendReviewAsk(chat: number, r: Pick<Review, "id" | "lang">) {
+  await say(chat, "👇 הודעה מוכנה לזוג: העתיקו לצ'אט שלהם או לחצו ״שליחה בווטסאפ״.");
   await sayForWhatsApp(chat, reviewAskMessage(r));
 }
 
@@ -214,7 +214,7 @@ async function onButton(q: NonNullable<TgUpdate["callback_query"]>) {
       const all = JSON.parse((await readFile(REVIEWS)).text) as Review[];
       const r = all.find((x) => x.id === data.slice(4));
       if (!r) return void (await say(chat, "ההמלצה הזאת כבר לא באתר."));
-      return void (await sendReviewAsk(chat, r, false));
+      return void (await sendReviewAsk(chat, r));
     }
     if (data.startsWith("rmy:")) {
       await ack("מסיר…");
@@ -281,7 +281,7 @@ async function onButton(q: NonNullable<TgUpdate["callback_query"]>) {
       await updateJson<Review[]>(REVIEWS, `Reviews bot: add ${review.name ?? "anonymous"}${review.venue ? ` (${review.venue})` : ""}`, (all) => [review, ...all]);
       const who = review.name ? `${review.name}${review.venue ? ` · ${review.venue}` : ""}` : "אנונימי";
       await edit(`✅ פורסם! יופיע באתר תוך 1–2 דקות\nkolotband.co.il/reviews/\n\n${d.quote}\n— ${who}`, keyboard([[{ text: "🗑 הסרה מהאתר", callback_data: `rm:${rid}` }]]));
-      return void (await sendReviewAsk(chat, review, true));
+      return void (await sendReviewAsk(chat, review));
     }
     await ack();
   } catch (e) {

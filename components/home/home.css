@@ -1102,3 +1102,13 @@ html.kh-menu-open .a11y-btn { opacity: 0; pointer-events: none; transform: scale
 .kh-ask__quote figcaption { font-size: 15px; color: var(--k-muted); }
 .kh-ask__note { text-align: center; font-size: 14px; color: var(--k-muted); }
 .kh-ask__foot { text-align: center; padding: 8px 20px 32px; font-size: 13px; }
+
+/* ------------------------------------------------------------ 404 */
+.kh-404 { min-height: 100svh; display: grid; place-items: center; }
+.kh-404__main { width: 100%; max-width: 560px; padding: 48px 20px; display: grid; justify-items: center; gap: 18px; text-align: center; }
+.kh-404__main img { width: 84px; height: auto; margin-block-end: 20px; }
+.kh-404__main .kh-display-l { margin-block: 2px 4px; }
+.kh-404__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-block-start: 14px; }
+.kh-404__lang { margin-block-start: 10px; }
+.kh-404__lang:hover { color: var(--k-text); }
+@media (max-width: 480px) { .kh-404__btns { width: 100%; } .kh-404__btns .kh-btn { flex: 1 1 100%; } }

@@ -1,7 +1,7 @@
-import ReviewAskPage, { askMetadata, askParams } from "@/components/home/ReviewAskPage";
+import ReviewAskPage, { askMetadata } from "@/components/home/ReviewAskPage";
 
-export const dynamicParams = false;
-export const generateStaticParams = askParams;
+// rendered per request: a review the bot published a minute ago is found even before the site rebuilds
+export const dynamic = "force-dynamic";
 export const metadata = askMetadata("en");
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {

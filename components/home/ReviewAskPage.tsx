@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Lang } from "@/lib/types";
-import { REVIEWS, reviewWho } from "@/lib/reviews";
+import { REVIEWS, reviewWho, type Review } from "@/lib/reviews";
+import { readFile } from "@/lib/bot/github";
 import { GOOGLE_REVIEW_URL } from "@/lib/site";
 import GoogleReviewSteps, { type StepsCopy } from "./GoogleReviewSteps";
 import "./home.css";
@@ -43,7 +44,20 @@ const COPY: Record<Lang, StepsCopy & { title: string; eyebrow: string; text: str
   },
 };
 
-export const askParams = () => REVIEWS.map((r) => ({ id: r.id }));
+/**
+ * The bot sends the link the moment a review is published, while Vercel is still rebuilding (1–2 min).
+ * So a review that isn't in this build yet is read straight from GitHub (content/reviews.json on main).
+ */
+async function findReview(id: string): Promise<Review | undefined> {
+  const built = REVIEWS.find((x) => x.id === id);
+  if (built || !/^[a-z0-9]{2,20}$/.test(id)) return built;
+  try {
+    return (JSON.parse((await readFile("content/reviews.json")).text) as Review[]).find((x) => x.id === id);
+  } catch (e) {
+    console.error("[review-ask] GitHub lookup failed", e);
+    return undefined;
+  }
+}
 
 export function askMetadata(lang: Lang): Metadata {
   const c = COPY[lang];
@@ -59,7 +73,7 @@ export function askMetadata(lang: Lang): Metadata {
 
 export default async function ReviewAskPage({ lang, params }: { lang: Lang; params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const r = REVIEWS.find((x) => x.id === id);
+  const r = await findReview(id);
   if (!r) notFound();
   const c = COPY[lang];
   const he = lang === "he";
