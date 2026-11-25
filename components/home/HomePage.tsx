@@ -15,6 +15,7 @@ import {
   WatchButton,
 } from "./Interactive";
 import Motion from "./Motion";
+import Story from "./Story";
 import { SiteFooter, SiteHeader } from "./Shell";
 import "./home.css";
 
@@ -207,6 +208,9 @@ export default async function HomePage({ lang }: { lang: Lang }) {
             </div>
           )}
         </section>
+
+        {/* ----------------------------------------------------- our story */}
+        <Story lang={lang} />
 
         {/* ----------------------------------------------------------- why */}
         <section className="kh-sec kh-why" id="why">

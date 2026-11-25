@@ -85,6 +85,80 @@ export const BENEFITS = [
   { icon: "music", he: ["כל סגנון, באותו ערב", "חסידי, ישראלי, מזרחי ולועזי. רפרטואר תפור עליכם שיחבר את כולם."], en: ["Every style, one night", "Chassidic, Israeli, Mizrahi and international. A repertoire tailored to bring everyone together."] },
 ] as const;
 
+/**
+ * "Our story" section, the band's own text word for word.
+ * Blocks: p = paragraph, h = small sub-heading, li = bullet list.
+ * Inside text, **name** is shown bright and bold, ==line== in yellow.
+ */
+export type StoryBlock = { p: string } | { h: string } | { li: string[] };
+export const STORY_PHOTOS = { early: `${M}/story-2009.webp`, today: `${M}/story-today.webp` };
+export const STORY: Record<Lang, {
+  eyebrow: string;
+  title: string;
+  blocks: StoryBlock[];
+  signoff: string;
+  sign: string;
+  more: string;
+  less: string;
+  tags: [string, string];
+  alts: [string, string];
+}> = {
+  he: {
+    eyebrow: "OUR STORY",
+    title: "הכל התחיל איפשהו ב-2009.",
+    blocks: [
+      { p: "חבורה של נערים מוזיקאים רעבים, עם המון חלומות ומטרה אחת פשוטה – רק למצוא איפה לנגן." },
+      { p: "הגרעין שלנו כלל את **נתנאל יוסף** (בסיסט עם גרוב ייחודי ודיג'יי), **איתמר נובוסלסקי** (פסנתרן ג'אז מטורף ואמן תופים), **יוחאי טובול** (סקסופוניסט וחיית סאונד וטכנולוגיה) ו**יניב וסלי** (פסנתרן נשמה שאי אפשר להתעלם מהנוכחות הבימתית שלו)." },
+      { p: "היה לנו כמעט הכל – גרוב, תשוקה וכימיה נדירה. ==רק דבר אחד קטן היה חסר: זמר.==" },
+      { p: "חיפשנו בנרות, עד שמצאנו איזה בחור אלמוני ומוכשר בשם **חנן בן ארי**. החיבור היה מיידי. חרשנו יחד את הארץ בחתונות ואירועים, צברנו שעות במה וגיבשנו את ה-DNA שלנו – עד שהגיע הרגע שבו חנן פרץ והפך לאחד הכוכבים הגדולים במיינסטרים הישראלי." },
+      { p: "ואז הגיע הרגע למלא נעליים גדולות במיוחד. אל קדמת הבמה של להקת קולות נכנס **טל שבח** – והוא לא רק מילא אותן, הוא עשה את זה ביג טיים. היום טל הוא בקלות אחד הקולות הבולטים והמבוקשים בתעשיית האירועים הישראלית." },
+      { p: "זמן קצר אחר כך הצטרפו לצוות שתי צלעות נוספות שהרימו אותנו עוד שלב למעלה:" },
+      {
+        li: [
+          "**אריאל קנדאבי** – זמר ויוצר ישראלי שהופיע ומופיע בארץ ובחו\"ל לצד מיטב אמני הזמר החסידי.",
+          "**רובי בדלוב** – חיית במה מטורפת שנע בקלילות בין בון ג'ובי והביטלס לבין ג'יי בלבין וברונו מארס.",
+        ],
+      },
+      { h: "ואיפה אנחנו היום?" },
+      { p: "לאורך השנים גדלנו, התפתחנו והרחבנו את הרפרטואר שלנו כך שנוכל להתאים את עצמנו כמעט לכל קהל ולכל סגנון מוזיקלי. אנחנו עובדים עם מיטב צוותי הסאונד בישראל, ומשלבים טכנולוגיה וסטנדרט מוזיקלי שרואים בדרך כלל רק בהפקות ובבמות הגדולות ביותר." },
+      { p: "את כל הניסיון, העוצמה והדיוק הזה אנחנו מביאים ישירות לאירוע הפרטי שלכם – באותה אהבה ובאותה התרגשות, כאילו זו הפעם הראשונה שאנחנו עולים על במה." },
+    ],
+    signoff: "מחכים לשמוח ולחגוג איתכם,",
+    sign: "קולות",
+    more: "לסיפור המלא",
+    less: "לקצר",
+    tags: ["2009", "היום"],
+    alts: ["להקת קולות בימיה הראשונים", "להקת קולות היום"],
+  },
+  en: {
+    eyebrow: "OUR STORY",
+    title: "It all started somewhere back in 2009.",
+    blocks: [
+      { p: "We were a group of hungry young musicians with big dreams and one simple goal—just finding somewhere to play. Our original core brought together **Netanel Yosef** (a bassist with an unmistakable groove and a DJ), **Itamar Novoselsky** (a phenomenal jazz pianist and master drummer), **Yochay Tubul** (a soulful saxophonist and a wizard of sound and tech), and **Yaniv Vessely** (a soulful pianist with an undeniable stage presence)." },
+      { p: "We had almost everything—groove, passion, and rare musical chemistry. ==Just one small thing was missing: a lead singer.==" },
+      { p: "We searched everywhere until we found an unknown, wildly talented guy named **Hanan Ben Ari**. The connection was instant. We crisscrossed the country together playing weddings and events, putting in the stage hours and shaping our musical DNA—until Hanan broke out and became one of Israel’s biggest mainstream superstars." },
+      { p: "Suddenly, we had some massive shoes to fill." },
+      { p: "Stepping into the spotlight as Kolot’s frontman was **Tal Shevach**—and he didn’t just fill those shoes, he owned them. Today, Tal is easily one of the most prominent and sought-after voices in the live events industry." },
+      { p: "Not long after, two more powerhouses joined the lineup and took us to the next level:" },
+      {
+        li: [
+          "**Ariel Kandabi** – an Israeli singer and songwriter who has performed across Israel and worldwide alongside top artists in the Jewish and Hassidic music scene.",
+          "**Rubi Badalov** – an absolute force on stage who glides effortlessly from Bon Jovi and The Beatles to J Balvin and Bruno Mars.",
+        ],
+      },
+      { h: "Where are we today?" },
+      { p: "Over the years, we’ve grown, evolved, and expanded our repertoire to fit virtually any crowd and any musical style. We collaborate with top-tier sound teams and bring the kind of cutting-edge technology and musical standards usually reserved for major concert stages and live productions." },
+      { p: "We bring all of that experience, energy, and precision straight to your private celebration—with the exact same love and excitement as if it were our very first show." },
+    ],
+    signoff: "We can’t wait to celebrate with you,",
+    sign: "Kolot",
+    more: "Read the full story",
+    less: "Show less",
+    tags: ["2009", "TODAY"],
+    alts: ["KOLOT in the early days", "KOLOT today"],
+  },
+};
+
 export const MARQUEE = {
   he: ["אין עליכם בעולם", "עשיתם הכי הרבה שמח שיש", "כולם שואלים מי הייתה הלהקה", "אתם פשוט הייתם משהו אחר"],
   en: ["THE BAND WAS PHENOMENAL", "IT MADE THE DAY SO SPECIAL", "YOU CREATED THE ATMOSPHERE"],
@@ -98,7 +172,7 @@ export const COPY = {
       { label: "הרכבים", href: "/#lineup" },
       { label: "וידאו", href: "/#showreel" },
       { label: "המלצות", href: "/reviews/" },
-      { label: "עלינו", href: "/#why" },
+      { label: "עלינו", href: "/#story" },
       { label: "Worldwide", href: "/international/" },
       { label: "צור קשר", href: "#contact" },
     ],
@@ -146,7 +220,7 @@ export const COPY = {
       { label: "הרכבים", href: "/#lineup" },
       { label: "וידאו", href: "/#showreel" },
       { label: "המלצות", href: "/reviews/" },
-      { label: "עלינו", href: "/#why" },
+      { label: "עלינו", href: "/#story" },
       { label: "Worldwide", href: "/international/" },
       { label: "צור קשר", href: "#contact" },
       { label: "Instagram", href: INSTAGRAM },
@@ -171,7 +245,7 @@ export const COPY = {
       { label: "Line-up", href: "/en/#lineup" },
       { label: "Video", href: "/en/#showreel" },
       { label: "Reviews", href: "/en/reviews/" },
-      { label: "About", href: "/en/#why" },
+      { label: "About", href: "/en/#story" },
       { label: "Worldwide", href: "/en/international/" },
       { label: "Contact", href: "#contact" },
     ],
@@ -219,7 +293,7 @@ export const COPY = {
       { label: "Line-up", href: "/en/#lineup" },
       { label: "Video", href: "/en/#showreel" },
       { label: "Reviews", href: "/en/reviews/" },
-      { label: "About", href: "/en/#why" },
+      { label: "About", href: "/en/#story" },
       { label: "Worldwide", href: "/en/international/" },
       { label: "Contact", href: "#contact" },
       { label: "Instagram", href: INSTAGRAM },
