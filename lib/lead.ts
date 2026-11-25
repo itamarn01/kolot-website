@@ -9,6 +9,10 @@ export type LeadFields = {
   contact_name: string;
   relation: string;
   relation_other: string;
+  /** bride → the groom's name, groom → the bride's name */
+  partner_name: string;
+  /** any other relation: "what are you celebrating?" */
+  celebration: string;
   event_date: string;
   event_location: string;
   /** coordinates of the suggestion the visitor picked (empty if typed freely) */
@@ -27,6 +31,8 @@ export const EMPTY_LEAD: LeadFields = {
   contact_name: "",
   relation: "",
   relation_other: "",
+  partner_name: "",
+  celebration: "",
   event_date: "",
   event_location: "",
   event_lat: "",
@@ -66,6 +72,24 @@ export const validPhone = (s: string) => {
 };
 export const validEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s.trim());
 
+/** Which follow-up the relation opens: the partner's name for a bride or groom, "what are you celebrating?" otherwise. */
+export type FollowUp = "groom" | "bride" | "celebration";
+export const followUp = (relation: string): FollowUp | null =>
+  relation === "כלה" ? "groom" : relation === "חתן" ? "bride" : relation ? "celebration" : null;
+
+export const FOLLOW_UP_COPY: Record<Lang, Record<FollowUp, { label: string; placeholder: string }>> = {
+  he: {
+    groom: { label: "מה שם החתן?", placeholder: "שם החתן" },
+    bride: { label: "מה שם הכלה?", placeholder: "שם הכלה" },
+    celebration: { label: "מה חוגגים?", placeholder: "בר מצוה ל... / אירוע לחברת..." },
+  },
+  en: {
+    groom: { label: "What's the groom's name?", placeholder: "Groom's name" },
+    bride: { label: "What's the bride's name?", placeholder: "Bride's name" },
+    celebration: { label: "What are you celebrating?", placeholder: "Bar mitzvah for... / Company event for..." },
+  },
+};
+
 /** What the server sends on to Zooglot: "Other" free text replaces the chip value, like the Zooglot form does. */
 export function toPayloadFields(f: LeadFields) {
   const relation = f.relation === "אחר" && f.relation_other.trim() ? f.relation_other.trim() : f.relation;
@@ -81,6 +105,8 @@ export function toPayloadFields(f: LeadFields) {
     email: f.email.trim(),
     hear_about_us: hear,
     referrer: f.hear_about_us === "המלצה" ? f.referrer.trim() : "",
+    partner_name: followUp(f.relation) === "groom" || followUp(f.relation) === "bride" ? f.partner_name.trim() : "",
+    celebration: followUp(f.relation) === "celebration" ? f.celebration.trim() : "",
     notes: f.notes.trim(),
   };
 }

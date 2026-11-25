@@ -13,6 +13,8 @@ import {
   validEmail,
   validPhone,
   type LeadFields,
+  FOLLOW_UP_COPY,
+  followUp,
 } from "@/lib/lead";
 import { CONTACT } from "@/lib/site";
 import { leadSource } from "@/lib/source";
@@ -221,7 +223,7 @@ export default function LeadForm({ lang, worldwide = false }: { lang: Lang; worl
 
   const field = (
     name: keyof LeadFields,
-    opts: { type?: string; autoComplete?: string; inputMode?: "tel" | "email" | "text"; optional?: boolean; dirLtr?: boolean; min?: string } = {},
+    opts: { type?: string; autoComplete?: string; inputMode?: "tel" | "email" | "text"; optional?: boolean; dirLtr?: boolean; min?: string; label?: string; placeholder?: string } = {},
   ) => {
     const id = `lf-${name}`;
     const hint = t.hints[name];
@@ -229,7 +231,7 @@ export default function LeadForm({ lang, worldwide = false }: { lang: Lang; worl
     return (
       <div className={`lf-field${e ? " has-error" : ""}`}>
         <label className="lf-label" htmlFor={id}>
-          {t.labels[name]}
+          {opts.label ?? t.labels[name]}
           {opts.optional && <span className="lf-opt"> ({t.optional})</span>}
         </label>
         <input
@@ -241,7 +243,7 @@ export default function LeadForm({ lang, worldwide = false }: { lang: Lang; worl
           dir={opts.dirLtr ? "ltr" : undefined}
           min={opts.min}
           value={String(f[name])}
-          placeholder={t.placeholders[name]}
+          placeholder={opts.placeholder ?? t.placeholders[name]}
           aria-invalid={e ? true : undefined}
           aria-describedby={[hint && `${id}-hint`, e && `${id}-err`].filter(Boolean).join(" ") || undefined}
           onChange={(ev) => set(name, ev.target.value as never)}
@@ -359,11 +361,17 @@ export default function LeadForm({ lang, worldwide = false }: { lang: Lang; worl
                   <>
                     {field("contact_name", { autoComplete: "name" })}
                     <Chips name="relation" legend={t.labels.relation} options={RELATION_OPTIONS} value={f.relation} lang={lang} onPick={(v) => set("relation", v)} />
-                    {f.relation === "אחר" && (
-                      <div className="lf-reveal">
-                        {field("relation_other", { optional: true })}
-                      </div>
-                    )}
+                    {(() => {
+                      // bride → groom's name, groom → bride's name, anything else → what are you celebrating
+                      const k = followUp(f.relation);
+                      if (!k) return null;
+                      const q = FOLLOW_UP_COPY[lang][k];
+                      return (
+                        <div key={k} className="lf-reveal">
+                          {field(k === "celebration" ? "celebration" : "partner_name", { optional: true, autoComplete: "off", label: q.label, placeholder: q.placeholder })}
+                        </div>
+                      );
+                    })()}
                   </>
                 )}
                 {step === 1 && (

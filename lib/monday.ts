@@ -26,6 +26,9 @@ const COL = {
   contactDate: "_____________", // תאריך התקשרות
   howArrived: "_________", // איך הגיעו
   origin: "short_text19x5pzh7", // origin (text): "website", "ig"… (the board has a second, unused "origin" column)
+  groomName: "text55", // שם חתן
+  brideName: "text7", // שם כלה
+  eventType: "status_Mjj7YD2u", // סוג אירוע: חתונה / בר מצוה / בת מצוה / אירוע עסקי / אחר
 };
 
 // labels that exist on the board's status columns
@@ -70,12 +73,43 @@ type Coords = { lat: number; lng: number } | null;
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
+const firstName = (s: string) => s.trim().split(/\s+/)[0] || "";
+const hasHebrew = (s: string) => /[\u0590-\u05FF]/.test(s);
+
+/** "What are you celebrating?" → the board's event type. */
+function eventTypeOf(celebration: string): string {
+  const s = celebration.toLowerCase();
+  if (/בת[\s-]*מצו|bat[\s-]*mitz/.test(s)) return "בת מצוה";
+  if (/בר[\s-]*מצו|bar[\s-]*mitz/.test(s)) return "בר מצוה";
+  if (/חתונ|wedding/.test(s)) return "חתונה";
+  if (/חבר[הת]|עסקי|כנס|השקה|ערב גיבוש|company|corporate|business|conference/.test(s)) return "אירוע עסקי";
+  return "אחר";
+}
+
 export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en", page: string, coords: Coords = null, source = "website") {
   const v: Record<string, unknown> = {};
   /** free-text lines that go into the item's first update (not the הערות column) */
   const info: [string, string][] = [];
 
   if (fields.contact_name) v[COL.contact] = fields.contact_name;
+
+  // a bride or groom: both names on the board, and the item is named "Yossi & Dana" (groom first)
+  let itemName = fields.contact_name || fields.phone1 || "ליד מהאתר";
+  if (fields.relation === "כלה" || fields.relation === "חתן") {
+    const groom = fields.relation === "חתן" ? fields.contact_name || "" : fields.partner_name || "";
+    const bride = fields.relation === "כלה" ? fields.contact_name || "" : fields.partner_name || "";
+    if (groom) v[COL.groomName] = groom;
+    if (bride) v[COL.brideName] = bride;
+    v[COL.eventType] = { label: "חתונה" };
+    if (groom && bride) {
+      const [g, b] = [firstName(groom), firstName(bride)];
+      itemName = hasHebrew(g + b) ? `${g} ו${b}` : `${g} & ${b}`;
+    }
+    if (fields.partner_name) info.push([fields.relation === "כלה" ? "שם החתן" : "שם הכלה", fields.partner_name]);
+  } else if (fields.celebration) {
+    v[COL.eventType] = { label: eventTypeOf(fields.celebration) };
+    info.push(["מה חוגגים", fields.celebration]);
+  }
   if (fields.relation) {
     if (RELATION_LABELS.has(fields.relation)) v[COL.relation] = { label: fields.relation };
     else info.push(["קרבה", fields.relation]);
@@ -112,7 +146,7 @@ export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en
     fields.notes ? `<p><strong>הערות:</strong><br>${esc(fields.notes).replace(/\n/g, "<br>")}</p>` : "",
   ].filter(Boolean);
 
-  return { name: fields.contact_name || fields.phone1 || "ליד מהאתר", columnValues: v, update: lines.join("") };
+  return { name: itemName, columnValues: v, update: lines.join("") };
 }
 
 async function mondayQuery(query: string, variables: Record<string, unknown>) {

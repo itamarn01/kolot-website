@@ -779,11 +779,12 @@ html.kh-menu-open .a11y-btn { opacity: 0; pointer-events: none; transform: scale
 .kf-intro, .kf-form, .kf-status { animation: kf-in 0.6s var(--k-ease) both; }
 @keyframes kf-in { from { opacity: 0; transform: translateY(24px); } }
 .kf-form { max-width: 760px; margin-inline: auto; text-align: start; display: grid; gap: 40px; }
-.kf-top { display: flex; justify-content: space-between; align-items: center; }
+.kf-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
 .kf-back { font-size: 14px; color: var(--k-muted); }
 .kf-back:hover { color: var(--k-text); }
-.kf-dashes { display: flex; gap: 6px; }
-.kf-dashes span { width: 28px; height: 2px; background: var(--k-line); transition: background-color 0.4s; }
+/* the step bar runs across the whole form, above the back link */
+.kf-dashes { display: flex; gap: 6px; order: -1; flex-basis: 100%; }
+.kf-dashes span { flex: 1; height: 2px; background: var(--k-line); transition: background-color 0.4s; }
 .kf-dashes span.is-on { background: var(--k-accent); }
 /* position + z-index: the question (and its venue list) stacks above the Continue button below it. */
 .kf-q { position: relative; z-index: 2; display: grid; gap: 28px; animation: kf-slide 0.5s var(--k-ease) both; }
@@ -813,6 +814,7 @@ html.kh-menu-open .a11y-btn { opacity: 0; pointer-events: none; transform: scale
 .kh .kf-input:focus-visible, .kh .kf .lf-input:focus-visible { outline: none; }
 .kf-input::placeholder, .kf .lf-input::placeholder { color: rgba(255, 255, 255, 0.3); }
 .kf-input:disabled { opacity: 0.35; }
+.kf-textarea { resize: vertical; min-height: 120px; line-height: 1.5; font-size: 18px; }
 .kf-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; }
 .kf-field { display: grid; gap: 6px; }
 .kf-field > span, .kf-field > label { font-size: 13px; color: var(--k-muted); }

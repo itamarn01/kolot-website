@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import PlaceInput from "@/components/PlaceInput";
-import { EMPTY_LEAD, HEAR_OPTIONS, RELATION_OPTIONS, toPayloadFields, validPhone, type LeadFields } from "@/lib/lead";
+import { EMPTY_LEAD, FOLLOW_UP_COPY, HEAR_OPTIONS, RELATION_OPTIONS, followUp, toPayloadFields, validPhone, type LeadFields } from "@/lib/lead";
 import type { Lang } from "@/lib/types";
 import { leadSource } from "@/lib/source";
 import { WHATSAPP } from "./copy";
@@ -14,13 +14,6 @@ import "@/components/lead-form.css";
  * other form (Zooglot + monday), with the same fields.
  */
 
-const INTERESTS = [
-  { value: "להקה", he: "להקה", en: "Live band" },
-  { value: "הרכב קבלת פנים", he: "הרכב קבלת פנים", en: "Reception ensemble" },
-  { value: "דיג׳יי", he: "דיג׳יי", en: "DJ" },
-  { value: "עוד מתלבטים", he: "עוד מתלבטים", en: "Not sure yet" },
-  { value: "אחר", he: "אחר", en: "Other" },
-];
 
 type CountdownText = { before: string; after: string; today: string; tomorrow: string };
 
@@ -90,10 +83,9 @@ const T = {
     submit: "בדיקת זמינות",
     stepOf: (a: number, b: number) => `${a} / ${b}`,
     eyebrows: ["רגע לפני שמתחילים", "מזל טוב!", "כמעט שם", "ממש עוד רגע"],
-    q: ["איך קוראים לך?", "מתי ואיפה חוגגים?", "מה תרצו באירוע?", "מה הטלפון שלך?"],
+    q: ["איך קוראים לך?", "מתי ואיפה חוגגים?", "רוצים לספר לנו קצת על האירוע?", "מה הטלפון שלך?"],
     name: "שם מלא",
     relation: "ומה הקשר שלך לאירוע?",
-    relationOther: "ספרו לנו, למשל: אח של הכלה",
     date: "תאריך האירוע",
     noDate: "עוד אין לנו תאריך",
     venue: "איפה? (לא חובה)",
@@ -116,8 +108,7 @@ const T = {
     failText: "הפרטים לא אבדו. אפשר לשלוח אותם אלינו בוואטסאפ:",
     failCta: "שליחה בוואטסאפ",
     waPrefill: "היי קולות! פנייה מהאתר:",
-    interestsLabel: "מעוניינים ב",
-    otherPh: "דברו איתנו",
+    notesPh: "לדוגמא: תקציב, הרכב ספציפי, סגנונות מוזיקליים אהובים, מעוניינים בדיג׳יי...",
     countdown: { before: "עוד", after: "ימים לאירוע 🎉", today: "זה היום! 🎉", tomorrow: "מחר! 🎉" },
     hear: "איך שמעתם עלינו? (לא חובה)",
     referrer: "מי המליץ? (כדי שנוכל להגיד תודה)",
@@ -131,10 +122,9 @@ const T = {
     submit: "Check availability",
     stepOf: (a: number, b: number) => `${a} / ${b}`,
     eyebrows: ["Before we start", "Mazal tov!", "Almost there", "One last thing"],
-    q: ["What's your name?", "When and where is the party?", "What would you like?", "What's your phone number?"],
+    q: ["What's your name?", "When and where is the party?", "Want to tell us a bit about the event?", "What's your phone number?"],
     name: "Full name",
     relation: "And how are you related to the event?",
-    relationOther: "Tell us, e.g. the bride's brother",
     date: "Event date",
     noDate: "We don't have a date yet",
     venue: "Where? (optional)",
@@ -157,8 +147,7 @@ const T = {
     failText: "Your details aren't lost. Send them to us on WhatsApp:",
     failCta: "Send on WhatsApp",
     waPrefill: "Hi KOLOT! A request from the website:",
-    interestsLabel: "Interested in",
-    otherPh: "Talk to us",
+    notesPh: "For example: budget, a specific line-up, music styles you love, interested in a DJ...",
     countdown: { before: "That's", after: "days away 🎉", today: "That's today! 🎉", tomorrow: "That's tomorrow! 🎉" },
     hear: "How did you hear about us? (optional)",
     referrer: "Who recommended us? (so we can say thank you)",
@@ -193,8 +182,6 @@ export default function AvailabilitySection({
   const [dir, setDir] = useState<1 | -1>(1);
   const [f, setF] = useState<LeadFields>(EMPTY_LEAD);
   const [noDate, setNoDate] = useState(false);
-  const [interests, setInterests] = useState<string[]>([]);
-  const [interestOther, setInterestOther] = useState("");
   const [err, setErr] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
   const startedAt = useRef(0);
@@ -254,9 +241,7 @@ export default function AvailabilitySection({
 
   const payload = () => {
     const fields = toPayloadFields({ ...f, event_date: noDate ? "" : f.event_date });
-    const picked = interests.map((v) => (v === "אחר" && interestOther.trim() ? `אחר (${interestOther.trim()})` : v));
-    const wants = picked.length ? `${t.interestsLabel}: ${picked.join(", ")}` : "";
-    return { ...fields, notes: [wants, fields.notes].filter(Boolean).join("\n") };
+    return fields;
   };
 
   const waLink = () => {
@@ -298,7 +283,6 @@ export default function AvailabilitySection({
 
   const today = new Date().toISOString().slice(0, 10);
   const firstName = f.contact_name.trim().split(/\s+/)[0] || "";
-  const toggleInterest = (v: string) => setInterests((p) => (p.includes(v) ? p.filter((x) => x !== v) : [...p, v]));
 
   return (
     <div ref={rootRef} className={`kf kf--${phase}`}>
@@ -367,17 +351,25 @@ export default function AvailabilitySection({
                     </button>
                   ))}
                 </fieldset>
-                {f.relation === "אחר" && (
-                  <input
-                    className="kf-input kf-input--small kf-reveal"
-                    placeholder={t.relationOther}
-                    aria-label={t.relationOther}
-                    value={f.relation_other}
-                    maxLength={80}
-                    onChange={(e) => set("relation_other", e.target.value)}
-                    autoFocus
-                  />
-                )}
+                {(() => {
+                  const k = followUp(f.relation);
+                  if (!k) return null;
+                  const q = FOLLOW_UP_COPY[lang][k];
+                  const key = k === "celebration" ? "celebration" : "partner_name";
+                  return (
+                    <label key={k} className="kf-field kf-reveal kf-follow">
+                      <span>{q.label}</span>
+                      <input
+                        className="kf-input kf-input--small"
+                        placeholder={q.placeholder}
+                        value={f[key]}
+                        maxLength={k === "celebration" ? 200 : 120}
+                        autoComplete="off"
+                        onChange={(e) => set(key, e.target.value)}
+                      />
+                    </label>
+                  );
+                })()}
               </>
             )}
 
@@ -415,17 +407,17 @@ export default function AvailabilitySection({
             )}
 
             {step === 2 && (
-              <fieldset className="kf-chips kf-chips--big">
-                <legend>{t.multi}</legend>
-                {INTERESTS.map((o) => (
-                  <button type="button" key={o.value} className={interests.includes(o.value) ? "is-on" : ""} aria-pressed={interests.includes(o.value)} onClick={() => toggleInterest(o.value)}>
-                    {o[lang]}
-                  </button>
-                ))}
-              </fieldset>
-            )}
-            {step === 2 && interests.includes("אחר") && (
-              <input className="kf-input kf-draw" placeholder={t.otherPh} aria-label={t.otherPh} value={interestOther} maxLength={200} onChange={(e) => setInterestOther(e.target.value)} autoFocus />
+              <textarea
+                className="kf-input kf-textarea"
+                name="notes"
+                rows={4}
+                maxLength={2000}
+                placeholder={t.notesPh}
+                aria-label={t.q[2]}
+                value={f.notes}
+                onChange={(e) => set("notes", e.target.value)}
+                autoFocus
+              />
             )}
 
             {step === 3 && (
