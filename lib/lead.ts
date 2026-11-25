@@ -13,6 +13,8 @@ export type LeadFields = {
   partner_name: string;
   /** any other relation: "what are you celebrating?" */
   celebration: string;
+  /** "you played at a friend's event": whose */
+  friends: string;
   event_date: string;
   event_location: string;
   /** coordinates of the suggestion the visitor picked (empty if typed freely) */
@@ -33,6 +35,7 @@ export const EMPTY_LEAD: LeadFields = {
   relation_other: "",
   partner_name: "",
   celebration: "",
+  friends: "",
   event_date: "",
   event_location: "",
   event_lat: "",
@@ -73,20 +76,24 @@ export const validPhone = (s: string) => {
 export const validEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s.trim());
 
 /** Which follow-up the relation opens: the partner's name for a bride or groom, "what are you celebrating?" otherwise. */
-export type FollowUp = "groom" | "bride" | "celebration";
+export type FollowUp = "groom" | "bride" | "celebration" | "celebrationParent";
 export const followUp = (relation: string): FollowUp | null =>
-  relation === "כלה" ? "groom" : relation === "חתן" ? "bride" : relation ? "celebration" : null;
+  relation === "כלה" ? "groom" : relation === "חתן" ? "bride" : relation === "הורה" ? "celebrationParent" : relation ? "celebration" : null;
+/** the two "what are you celebrating" variants only differ in the example text */
+export const isCelebration = (k: FollowUp | null) => k === "celebration" || k === "celebrationParent";
 
 export const FOLLOW_UP_COPY: Record<Lang, Record<FollowUp, { label: string; placeholder: string }>> = {
   he: {
     groom: { label: "מה שם החתן?", placeholder: "שם החתן" },
     bride: { label: "מה שם הכלה?", placeholder: "שם הכלה" },
-    celebration: { label: "מה חוגגים?", placeholder: "בר מצוה ל... / אירוע לחברת..." },
+    celebration: { label: "מה חוגגים?", placeholder: "חתונה / בר מצוה / אירוע חברה" },
+    celebrationParent: { label: "מה חוגגים?", placeholder: "בר מצוה ל... / החתונה של..." },
   },
   en: {
     groom: { label: "What's the groom's name?", placeholder: "Groom's name" },
     bride: { label: "What's the bride's name?", placeholder: "Bride's name" },
-    celebration: { label: "What are you celebrating?", placeholder: "Bar mitzvah for... / Company event for..." },
+    celebration: { label: "What are you celebrating?", placeholder: "Wedding / bar mitzvah / company event" },
+    celebrationParent: { label: "What are you celebrating?", placeholder: "Bar mitzvah for... / The wedding of..." },
   },
 };
 
@@ -106,7 +113,8 @@ export function toPayloadFields(f: LeadFields) {
     hear_about_us: hear,
     referrer: f.hear_about_us === "המלצה" ? f.referrer.trim() : "",
     partner_name: followUp(f.relation) === "groom" || followUp(f.relation) === "bride" ? f.partner_name.trim() : "",
-    celebration: followUp(f.relation) === "celebration" ? f.celebration.trim() : "",
+    celebration: isCelebration(followUp(f.relation)) ? f.celebration.trim() : "",
+    friends: f.hear_about_us === "ניגנתם אצל חברים" ? f.friends.trim() : "",
     notes: f.notes.trim(),
   };
 }
@@ -166,6 +174,7 @@ export const FORM_COPY: Record<
       hear_about_us: "איך שמעתם עלינו?",
       hear_other: "איפה?",
       referrer: "מי המליץ?",
+      friends: "איך קוראים להם?",
       notes: "משהו נוסף שכדאי שנדע?",
     },
     hints: {
@@ -183,6 +192,7 @@ export const FORM_COPY: Record<
       relation_other: "למשל: אח של הכלה",
       hear_other: "ספרו לנו",
       referrer: "שם",
+      friends: "למשל: החתונה של יוסי ודנה",
     },
     errors: {
       contact_name: "נשמח לדעת איך לפנות אליך",
@@ -229,6 +239,7 @@ export const FORM_COPY: Record<
       hear_about_us: "How did you hear about us?",
       hear_other: "Where?",
       referrer: "Who recommended us?",
+      friends: "Whose event was it?",
       notes: "Anything else we should know?",
     },
     hints: {
@@ -246,6 +257,7 @@ export const FORM_COPY: Record<
       relation_other: "e.g. the bride's brother",
       hear_other: "Tell us",
       referrer: "Name",
+      friends: "e.g. Yossi & Dana's wedding",
     },
     errors: {
       contact_name: "We'd love to know what to call you",

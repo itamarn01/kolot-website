@@ -46,6 +46,7 @@ const FIELD_MAX: Record<string, number> = {
   hear_about_us: 120,
   partner_name: 120,
   celebration: 200,
+  friends: 120,
   referrer: 120,
   notes: 2000,
 };
@@ -175,9 +176,13 @@ export async function POST(req: Request) {
     : Promise.resolve(null);
 
   // the CRM stores the location as text, and has no partner / celebration fields: those lead the notes
-  const { event_lat: _lat, event_lng: _lng, partner_name, celebration, ...zooglotFields } = fields;
+  const { event_lat: _lat, event_lng: _lng, partner_name, celebration, friends, ...zooglotFields } = fields;
   const partnerLabel = fields.relation === "כלה" ? "שם החתן" : "שם הכלה";
-  const extra = [partner_name && `${partnerLabel}: ${partner_name}`, celebration && `מה חוגגים: ${celebration}`].filter(Boolean);
+  const extra = [
+    partner_name && `${partnerLabel}: ${partner_name}`,
+    celebration && `מה חוגגים: ${celebration}`,
+    friends && `ניגנו אצל: ${friends}`,
+  ].filter(Boolean);
   if (extra.length) zooglotFields.notes = [...extra, zooglotFields.notes].filter(Boolean).join("\n");
   const zooglot = await sendToZooglot(zooglotFields, lang, page, body.whatsapp_consent !== false);
   const mondayId = await monday;

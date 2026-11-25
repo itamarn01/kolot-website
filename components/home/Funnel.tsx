@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import PlaceInput from "@/components/PlaceInput";
-import { EMPTY_LEAD, FOLLOW_UP_COPY, HEAR_OPTIONS, RELATION_OPTIONS, followUp, toPayloadFields, validPhone, type LeadFields } from "@/lib/lead";
+import { EMPTY_LEAD, FOLLOW_UP_COPY, HEAR_OPTIONS, RELATION_OPTIONS, followUp, isCelebration, toPayloadFields, validPhone, type LeadFields } from "@/lib/lead";
 import type { Lang } from "@/lib/types";
 import { leadSource } from "@/lib/source";
 import { WHATSAPP } from "./copy";
@@ -86,6 +86,8 @@ const T = {
     q: ["איך קוראים לך?", "מתי ואיפה חוגגים?", "רוצים לספר לנו קצת על האירוע?", "מה הטלפון שלך?"],
     name: "שם מלא",
     relation: "ומה הקשר שלך לאירוע?",
+    optional: "לא חובה",
+    friends: "איך קוראים להם? (למשל: החתונה של יוסי ודנה)",
     date: "תאריך האירוע",
     noDate: "עוד אין לנו תאריך",
     venue: "איפה? (לא חובה)",
@@ -125,6 +127,8 @@ const T = {
     q: ["What's your name?", "When and where is the party?", "Want to tell us a bit about the event?", "What's your phone number?"],
     name: "Full name",
     relation: "And how are you related to the event?",
+    optional: "optional",
+    friends: "Whose event was it? (e.g. Yossi & Dana's wedding)",
     date: "Event date",
     noDate: "We don't have a date yet",
     venue: "Where? (optional)",
@@ -160,6 +164,15 @@ const T = {
 const STEPS = 4;
 type Phase = "intro" | "form" | "sending" | "done" | "fail";
 
+/**
+ * Progress survives a page change in the same tab (switching language is a new page): what was typed, the
+ * step, and whether the form was open. Cleared once the lead is sent; ignored after two hours.
+ */
+const SAVE_KEY = "kolot-funnel-v1";
+const JUMP_KEY = "kolot-funnel-jump"; // set when a language link is clicked mid-form: the next page scrolls back to the form
+const SAVE_TTL = 2 * 60 * 60 * 1000;
+type Saved = { f: LeadFields; step: number; noDate: boolean; startedAt: number; t: number };
+
 export default function AvailabilitySection({
   lang,
   eyebrow,
@@ -191,9 +204,51 @@ export default function AvailabilitySection({
 
   const set = <K extends keyof LeadFields>(k: K, v: LeadFields[K]) => setF((p) => ({ ...p, [k]: v }));
 
+  // saving starts only after the saved progress was read back: the first render (empty form) must not overwrite it
+  const [ready, setReady] = useState(false);
   useEffect(() => {
     if (startOpen) startedAt.current = Date.now();
+    try {
+      const raw = sessionStorage.getItem(SAVE_KEY);
+      const saved = raw ? (JSON.parse(raw) as Saved) : null;
+      if (saved && Date.now() - saved.t < SAVE_TTL) {
+        setF({ ...EMPTY_LEAD, ...saved.f });
+        setStep(Math.min(Math.max(0, saved.step | 0), STEPS - 1));
+        setNoDate(!!saved.noDate);
+        startedAt.current = saved.startedAt || Date.now();
+        setPhase("form");
+        if (sessionStorage.getItem(JUMP_KEY)) {
+          sessionStorage.removeItem(JUMP_KEY);
+          requestAnimationFrame(() => rootRef.current?.scrollIntoView({ block: "start" }));
+        }
+      }
+    } catch {}
+    setReady(true);
   }, [startOpen]);
+
+  // keep the progress while the form is open; forget it once sent
+  useEffect(() => {
+    if (!ready) return;
+    try {
+      if (phase === "form") {
+        const saved: Saved = { f, step, noDate, startedAt: startedAt.current, t: Date.now() };
+        sessionStorage.setItem(SAVE_KEY, JSON.stringify(saved));
+      } else if (phase === "done") sessionStorage.removeItem(SAVE_KEY);
+    } catch {}
+  }, [ready, phase, f, step, noDate]);
+
+  // a language link clicked mid-form: come back to the form on the other-language page
+  useEffect(() => {
+    if (phase !== "form") return;
+    const onClick = (e: MouseEvent) => {
+      if (!(e.target as Element | null)?.closest?.("a[hreflang]")) return;
+      try {
+        sessionStorage.setItem(JUMP_KEY, "1");
+      } catch {}
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, [phase]);
 
   // Focus the new question so keyboard and screen-reader users land on it.
   useEffect(() => {
@@ -309,7 +364,16 @@ export default function AvailabilitySection({
             ) : startOpen ? (
               <span />
             ) : (
-              <button type="button" className="kf-back" onClick={() => setPhase("intro")}>
+              <button
+                type="button"
+                className="kf-back"
+                onClick={() => {
+                  setPhase("intro");
+                  try {
+                    sessionStorage.removeItem(SAVE_KEY); // closed on purpose: start fresh next time
+                  } catch {}
+                }}
+              >
                 {lang === "he" ? "→" : "←"} {t.back}
               </button>
             )}
@@ -329,6 +393,7 @@ export default function AvailabilitySection({
             <p className="kh-label kh-muted">{t.eyebrows[step]}</p>
             <h3 ref={headRef} tabIndex={-1} className="kh-display-l kf-title">
               {t.q[step]}
+              {step === 2 && <span className="kf-opt"> ({t.optional})</span>}
             </h3>
 
             {step === 0 && (
@@ -355,7 +420,7 @@ export default function AvailabilitySection({
                   const k = followUp(f.relation);
                   if (!k) return null;
                   const q = FOLLOW_UP_COPY[lang][k];
-                  const key = k === "celebration" ? "celebration" : "partner_name";
+                  const key = isCelebration(k) ? "celebration" : "partner_name";
                   return (
                     <label key={k} className="kf-field kf-reveal kf-follow">
                       <span>{q.label}</span>
@@ -363,7 +428,7 @@ export default function AvailabilitySection({
                         className="kf-input kf-input--small"
                         placeholder={q.placeholder}
                         value={f[key]}
-                        maxLength={k === "celebration" ? 200 : 120}
+                        maxLength={isCelebration(k) ? 200 : 120}
                         autoComplete="off"
                         onChange={(e) => set(key, e.target.value)}
                       />
@@ -447,6 +512,9 @@ export default function AvailabilitySection({
                     </button>
                   ))}
                 </fieldset>
+                {f.hear_about_us === "ניגנתם אצל חברים" && (
+                  <input className="kf-input kf-input--small kf-reveal" placeholder={t.friends} aria-label={t.friends} value={f.friends} maxLength={120} onChange={(e) => set("friends", e.target.value)} />
+                )}
                 {f.hear_about_us === "המלצה" && (
                   <input className="kf-input kf-input--small kf-reveal" placeholder={t.referrer} aria-label={t.referrer} value={f.referrer} maxLength={120} onChange={(e) => set("referrer", e.target.value)} />
                 )}

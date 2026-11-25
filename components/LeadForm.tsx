@@ -15,6 +15,7 @@ import {
   type LeadFields,
   FOLLOW_UP_COPY,
   followUp,
+  isCelebration,
 } from "@/lib/lead";
 import { CONTACT } from "@/lib/site";
 import { leadSource } from "@/lib/source";
@@ -368,7 +369,7 @@ export default function LeadForm({ lang, worldwide = false }: { lang: Lang; worl
                       const q = FOLLOW_UP_COPY[lang][k];
                       return (
                         <div key={k} className="lf-reveal">
-                          {field(k === "celebration" ? "celebration" : "partner_name", { optional: true, autoComplete: "off", label: q.label, placeholder: q.placeholder })}
+                          {field(isCelebration(k) ? "celebration" : "partner_name", { optional: true, autoComplete: "off", label: q.label, placeholder: q.placeholder })}
                         </div>
                       );
                     })()}
@@ -416,6 +417,7 @@ export default function LeadForm({ lang, worldwide = false }: { lang: Lang; worl
                 {step === 3 && (
                   <>
                     <Chips name="hear_about_us" legend={t.labels.hear_about_us} options={HEAR_OPTIONS} value={f.hear_about_us} lang={lang} onPick={(v) => set("hear_about_us", v)} />
+                    {f.hear_about_us === "ניגנתם אצל חברים" && <div className="lf-reveal">{field("friends", { optional: true })}</div>}
                     {f.hear_about_us === "המלצה" && <div className="lf-reveal">{field("referrer", { optional: true })}</div>}
                     {f.hear_about_us === "אחר" && <div className="lf-reveal">{field("hear_other", { optional: true })}</div>}
                     <div className="lf-field">

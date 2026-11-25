@@ -793,6 +793,7 @@ html.kh-menu-open .a11y-btn { opacity: 0; pointer-events: none; transform: scale
 @keyframes kf-slide-back { from { opacity: 0; transform: translateX(calc(var(--kf-dir, 1) * -40px)); } }
 [dir="rtl"] .kf { --kf-dir: -1; }
 .kf-title { margin-block-start: -12px; }
+.kf-title .kf-opt { font-family: var(--k-body); font-size: 15px; font-weight: 400; color: var(--k-muted); -webkit-text-stroke: 0; white-space: nowrap; }
 /* Headings get focus programmatically (for screen readers) and should not show a focus frame. */
 .kh .kf-title:focus-visible, .kh .kf-status h3:focus-visible { outline: none; }
 .kf-input, .kf .lf-input {

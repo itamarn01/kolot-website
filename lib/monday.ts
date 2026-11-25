@@ -132,6 +132,7 @@ export function buildMondayItem(fields: Record<string, string>, lang: "he" | "en
     v[COL.hearAbout] = { label: HEAR_MAP[fields.hear_about_us] || "אחר" };
     info.push(["איך שמעו עלינו", fields.hear_about_us]);
   }
+  if (fields.friends) info.push(["ניגנו אצל", fields.friends]);
   if (fields.referrer) {
     v[COL.referrer] = fields.referrer;
     info.push(["מי המליץ", fields.referrer]);
